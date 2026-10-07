@@ -80,12 +80,10 @@ img{display:block;max-width:100%}
 .stories{display:flex;gap:12px;overflow-x:auto;padding:14px 16px 6px;scrollbar-width:none}
 .stories::-webkit-scrollbar{display:none}
 .story{flex:none;width:78px;border:0;background:none;padding:0;display:flex;flex-direction:column;align-items:center;gap:14px}
-/* ONE gradient for every unseen ring — the rail is a single set, not six colour-coded ones.
-   Per-story colours were my invention twice over; the design has one orange sweep throughout.
-   The 2px gradient sits on the border box with a 1px white gap inside it. */
-.ring{position:relative;width:78px;height:78px;border-radius:39px;padding:1px;border:2px solid transparent;box-shadow:0 4px 4px rgba(16,24,40,.14);background-image:linear-gradient(#fff,#fff),linear-gradient(135deg,#FDB022,#EF6939);background-origin:border-box;background-clip:padding-box,border-box}
-.story.seen .ring{border:1.5px solid var(--line-solid);background-image:none;background:#fff;box-shadow:none}
-.ring img{width:100%;height:100%;border-radius:36px;box-shadow:inset 0 0 0 1px rgba(255,255,255,.55)}
+/* No stroke on the ring. The avatar artwork carries its own edge — every border I put here
+   (gold, then per-story gradient, then one gradient) was invented, not in the design. */
+.ring{position:relative;width:78px;height:78px;border-radius:39px}
+.ring img{width:100%;height:100%;border-radius:39px;display:block}
 .tag{position:absolute;left:50%;bottom:-10px;transform:translateX(-50%);height:22px;padding:0 9px;border-radius:11px;font-size:12px;font-weight:600;display:flex;align-items:center;gap:4px;white-space:nowrap;background:#fff;border:1px solid #FBD3E2;box-shadow:0 2px 6px rgba(232,90,147,.18)}
 .tag.live{background:#D92D20;color:#fff;border-color:#D92D20;box-shadow:none}
 .tag.live i{width:6px;height:6px;border-radius:50%;background:#fff;animation:blink 1.2s infinite}
@@ -299,7 +297,7 @@ img{display:block;max-width:100%}
 /* nav */
 .nav{position:absolute;left:16px;right:16px;bottom:16px;height:60px;display:flex;border-radius:30px;background:rgba(255,255,255,.96);border:1px solid var(--line-solid);padding:4px 8px;z-index:10;backdrop-filter:blur(8px)}
 /* type and icon sizing taken from the Experts page tabbar: 24px icon, 11/16 label, 2px gap */
-.nav button{flex:1;border:0;background:none;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px;font-size:11px;line-height:16px;color:var(--mute);padding:0}
+.nav button{flex:1;border:0;background:none;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px;font-size:12px;line-height:16px;color:var(--mute);padding:0}
 .nav button img{width:24px;height:24px}
 .nav button.on{color:var(--or);font-weight:600}
 
@@ -378,7 +376,7 @@ img{display:block;max-width:100%}
 .svoice .pb{width:40px;height:40px;border-radius:50%;background:#fff;display:grid;place-items:center;flex:none;border:0;padding:0}
 .svoice .wave i{background:rgba(255,255,255,.4)}.svoice .wave i.on{background:#fff}
 /* the watermark that rides along when a slide is shared out of the app */
-.svmark{text-align:center;font-size:11px;line-height:15px;color:rgba(255,255,255,.65);letter-spacing:.2px}
+.svmark{text-align:center;font-size:12px;line-height:16px;color:rgba(255,255,255,.65);letter-spacing:.2px}
 .svmark b{font-weight:600;color:rgba(255,255,255,.9)}
 /* the free-chat line that sits above Hemali's CTA, dashes and all */
 .svfree b{font-weight:600;color:#fff;font-variant-numeric:tabular-nums}
@@ -408,9 +406,9 @@ img{display:block;max-width:100%}
 .calsum .s+.s{margin-left:14px;padding-left:14px;border-left:1px solid var(--bubble-line)}
 .calsum .s i{width:18px;height:18px;border-radius:50%;display:grid;place-items:center;flex:none}
 .calsum .s b{display:block;font-size:14px;line-height:18px}
-.calsum .s small{display:block;font-size:11px;line-height:14px;color:var(--mute)}
+.calsum .s small{display:block;font-size:12px;line-height:15px;color:var(--mute)}
 .calsum .sp{flex:1}
-.calsum em{font-size:11px;line-height:14px;color:var(--mute);font-style:normal;text-align:right;max-width:92px}
+.calsum em{font-size:12px;line-height:15px;color:var(--mute);font-style:normal;text-align:right;max-width:92px}
 .grid{margin:12px 16px 0;background:var(--bubble);border:1px solid var(--bubble-line);border-radius:22px;padding:12px 6px 10px;position:relative}
 .wk,.gr{display:grid;grid-template-columns:repeat(7,1fr);text-align:center}
 .wk span{font-size:12px;color:var(--mute);font-weight:600;padding-bottom:6px}
@@ -419,7 +417,7 @@ img{display:block;max-width:100%}
 .cd .n{font-size:14px;font-weight:600;line-height:18px}
 /* the moon is gone from the cells — this mark says whether the day's money was claimed */
 .cd .mk{width:16px;height:16px;border-radius:50%;display:grid;place-items:center;flex:none}
-.cd .am{font-size:10px;line-height:12px;font-weight:700;color:var(--ink2);font-variant-numeric:tabular-nums}
+.cd .am{font-size:12px;line-height:14px;font-weight:700;color:var(--ink2);font-variant-numeric:tabular-nums}
 /* only the coming weeks' amounts are hidden; the day itself stays readable */
 .cd .am.bl{filter:blur(3px)}
 .cd .dts{display:flex;gap:3px;height:6px}.cd .dts i{width:6px;height:6px;border-radius:50%}
@@ -440,7 +438,7 @@ img{display:block;max-width:100%}
 .panch>b{display:block;font-size:12px;letter-spacing:.6px;text-transform:uppercase;color:var(--mute);font-weight:600}
 .pg{display:grid;grid-template-columns:1fr 1fr;gap:10px 12px;margin-top:10px}
 .pg>span{display:block;min-width:0}
-.pg small{display:block;font-size:11px;line-height:14px;color:var(--mute)}
+.pg small{display:block;font-size:12px;line-height:15px;color:var(--mute)}
 .pg b{display:block;font-size:13px;line-height:18px;font-weight:600;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
 .pg b.warn{color:#B54708}
 .seld{margin:14px 16px 0;background:var(--bubble);border:1px solid var(--bubble-line);border-radius:20px;padding:14px;display:flex;gap:12px}
