@@ -438,7 +438,7 @@ img{display:block;max-width:100%}
     <!-- Aaj ka din -->
     <div class="sec"><div class="card pan">
       <div class="th"><span class="node gold"></span><div class="tx"><small>Mumbai · aaj</small><b>Aaj ka din</b></div><button class="chev" id="panCal" aria-label="Open calendar"><svg width="18" height="18" viewBox="0 0 24 24"><path d="M9 5l7 7-7 7" fill="none" stroke="#101828" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></button></div>
-      <div class="arc"><svg viewBox="0 0 316 172" id="arcSvg"></svg></div>
+      <div class="arc"><svg viewBox="0 0 316 96" id="arcSvg"></svg></div>
       <div class="suntimes"><span>Sunrise 6:28 AM</span><span>Sunset 6:24 PM</span></div>
       <div class="pgrid">
         <div class="pc"><img src="assets/ic-rahu.png" alt=""><small><span class="bad"></span>Rahu kaal · ashubh</small><b>7:57–9:27 AM</b></div>
@@ -725,10 +725,10 @@ function closeSheet(){$('#ov').classList.remove('on');}
 $('#scrim').onclick=closeSheet;
 
 /* ---------- Aaj ka din arc ----------
-   Semi-circle: the span is 2× the rise, so t sweeps a true half turn. The sun rides in from
-   sunrise the first time the card enters the viewport, then stays put. */
+   Rise is 0.21 of the span, measured off Figma 2358:13688. The sun rides in from sunrise the
+   first time the card enters the viewport, then stays put. */
 (()=>{
- const W=316,pad=14,base=164,ht=(W-2*pad)/2;
+ const W=316,pad=14,base=84,ht=(W-2*pad)*0.21;
  const P=t=>[pad+t*(W-2*pad), base-Math.sin(Math.PI*t)*ht];
  const seg=(a,b,n=60)=>{let d='';for(let i=0;i<=n;i++){const [x,y]=P(a+(b-a)*i/n);d+=(i?'L':'M')+x.toFixed(1)+' '+y.toFixed(1);}return d;};
  const m=v=>(v-388)/716;
