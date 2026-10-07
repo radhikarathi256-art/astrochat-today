@@ -346,8 +346,21 @@ img{display:block;max-width:100%}
 .shlok{font-family:'Cormorant Infant',serif;font-size:30px;line-height:38px;text-align:center;color:#FBE3B4}
 .shlok-tr{font-size:13px;line-height:19px;text-align:center;color:rgba(255,255,255,.75);font-style:italic}
 /* Mahadev fills the slide edge to edge; the words sit in a scrim over the bottom third */
-.mahadev{position:absolute;inset:0;width:100%;height:100%}
-.mdscrim{position:absolute;left:0;right:0;bottom:0;height:56%;background:linear-gradient(180deg,rgba(2,8,28,0) 0%,rgba(2,8,28,.52) 32%,rgba(2,8,28,.88) 62%,rgba(2,8,28,.97) 100%)}
+/* Mahadev is cropped hard at his left edge, so hold that edge and let the empty right go */
+.mahadev{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:left top}
+.mdscrim{position:absolute;left:0;right:0;bottom:0;height:54%;background:linear-gradient(180deg,rgba(4,14,43,0) 0%,rgba(4,14,43,.5) 34%,rgba(4,14,43,.88) 66%,rgba(4,14,43,.97) 100%)}
+/* the light-slide equivalent of .mdscrim — a warm cream wash so the words clear the orb's glow */
+.ltscrim{position:absolute;left:0;right:0;bottom:0;height:56%;background:linear-gradient(180deg,rgba(255,241,232,0) 0%,rgba(255,240,230,.5) 30%,rgba(255,238,227,.88) 64%,rgba(255,237,225,.98) 100%)}
+/* Gita's artwork is a pale violet-to-peach wash, so white chrome would vanish on it. The light
+   tone leaves the art alone and inverts the viewer's own text to the deepest colour inside it. */
+.sv.light{color:#3B1E63}
+.sv.light .svtop{background:linear-gradient(rgba(255,255,255,.45),transparent)}
+.sv.light .bars span{background:rgba(59,30,99,.25)}
+.sv.light .bars span i{background:#3B1E63}
+.sv.light .svhd small,.sv.light .s-eyebrow,.sv.light .shlok-tr,.sv.light .svmark{color:rgba(59,30,99,.72)}
+.sv.light .svmark b,.sv.light .shlok{color:#3B1E63}
+.sv.light .ghostw{border-color:rgba(59,30,99,.35);background:rgba(255,255,255,.55);color:#3B1E63}
+.sv.light .svhd .x svg path{stroke:#3B1E63}
 .bleed{position:absolute;inset:0;z-index:0}
 
 /* CALENDAR — same light theme as Today: cream surfaces, ink text, orange accent */
@@ -510,7 +523,8 @@ img{display:block;max-width:100%}
 
     <!-- Aaj ka din -->
     <div class="sec"><div class="card pan">
-      <div class="th"><svg class="node" width="14" height="40" viewBox="0 0 14 40" fill="none" aria-hidden="true"><path d="M7 0V15.925M7 27.5V49" stroke="#F79009" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/><path d="M7 13L13 20L7 27L1 20L7 13Z" stroke="#F79009" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg><div class="tx"><small>Mumbai · aaj</small><b>Aaj ka din</b></div><button class="chev" id="panCal" aria-label="Open calendar"><svg width="18" height="18" viewBox="0 0 24 24"><path d="M9 5l7 7-7 7" fill="none" stroke="#101828" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></button></div>
+      <div class="th"><!-- same node as the Ekadashi card below, down to the orange -->
+      <svg class="node" width="14" height="40" viewBox="0 0 14 40" fill="none" aria-hidden="true"><path d="M7 0V15.925M7 27.5V49" stroke="#EF6939" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/><path d="M7 13L13 20L7 27L1 20L7 13Z" stroke="#EF6939" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg><div class="tx"><small>Mumbai · aaj</small><b>Aaj ka din</b></div><button class="chev" id="panCal" aria-label="Open calendar"><svg width="18" height="18" viewBox="0 0 24 24"><path d="M9 5l7 7-7 7" fill="none" stroke="#101828" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></button></div>
       <div class="arc"><svg viewBox="0 0 316 96" id="arcSvg"></svg></div>
       <div class="suntimes"><span>Sunrise 6:28 AM</span><span>Sunset 6:24 PM</span></div>
       <div class="pgrid">
@@ -561,7 +575,7 @@ const app=$('#app'), scroll=$('#scroll');
 /* Bottom tabs — same artwork and sizing as the Experts page, kept in this page's floating pill.
    Experts routes into the listing; Timeline and Explore stay inert. */
 $('#nav').innerHTML=[['Today','tab-today','on'],['Experts','tab-experts','experts'],['Timeline','tab-timeline',''],['Explore','tab-explore','']]
-  .map(([t,k,m])=>`<button class="${m==='on'?'on':''}"${m==='experts'?' data-experts':(m?'':` data-toast="${t} tab"`)}><img src="${ICONS[k]}" alt="">${t}</button>`).join('');
+  .map(([t,k,m])=>`<button class="${m==='on'?'on':''}"${m==='experts'?' data-experts':(m?'':` data-toast="${t} tab"`)}><img src="${ICONS[m==='on'?k+'-on':k]}" alt="">${t}</button>`).join('');
 $('#icMenu').src=ICONS.hamburger; $('#icWallet').src=ICONS.wallet; $('#icChat').src=ICONS['chat-top'];
 
 const state={bal:0,claimed:false,mood:null,tasks:{tarot:false,report:false},seen:{darshan:true,panchang:true},remind:false,freeRemind:false,ciRemind:false};
@@ -647,7 +661,7 @@ const STORIES=[
      <div style="font-size:12px;letter-spacing:1.5px;color:rgba(255,255,255,.6);margin-top:6px">AAJ NA KAREIN</div>
      <div class="dont">${['Naya kaam shuru karna','Jaldi wale faisle','Party ya celebration','Kisi se ehsaan maangna'].map(x=>`<div><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="1.8"><circle cx="12" cy="12" r="9"/><path d="M5.6 5.6l12.8 12.8"/></svg>${x}</div>`).join('')}</div></div>`],
   cta:{t:'Saare 12 hora dekhein',a:()=>toast('Hora list')}},
- {k:'darshan',ring:'#E09B46,#8A4A16',name:'Darshan',img:'assets/story-darshan.png',tag:'',pat:'bead',bg:'radial-gradient(90% 55% at 50% 38%,#8A4A16 0%,#3A1A08 55%,#120703 100%)',slides:[
+ {k:'darshan',ring:'#8FB7F2,#0B1D4D',name:'Darshan',img:'assets/story-darshan.png',tag:'',pat:'bead',bg:'#061233',slides:[
   ()=>`<div class="bleed">${darshanArt()}<span class="mdscrim"></span></div>
    <div style="position:relative;flex:1;display:flex;flex-direction:column;justify-content:flex-end;gap:10px;text-align:center;align-items:center;padding-bottom:24px">
      <div style="font-size:12px;letter-spacing:3px;color:#F6C27A;font-weight:600">SOMVAAR · CHANDRA</div>
@@ -666,13 +680,13 @@ const STORIES=[
   cta:{t:'Poora Panchang dekhein',a:()=>{closeStory();openCal();}}},
  /* Gita — the one slide that is purely to be shared. Its violet-to-amber dusk is pitched between
     Panchang's navy and Darshan's saffron so the rail still reads as one set. */
- {k:'gita',ring:'#9B7BE8,#2A1A52',name:'Gita',img:gitaAvatar(),tag:'new',pat:'chakra',bg:'radial-gradient(95% 55% at 50% 30%,#4B2E83 0%,#241546 55%,#0A0618 100%)',slides:[
-  ()=>`<div class="bleed">${gitaArt()}<span class="mdscrim"></span></div>
+ {k:'gita',ring:'#B08CE8,#F0A37A',name:'Gita',img:gitaAvatar(),tag:'new',tone:'light',bg:'#E8B49B',slides:[
+  ()=>`<div class="bleed">${gitaArt()}<span class="ltscrim"></span></div>
    <div style="position:relative;flex:1;display:flex;flex-direction:column;justify-content:flex-end;gap:14px;padding-bottom:12px">
      <div class="s-eyebrow" style="text-align:center;color:#F6C27A">Bhagavad Gita · 2.47</div>
      <div class="shlok">कर्मण्येवाधिकारस्ते<br>मा फलेषु कदाचन</div>
      <div class="shlok-tr">karmaṇy-evādhikāras te mā phaleṣu kadāchana</div>
-     <p style="margin:0;font-size:16px;line-height:24px;text-align:center;color:rgba(255,255,255,.92)">Apna kaam karne ka haq aapka hai, phal ka nahi. Natije ki chinta chhodiye — aaj ka kaam poora kijiye.</p></div>`],
+     <p style="margin:0;font-size:16px;line-height:24px;text-align:center">Apna kaam karne ka haq aapka hai, phal ka nahi. Natije ki chinta chhodiye — aaj ka kaam poora kijiye.</p></div>`],
   cta:{t:'Aaj ka arth samjhein',a:()=>toast('Gita ka arth khulega')}}
 ];
 /* the rail thumbnail — a Sudarshan chakra, so Gita needs no png of its own */
@@ -683,23 +697,7 @@ function gitaAvatar(){const sp=Array.from({length:12},(_,i)=>{const a=i*30*Math.
 /* cupped hands holding a light, after the reference: a dusk wash, a glow, and moths rising */
 /* Gita — a gold Sudarshan chakra over a dark ground, the same line-art register the other
    slides use, so the rail reads as one set instead of one bright outlier. */
-function gitaArt(){
- return `<svg viewBox="0 0 420 844" preserveAspectRatio="xMidYMid slice" width="100%" height="100%" aria-hidden="true"><defs>
- <radialGradient id="gtBg" cx=".5" cy=".32" r=".72"><stop offset="0" stop-color="#4B2E83"/><stop offset=".55" stop-color="#241546"/><stop offset="1" stop-color="#0A0618"/></radialGradient>
- <radialGradient id="gtGlow" cx=".5" cy=".28" r=".3"><stop offset="0" stop-color="#FFD79A" stop-opacity=".55"/><stop offset="1" stop-color="#FFD79A" stop-opacity="0"/></radialGradient>
- </defs>
- <rect width="420" height="844" fill="url(#gtBg)"/>
- <rect width="420" height="844" fill="url(#gtGlow)"/>
- <g fill="none" stroke="#F0B96A" stroke-linecap="round" stroke-linejoin="round" transform="translate(210,238) scale(.68) translate(-210,-300)">
-  <g stroke-width="2" opacity=".55"><path d="M210 300 360.0 300.0"/><path d="M210 300 354.9 338.8"/><path d="M210 300 339.9 375.0"/><path d="M210 300 316.1 406.1"/><path d="M210 300 285.0 429.9"/><path d="M210 300 248.8 444.9"/><path d="M210 300 210.0 450.0"/><path d="M210 300 171.2 444.9"/><path d="M210 300 135.0 429.9"/><path d="M210 300 103.9 406.1"/><path d="M210 300 80.1 375.0"/><path d="M210 300 65.1 338.8"/><path d="M210 300 60.0 300.0"/><path d="M210 300 65.1 261.2"/><path d="M210 300 80.1 225.0"/><path d="M210 300 103.9 193.9"/><path d="M210 300 135.0 170.1"/><path d="M210 300 171.2 155.1"/><path d="M210 300 210.0 150.0"/><path d="M210 300 248.8 155.1"/><path d="M210 300 285.0 170.1"/><path d="M210 300 316.1 193.9"/><path d="M210 300 339.9 225.0"/><path d="M210 300 354.9 261.2"/></g>
-  <circle cx="210" cy="300" r="150" stroke-width="3.5"/>
-  <circle cx="210" cy="300" r="128" stroke-width="2" opacity=".6"/>
-  <circle cx="210" cy="300" r="52" stroke-width="3.5"/>
-  <circle cx="210" cy="300" r="20" stroke-width="3.5" fill="#F0B96A"/>
-  <g stroke-width="3" fill="#2A1A52"><path d="M366.8 280.7 396.0 300.0 366.8 319.3 Z"/><path d="M364.0 335.5 384.8 363.6 350.8 371.7 Z"/><path d="M342.5 386.1 352.5 419.6 317.8 415.6 Z"/><path d="M305.1 426.2 303.0 461.1 271.7 445.4 Z"/><path d="M256.2 451.1 242.3 483.2 218.3 457.8 Z"/><path d="M201.7 457.8 177.7 483.2 163.8 451.1 Z"/><path d="M148.3 445.4 117.0 461.1 114.9 426.2 Z"/><path d="M102.2 415.6 67.5 419.6 77.5 386.1 Z"/><path d="M69.2 371.7 35.2 363.6 56.0 335.5 Z"/><path d="M53.2 319.3 24.0 300.0 53.2 280.7 Z"/><path d="M56.0 264.5 35.2 236.4 69.2 228.3 Z"/><path d="M77.5 213.9 67.5 180.4 102.2 184.4 Z"/><path d="M114.9 173.8 117.0 138.9 148.3 154.6 Z"/><path d="M163.8 148.9 177.7 116.8 201.7 142.2 Z"/><path d="M218.3 142.2 242.3 116.8 256.2 148.9 Z"/><path d="M271.7 154.6 303.0 138.9 305.1 173.8 Z"/><path d="M317.8 184.4 352.5 180.4 342.5 213.9 Z"/><path d="M350.8 228.3 384.8 236.4 364.0 264.5 Z"/></g>
-  <g stroke-width="2.2" opacity=".5" fill="none"><path d="M210 672q34 -62 0 -116 q-34 54 0 116Z" transform="rotate(-72 210 672)"/><path d="M210 672q34 -62 0 -116 q-34 54 0 116Z" transform="rotate(-48 210 672)"/><path d="M210 672q34 -62 0 -116 q-34 54 0 116Z" transform="rotate(-24 210 672)"/><path d="M210 672q34 -62 0 -116 q-34 54 0 116Z" transform="rotate(0 210 672)"/><path d="M210 672q34 -62 0 -116 q-34 54 0 116Z" transform="rotate(24 210 672)"/><path d="M210 672q34 -62 0 -116 q-34 54 0 116Z" transform="rotate(48 210 672)"/><path d="M210 672q34 -62 0 -116 q-34 54 0 116Z" transform="rotate(72 210 672)"/></g>
-  <path d="M60 700h300M96 724h228" stroke-width="2" opacity=".35"/>
- </g></svg>`;}
+function gitaArt(){return `<img class="mahadev" src="assets/story-gita.webp" alt="">`;}
 /* amplitude envelope: loud at the top of the note, tapering off at the end — like the Figma wave */
 function wave(n,on){let s='';for(let i=0;i<n;i++){
  const env=.4+.6*Math.pow(Math.sin(Math.PI*Math.min(1,i/(n-1)*1.12)),.55);
@@ -713,65 +711,7 @@ function icoChat(fill,dot,sz){return `<svg width="${sz}" height="${sz}" viewBox=
    the whole face sits above the text scrim so none of it is darkened. */
 /* Mahadev, drawn front-on and symmetric the way temple murti art is — the earlier cropped
    half-profile never read as a face. Everything is built off one vertical axis at x=210. */
-function darshanArt(){
- const mala='<circle cx="22.7" cy="623.4" r="10"/><circle cx="36.6" cy="649.4" r="10"/><circle cx="54.1" cy="673.1" r="10"/><circle cx="74.8" cy="694.1" r="10"/><circle cx="98.3" cy="711.9" r="10"/><circle cx="124.2" cy="726.2" r="10"/><circle cx="151.8" cy="736.6" r="10"/><circle cx="180.6" cy="742.9" r="10"/><circle cx="210.0" cy="745.0" r="10"/><circle cx="239.4" cy="742.9" r="10"/><circle cx="268.2" cy="736.6" r="10"/><circle cx="295.8" cy="726.2" r="10"/><circle cx="321.7" cy="711.9" r="10"/><circle cx="345.2" cy="694.1" r="10"/><circle cx="365.9" cy="673.1" r="10"/><circle cx="383.4" cy="649.4" r="10"/><circle cx="397.3" cy="623.4" r="10"/>';
- const jata='<path d="M96 150C82 196 88 244 70 292" /><path d="M122 150C108 196 114 244 96 292" /><path d="M148 150C134 196 140 244 122 292" /><path d="M174 150C160 196 166 244 148 292" /><path d="M200 150C186 196 192 244 174 292" /><path d="M226 150C212 196 218 244 200 292" /><path d="M252 150C238 196 244 244 226 292" /><path d="M278 150C264 196 270 244 252 292" /><path d="M304 150C290 196 296 244 278 292" /><path d="M330 150C316 196 322 244 304 292" />';
- return `<svg class="mahadev" viewBox="0 0 420 900" preserveAspectRatio="xMidYMid slice" aria-hidden="true"><defs>
- <radialGradient id="mdBg" cx=".5" cy=".3" r=".75"><stop offset="0" stop-color="#1B3C86"/><stop offset=".55" stop-color="#0A1B4A"/><stop offset="1" stop-color="#03081C"/></radialGradient>
- <linearGradient id="mdSkin" x1=".2" y1="0" x2=".85" y2="1"><stop offset="0" stop-color="#9CC0FA"/><stop offset=".45" stop-color="#6690E2"/><stop offset="1" stop-color="#2E5BB0"/></linearGradient>
- <linearGradient id="mdHair" x1=".5" y1="0" x2=".5" y2="1"><stop offset="0" stop-color="#2F5BB6"/><stop offset="1" stop-color="#0D2158"/></linearGradient>
- <radialGradient id="mdHalo" cx=".5" cy=".34" r=".42"><stop offset=".62" stop-color="#FFD79A" stop-opacity="0"/><stop offset=".86" stop-color="#FFC978" stop-opacity=".5"/><stop offset="1" stop-color="#FFC978" stop-opacity="0"/></radialGradient>
- <clipPath id="mdFace"><path d="M210 258c74 0 122 64 122 152 0 104-54 166-122 186-68-20-122-82-122-186 0-88 48-152 122-152Z"/></clipPath>
- </defs>
- <rect width="420" height="900" fill="url(#mdBg)"/>
- <g transform="translate(0,-66)">
- <circle cx="210" cy="400" r="300" fill="url(#mdHalo)"/>
- <g stroke="#0B1A45" stroke-width="5" stroke-linecap="round" stroke-linejoin="round">
-  <!-- shoulders, then neck, then the face on top of both -->
-  <path d="M34 1000c14-150 76-240 176-240s162 90 176 240Z" fill="#102A63" stroke="none"/>
-  <path d="M176 548h68v150h-68Z" fill="#2E5BB0" stroke="none"/>
-  <!-- jata: the matted-hair crown, with a top-knot and Ganga spilling from it -->
-  <path d="M210 92c84 0 142 60 150 150 4 44-6 80-22 108-6-104-54-162-128-162S88 246 82 350c-16-28-26-64-22-108C68 152 126 92 210 92Z" fill="url(#mdHair)" stroke="none"/>
-  <g stroke="#4C7BD4" stroke-width="2.6" opacity=".55" fill="none"><path d="M96 150C82 196 88 244 70 292" /><path d="M122 150C108 196 114 244 96 292" /><path d="M148 150C134 196 140 244 122 292" /><path d="M174 150C160 196 166 244 148 292" /><path d="M200 150C186 196 192 244 174 292" /><path d="M226 150C212 196 218 244 200 292" /><path d="M252 150C238 196 244 244 226 292" /><path d="M278 150C264 196 270 244 252 292" /><path d="M304 150C290 196 296 244 278 292" /><path d="M330 150C316 196 322 244 304 292" /></g>
-  <ellipse cx="210" cy="96" rx="62" ry="40" fill="url(#mdHair)" stroke="none"/>
-  <path d="M168 96c14-18 38-26 62-22M172 112c20-14 46-16 68-6" stroke="#5B8AE0" stroke-width="3" opacity=".7" fill="none"/>
-  <!-- crescent sitting in the locks -->
-  <path d="M322 128a44 44 0 1 0 34 70 34 34 0 1 1-34-70Z" fill="#FBE3B4" stroke="none"/>
-  <!-- Ganga spilling out of the knot -->
-  <path d="M250 110c26 10 44 32 48 62s-6 56-26 76" stroke="#BBD8FF" stroke-width="3.4" opacity=".75" fill="none"/>
-  <!-- face -->
-  <path d="M210 258c74 0 122 64 122 152 0 104-54 166-122 186-68-20-122-82-122-186 0-88 48-152 122-152Z" fill="url(#mdSkin)" stroke="none"/>
-  <g clip-path="url(#mdFace)">
-   <path d="M300 240c30 54 36 128 20 196-18 76-56 132-110 170h150V240Z" fill="#17388C" opacity=".3" stroke="none"/>
-   <!-- tripundra: three bands of ash across the brow -->
-   <g stroke="#EFF5FF" stroke-width="12" stroke-linecap="round" fill="none"><path d="M124 318c56-10 116-10 172 0"/><path d="M126 348c54-10 114-10 168 0"/><path d="M130 378c52-10 108-10 160 0"/></g>
-   <!-- the third eye crosses them on the centre line -->
-   <path d="M210 306c13 16 21 32 21 44s-8 28-21 44c-13-16-21-32-21-44s8-28 21-44Z" fill="#FFF6E4" stroke="#0B1A45" stroke-width="4"/>
-   <ellipse cx="210" cy="350" rx="6" ry="15" fill="#B4541B"/>
-   <!-- brows and closed eyes -->
-   <path d="M122 430c24-16 54-18 78-6M220 424c24-12 54-10 78 6" stroke="#0B1A45" stroke-width="6" fill="none"/>
-   <path d="M120 456c26 14 54 16 76 4M224 460c22 12 50 10 76-4" stroke="#0B1A45" stroke-width="7" fill="none"/>
-   <path d="M126 470c22 12 48 14 68 4M226 474c20 10 46 8 68-4" stroke="#0B1A45" stroke-width="3" opacity=".45" fill="none"/>
-   <!-- nose and mouth -->
-   <path d="M205 468c-3 32-9 56-18 70 6 8 16 11 23 11s17-3 23-11c-9-14-15-38-18-70" fill="#4874C9" opacity=".45" stroke="none"/>
-   <path d="M188 548c6 6 14 8 22 8s16-2 22-8" stroke="#0B1A45" stroke-width="5" fill="none"/>
-   <path d="M178 590c14-10 28-14 32-14s18 4 32 14c-14 10-28 13-32 13s-18-3-32-13Z" fill="#2B4E9E" stroke="#0B1A45" stroke-width="4.5"/>
-   <path d="M178 590h64" stroke="#0B1A45" stroke-width="3.5"/>
-  </g>
-  <!-- ears and hoops -->
-  <path d="M88 400c-20-4-32 10-30 32 2 24 16 44 32 50" fill="#5A86DC" stroke="#0B1A45" stroke-width="4.5"/>
-  <path d="M332 400c20-4 32 10 30 32-2 24-16 44-32 50" fill="#5A86DC" stroke="#0B1A45" stroke-width="4.5"/>
-  <circle cx="76" cy="506" r="26" fill="none" stroke="#FBE3B4" stroke-width="4.5"/>
-  <circle cx="344" cy="506" r="26" fill="none" stroke="#FBE3B4" stroke-width="4.5"/>
-  <!-- the serpent round his throat — pushed down and dimmed so it stays behind the title -->
-  <g transform="translate(0,86)" opacity=".6">
-   <path d="M120 686c40-26 140-26 180 0" stroke="#4FA98A" stroke-width="12" fill="none"/>
-   <path d="M300 686c18-10 30-30 26-52" stroke="#4FA98A" stroke-width="11" fill="none"/>
-   <path d="M326 628c12 0 20 10 20 22s-8 22-20 22-20-10-20-22 8-22 20-22Z" fill="#4FA98A" stroke="none"/>
-   <circle cx="320" cy="644" r="3.4" fill="#06301F"/><circle cx="334" cy="644" r="3.4" fill="#06301F"/></g>
-  <!-- rudraksha mala over the chest -->
-  <g fill="#C97B3C" stroke="#6E3C14" stroke-width="2"><circle cx="22.7" cy="623.4" r="10"/><circle cx="36.6" cy="649.4" r="10"/><circle cx="54.1" cy="673.1" r="10"/><circle cx="74.8" cy="694.1" r="10"/><circle cx="98.3" cy="711.9" r="10"/><circle cx="124.2" cy="726.2" r="10"/><circle cx="151.8" cy="736.6" r="10"/><circle cx="180.6" cy="742.9" r="10"/><circle cx="210.0" cy="745.0" r="10"/><circle cx="239.4" cy="742.9" r="10"/><circle cx="268.2" cy="736.6" r="10"/><circle cx="295.8" cy="726.2" r="10"/><circle cx="321.7" cy="711.9" r="10"/><circle cx="345.2" cy="694.1" r="10"/><circle cx="365.9" cy="673.1" r="10"/><circle cx="383.4" cy="649.4" r="10"/><circle cx="397.3" cy="623.4" r="10"/></g>
- </g></g></svg>`;}
+function darshanArt(){return `<img class="mahadev" src="assets/story-mahadev.webp" alt="">`;}
 function renderStories(){
   $('#stories').innerHTML=STORIES.map((s,i)=>`<button class="story ${state.seen[s.k]?'seen':''}" data-i="${i}" aria-label="${s.name} story"><span class="ring" style="--rg:linear-gradient(135deg,${s.ring})"><img src="${s.img}" alt="">${s.tag==='new'?'<span class="tag">New</span>':s.tag==='live'?'<span class="tag live"><i></i>Live</span>':''}</span><span class="lb">${s.name}</span></button>`).join('');
   $$('.story').forEach(b=>b.onclick=()=>openStory(+b.dataset.i));
@@ -795,6 +735,7 @@ function patternUrl(k){const [c,n,body]=PAT[k];
 function showSlide(){const s=STORIES[sv.i];state.seen[s.k]=true;
   const sv_=$('#sv');
   sv_.style.background=s.bg;
+  sv_.classList.toggle('light',s.tone==='light');
   $('#slide').innerHTML=s.slides[sv.j]();
   /* the motif layers over the slide's wash — a flat colour needs no second layer, a gradient does */
   if(s.pat)sv_.style.backgroundImage=patternUrl(s.pat)+(/gradient\(/.test(s.bg)?`,${s.bg}`:'');
