@@ -55,7 +55,8 @@ img{display:block;max-width:100%}
 .stories{display:flex;gap:12px;overflow-x:auto;padding:14px 16px 6px;scrollbar-width:none}
 .stories::-webkit-scrollbar{display:none}
 .story{flex:none;width:78px;border:0;background:none;padding:0;display:flex;flex-direction:column;align-items:center;gap:14px}
-.ring{position:relative;width:78px;height:78px;border-radius:50%;padding:3px;background:#fff;border:2px solid transparent;background-image:linear-gradient(#fff,#fff),linear-gradient(135deg,#FDB022,#EF6939);background-origin:border-box;background-clip:padding-box,border-box}
+/* each ring carries its own story's colours, so the rail previews the slide you are about to open */
+.ring{position:relative;width:78px;height:78px;border-radius:50%;padding:3px;background:#fff;border:2px solid transparent;background-image:linear-gradient(#fff,#fff),var(--rg,linear-gradient(135deg,#FDB022,#EF6939));background-origin:border-box;background-clip:padding-box,border-box}
 .story.seen .ring{border:1.5px solid var(--line-solid);background-image:none}
 .ring img{width:100%;height:100%;border-radius:50%}
 .tag{position:absolute;left:50%;bottom:-10px;transform:translateX(-50%);height:22px;padding:0 9px;border-radius:11px;font-size:12px;font-weight:600;display:flex;align-items:center;gap:4px;white-space:nowrap;background:#fff;border:1px solid #FBD3E2;box-shadow:0 2px 6px rgba(232,90,147,.18)}
@@ -94,11 +95,13 @@ img{display:block;max-width:100%}
 @keyframes fade{from{opacity:0;transform:translateY(-4px)}}
 .claim{margin:12px 16px 0;width:calc(100% - 32px);height:38px;border:0;border-radius:14px;background:var(--or);color:#fff;font-size:16px;font-weight:600;display:flex;align-items:center;justify-content:center;gap:8px;transition:background .3s}
 .claim.done{background:#F2F4F7;color:var(--ink2);font-size:14px}
-.remind-row{display:none;margin:8px 16px 0;align-items:center;gap:10px;padding:10px 12px;border-radius:14px;background:var(--purplebg)}
+.remind-row{display:none;margin:8px 16px 0;align-items:center;gap:10px;padding:10px 12px;border-radius:14px;background:var(--bubble);border:1px solid var(--bubble-line)}
 .remind-row.on{display:flex;animation:fade .3s}
-.remind-row span{flex:1;font-size:12px;line-height:16px;color:#42307D}
-.remind-row button{display:flex;align-items:center;gap:5px;border:0;border-radius:10px;background:#7F56D9;color:#fff;font-size:12px;font-weight:600;padding:8px 10px;white-space:nowrap}
-.remind-row button.set{padding:0;gap:0;width:28px;height:28px;justify-content:center}
+.remind-row span{flex:1;font-size:12px;line-height:16px;color:var(--ink2)}
+/* Every reminder button on the page is this one neutral 28px control. Setting it must not change
+   its height — the label drops away and the control becomes a 28px square holding the bell-and-tick. */
+.rmb{display:flex;align-items:center;gap:5px;flex:none;height:28px;padding:0 10px;border:1px solid var(--line-solid);border-radius:10px;background:#fff;color:var(--ink2);font-size:12px;font-weight:600;white-space:nowrap}
+.rmb.set{width:28px;padding:0;gap:0;justify-content:center;color:var(--ink2)}
 
 /* cards */
 .sec{padding:24px 16px 0}
@@ -115,13 +118,9 @@ img{display:block;max-width:100%}
 .th b{display:block;font-size:20px;line-height:28px;letter-spacing:-.2px}
 
 /* hemali */
-.freepill{display:flex;align-items:center;gap:8px;padding:8px 12px 8px 16px;background:linear-gradient(90deg,#F4EBFF,#fff 72%);font-size:12px;color:var(--purple)}
+.freepill{display:flex;align-items:center;gap:8px;padding:8px 12px 8px 16px;background:#fff;border-bottom:1px solid var(--line);font-size:12px;color:var(--purple)}
 .freepill b{font-variant-numeric:tabular-nums}
 .freepill .sp{flex:1}
-.freepill button{display:flex;align-items:center;gap:5px;border:1px solid var(--line-solid);border-radius:999px;background:#fff;color:var(--ink);font-size:12px;font-weight:600;padding:6px 12px}
-/* once set the label goes and only the bell-with-tick stays */
-/* set state keeps the same neutral chrome — only the label goes and the icon takes the tick */
-.freepill button.set{padding:0;gap:0;width:24px;height:24px;justify-content:center;color:var(--purple)}
 @keyframes bellring{0%,100%{transform:rotate(0)}8%,40%{transform:rotate(16deg)}24%,56%{transform:rotate(-16deg)}72%{transform:rotate(7deg)}86%{transform:rotate(-4deg)}}
 .ring svg{animation:bellring .8s ease;transform-origin:50% 15%}
 .hav{width:44px;height:44px;flex:none}
@@ -141,7 +140,7 @@ img{display:block;max-width:100%}
 .ins p{margin:0;font-size:14px;line-height:20px;color:var(--ink2)}
 /* free-chat band + reply, Figma 2391:73456 — the band is a flat full-width lilac pill sitting
    directly on top of the reply row, no gap */
-.freebar{display:flex;align-items:center;gap:8px;margin:16px 20px 0;height:26px;padding:0 12px;border-radius:999px;background:#F5EEFE;font-size:12px;line-height:18px;color:var(--purple)}
+.freebar{display:flex;align-items:center;gap:8px;margin:16px 20px 0;height:26px;padding:0 12px;border-radius:999px;background:var(--bubble);border:1px solid var(--bubble-line);font-size:12px;line-height:18px;color:var(--purple)}
 .freebar b{font-variant-numeric:tabular-nums}
 .replyrow{position:relative;display:flex;align-items:center;margin:0 20px 20px;height:48px;border:1px solid #D8DCE3;border-radius:24px;padding:0 5px 0 16px;background:#F9FAFB}
 .replyrow input{flex:1;min-width:0;border:0;outline:0;font:14px/20px Inter;color:var(--ink);background:transparent}
@@ -150,11 +149,17 @@ img{display:block;max-width:100%}
 .phtrack{position:absolute;left:16px;right:118px;top:0;bottom:0;display:flex;align-items:center;overflow:hidden;pointer-events:none}
 .phtrack span{white-space:nowrap;font-size:14px;line-height:20px;color:var(--mute2)}
 .replyrow.typed .phtrack{display:none}
-.btn-p{display:flex;align-items:center;justify-content:center;border:0;border-radius:19px;background:var(--or);color:#fff;font-size:14px;line-height:20px;font-weight:600;height:38px;padding:0 12px;white-space:nowrap}
+.btn-p{display:flex;align-items:center;justify-content:center;gap:4px;border:0;border-radius:19px;background:var(--or);color:#fff;font-size:14px;line-height:20px;font-weight:600;height:38px;padding:0 12px;white-space:nowrap}
+/* the price is the part that has to be read, so it sits at 12px bold next to the verb */
+.btn-p b{font-size:12px;line-height:16px;font-weight:700}
 
 /* check-in */
 .ci{padding:18px 20px 20px}
 .ci .pill{display:inline-flex;font-size:12px;font-weight:600;color:var(--purple);background:var(--purplebg);border-radius:8px;padding:3px 8px}
+/* once the question is answered the pill has no job left, so it drops back to neutral */
+.ci .pill.done{color:var(--mute);background:#F2F4F7}
+.ciremind{display:flex;align-items:center;gap:10px;margin-top:14px;padding-top:12px;border-top:1px solid var(--line)}
+.ciremind span{flex:1;font-size:12px;line-height:16px;color:var(--mute)}
 .ci h3{font-size:14px;line-height:20px;font-weight:500;color:var(--ink2);margin:10px 0 12px}
 .moods{display:flex;gap:8px}
 .mood{flex:1;height:42px;border:1px solid var(--line-solid);border-radius:21px;background:#fff;display:flex;align-items:center;justify-content:center;gap:6px;font-size:14px;color:var(--ink2);transition:all .2s}
@@ -375,8 +380,6 @@ img{display:block;max-width:100%}
 .cd{border:0;background:none;color:var(--ink);display:flex;flex-direction:column;align-items:center;gap:3px;padding:6px 0 5px;border-radius:14px}
 .cd .nr{display:flex;align-items:baseline;gap:2px}
 .cd .n{font-size:14px;font-weight:600;line-height:18px}
-/* kalnirnay-style tithi shorthand next to the date: K9, S8, Ama, Pur */
-.cd .ti{font-size:8.5px;line-height:10px;font-weight:700;color:var(--mute);letter-spacing:.2px}
 /* the moon is gone from the cells — this mark says whether the day's money was claimed */
 .cd .mk{width:16px;height:16px;border-radius:50%;display:grid;place-items:center;flex:none}
 .cd .am{font-size:10px;line-height:12px;font-weight:700;color:var(--ink2);font-variant-numeric:tabular-nums}
@@ -459,12 +462,12 @@ img{display:block;max-width:100%}
       </div>
       <div class="daytip" id="daytip"></div>
       <button class="claim" id="claim">Claim today’s ₹9</button>
-      <div class="remind-row" id="remindRow"><span><b>Kal ₹11 milenge.</b> Subah 8 baje yaad dilayein?</span><button id="remindBtn"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><path d="M6 16V11a6 6 0 0 1 12 0v5l1.5 2h-15ZM10 21h4" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>Set reminder</button></div>
+      <div class="remind-row" id="remindRow"><span><b>Kal ₹11 milenge.</b> Subah 8 baje yaad dilayein?</span><button class="rmb" id="remindBtn"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><path d="M6 16V11a6 6 0 0 1 12 0v5l1.5 2h-15ZM10 21h4" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>Set reminder</button></div>
     </div>
 
     <!-- Hemali -->
     <div class="sec"><div class="card" id="hemCard">
-      <div class="freepill"><svg width="14" height="14" viewBox="0 0 24 24"><path d="M12 2c.8 5.2 4.8 9.2 10 10-5.2.8-9.2 4.8-10 10-.8-5.2-4.8-9.2-10-10 5.2-.8 9.2-4.8 10-10Z" fill="#7F56D9"/></svg><span>FREE 2-min chat in</span><b id="freeT">14h 33m</b><span class="sp"></span><button id="freeRemind"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><path d="M6 16V11a6 6 0 0 1 12 0v5l1.5 2h-15ZM10 21h4" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>Remind me</button></div>
+      <div class="freepill"><svg width="14" height="14" viewBox="0 0 24 24"><path d="M12 2c.8 5.2 4.8 9.2 10 10-5.2.8-9.2 4.8-10 10-.8-5.2-4.8-9.2-10-10 5.2-.8 9.2-4.8 10-10Z" fill="#7F56D9"/></svg><span>FREE 2-min chat in</span><b id="freeT">14h 33m</b><span class="sp"></span><button class="rmb" id="freeRemind"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><path d="M6 16V11a6 6 0 0 1 12 0v5l1.5 2h-15ZM10 21h4" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>Remind me</button></div>
       <div class="th"><span class="node"></span><img class="hav" src="assets/hemali.png" alt=""><div class="tx"><small>Aapki chats se · AI notes</small><b>Astro Hemali</b></div></div>
       <div class="bubble">
         <div class="bhd">Aaj ke liye · 5 Oct</div>
@@ -475,7 +478,7 @@ img{display:block;max-width:100%}
         <div class="ins"><img src="assets/ic-calendar.png" alt=""><p>Ek faisla abhi clear nahi. Thursday tak rukiye.</p></div>
       </div>
       <div class="freebar"><svg width="14" height="14" viewBox="0 0 24 24"><path d="M12 2c.8 5.2 4.8 9.2 10 10-5.2.8-9.2 4.8-10 10-.8-5.2-4.8-9.2-10-10 5.2-.8 9.2-4.8 10-10Z" fill="#7F56D9"/></svg>FREE 2-min chat in <b id="freeT2">14h 33min 23 sec</b></div>
-      <div class="replyrow" id="replyRow"><span class="phtrack"><span id="phTx"></span></span><input id="reply" aria-label="Reply to Hemali"><button class="btn-p" data-chat="Astro Hemali" data-rate="10">Chat ₹10/min</button></div>
+      <div class="replyrow" id="replyRow"><span class="phtrack"><span id="phTx"></span></span><input id="reply" aria-label="Reply to Hemali"><button class="btn-p" data-chat="Astro Hemali" data-rate="10">Chat <b>₹10/min</b></button></div>
     </div></div>
 
     <!-- Check-in -->
@@ -488,6 +491,7 @@ img{display:block;max-width:100%}
         <button class="mood" data-m="pareshaan"><svg width="20" height="20" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10" fill="#FEF3F2" stroke="#F04438" stroke-width="1.6"/><circle cx="9" cy="10" r="1.2" fill="#F04438"/><circle cx="15" cy="10" r="1.2" fill="#F04438"/><path d="M8 16q4-4 8 0" fill="none" stroke="#F04438" stroke-width="1.6" stroke-linecap="round"/></svg>Pareshaan</button>
       </div>
       <div class="thread" id="thread"></div>
+      <div class="ciremind"><span>Roz check-in ki yaad dilayein?</span><button class="rmb" id="ciRemind"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><path d="M6 16V11a6 6 0 0 1 12 0v5l1.5 2h-15ZM10 21h4" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>Set reminder</button></div>
     </div></div>
 
     <!-- Tasks -->
@@ -566,7 +570,7 @@ $('#nav').innerHTML=[['Today','tab-today','on'],['Experts','tab-experts','expert
   .map(([t,k,m])=>`<button class="${m==='on'?'on':''}"${m==='experts'?' data-experts':(m?'':` data-toast="${t} tab"`)}><img src="${ICONS[k]}" alt="">${t}</button>`).join('');
 $('#icMenu').src=ICONS.hamburger; $('#icWallet').src=ICONS.wallet; $('#icChat').src=ICONS['chat-top'];
 
-const state={bal:0,claimed:false,mood:null,tasks:{tarot:false,report:false},seen:{darshan:true,panchang:true},remind:false,freeRemind:false};
+const state={bal:0,claimed:false,mood:null,tasks:{tarot:false,report:false},seen:{darshan:true,panchang:true},remind:false,freeRemind:false,ciRemind:false};
 
 /* header turns white once the page slides under it */
 scroll.addEventListener('scroll',()=>$('#hd').classList.toggle('stuck',scroll.scrollTop>6),{passive:true});
@@ -615,7 +619,7 @@ function addMoney(n,fromEl){
 const STORIES=[
  /* Hemali's own story is not something you share out — it is a route into her chat, so it drops
     the WhatsApp button and carries the free-chat countdown above the CTA instead. */
- {k:'hemali',name:'Hemali ji',img:'assets/story-hemali.png',tag:'new',pat:'spark',share:false,bg:'radial-gradient(120% 70% at 50% 0%,#7A2E4D,#2A0F1D 70%)',slides:[
+ {k:'hemali',ring:'#C06288,#7A2E4D',name:'Hemali ji',img:'assets/story-hemali.png',tag:'new',pat:'spark',share:false,bg:'radial-gradient(120% 70% at 50% 0%,#7A2E4D,#2A0F1D 70%)',slides:[
   ()=>`<div style="flex:1;display:flex;flex-direction:column;justify-content:center;gap:18px;text-align:center;align-items:center">
      <img src="assets/hemali.png" style="width:120px;height:120px" alt="">
      <div class="s-eyebrow">Aapke liye · aaj subah</div>
@@ -628,7 +632,7 @@ const STORIES=[
      <p style="margin:0;font-size:16px;line-height:24px;color:rgba(255,255,255,.85)">Shukra aapke 7th house ko dekh raha hai. Thursday ke baad baat aage badhegi. Tab tak apne kaam par dhyan dijiye.</p>
      <div style="background:rgba(255,255,255,.1);border-radius:16px;padding:12px 14px;font-size:14px;line-height:20px">Aaj ka chhota kaam: Shaam ko 5 minute Om Shukraya Namah ka jaap.</div></div>`],
   cta:{t:'Chat with Astro Hemali · ₹10/min',a:()=>{closeStory();openWallet('listingChat',10);}}},
- {k:'horoscope',name:'Horoscope',img:'assets/story-horoscope.png',tag:'',pat:'stars',bg:'radial-gradient(120% 70% at 30% 0%,#2C6E7E,#0C2830 75%)',slides:[
+ {k:'horoscope',ring:'#4FA3B8,#2C6E7E',name:'Horoscope',img:'assets/story-horoscope.png',tag:'',pat:'stars',bg:'radial-gradient(120% 70% at 30% 0%,#2C6E7E,#0C2830 75%)',slides:[
   ()=>`<div style="flex:1;display:flex;flex-direction:column;justify-content:center;gap:14px">
      <div class="s-eyebrow">Kanya rashi · aaj</div>
      <div class="serif" style="font-size:38px;line-height:42px">Dil ki baat kehne ka din hai.</div>
@@ -639,7 +643,7 @@ const STORIES=[
      <div class="lucky"><div><small>Rang</small><b>Gulabi</b></div><div><small>Ank</small><b>6</b></div><div><small>Disha</small><b>Purab</b></div><div><small>Samay</small><b>12:02–12:50</b></div></div>
      <p style="margin:0;font-size:14px;line-height:20px;color:rgba(255,255,255,.75)">Gulabi pehnein aur Abhijit muhurat mein zaroori message bhejein.</p></div>`],
   cta:{t:'Poora horoscope padhein',a:()=>toast('Full horoscope page')}},
- {k:'hora',name:'Hora',img:'assets/story-hora.png',tag:'live',pat:'rays',bg:'linear-gradient(180deg,#6B3E1F,#3E2210)',slides:[
+ {k:'hora',ring:'#D08F4E,#6B3E1F',name:'Hora',img:'assets/story-hora.png',tag:'live',pat:'rays',bg:'linear-gradient(180deg,#6B3E1F,#3E2210)',slides:[
   ()=>`<div style="flex:1;display:flex;flex-direction:column;justify-content:center;gap:14px">
      <span style="align-self:center;display:inline-flex;gap:6px;align-items:center;background:#F6E3CF;color:#6B3E1F;font-size:12px;font-weight:600;border-radius:14px;padding:5px 12px"><i style="width:7px;height:7px;border-radius:50%;background:#D92D20;display:inline-block"></i>Live · 11 min baaki</span>
      <div style="font-size:44px;line-height:48px;font-weight:500">Not ideal</div>
@@ -649,7 +653,7 @@ const STORIES=[
      <div style="font-size:12px;letter-spacing:1.5px;color:rgba(255,255,255,.6);margin-top:6px">AAJ NA KAREIN</div>
      <div class="dont">${['Naya kaam shuru karna','Jaldi wale faisle','Party ya celebration','Kisi se ehsaan maangna'].map(x=>`<div><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="1.8"><circle cx="12" cy="12" r="9"/><path d="M5.6 5.6l12.8 12.8"/></svg>${x}</div>`).join('')}</div></div>`],
   cta:{t:'Saare 12 hora dekhein',a:()=>toast('Hora list')}},
- {k:'darshan',name:'Darshan',img:'assets/story-darshan.png',tag:'',pat:'bead',bg:'radial-gradient(90% 55% at 50% 38%,#8A4A16 0%,#3A1A08 55%,#120703 100%)',slides:[
+ {k:'darshan',ring:'#E09B46,#8A4A16',name:'Darshan',img:'assets/story-darshan.png',tag:'',pat:'bead',bg:'radial-gradient(90% 55% at 50% 38%,#8A4A16 0%,#3A1A08 55%,#120703 100%)',slides:[
   ()=>`<div class="bleed">${darshanArt()}<span class="mdscrim"></span></div>
    <div style="position:relative;flex:1;display:flex;flex-direction:column;justify-content:flex-end;gap:10px;text-align:center;align-items:center;padding-bottom:24px">
      <div style="font-size:12px;letter-spacing:3px;color:#F6C27A;font-weight:600">SOMVAAR · CHANDRA</div>
@@ -657,7 +661,7 @@ const STORIES=[
      <p style="margin:0;font-size:16px;line-height:24px;color:rgba(255,255,255,.85)">Somvaar Mahadev ka din hai — shaant mann aur ghar mein sukoon ke liye.</p>
      <p style="margin:0;font-size:12px;color:rgba(255,255,255,.55)">Darshan, har subah AstroChat par</p></div>`],
   cta:{t:'Om Namah Shivaya · 108 jaap',a:()=>toast('Jaap counter khulega')}},
- {k:'panchang',name:'Panchang',img:'assets/story-panchang.png',tag:'',bg:'#141A33',pat:'lotus',slides:[
+ {k:'panchang',ring:'#5867A8,#141A33',name:'Panchang',img:'assets/story-panchang.png',tag:'',bg:'#141A33',pat:'lotus',slides:[
   ()=>`<div style="flex:1;display:flex;flex-direction:column;justify-content:center;gap:12px">
      <div class="wcard" style="text-align:center"><small style="color:var(--mute);font-size:12px">Krishna Paksha</small><div style="font-size:40px;line-height:48px;font-weight:600">Dashami</div><small style="color:var(--mute);font-size:12px">2:08 AM tak · phir Ekadashi</small></div>
      <div class="wcard"><div style="font-size:12px;color:var(--mute);font-weight:600;margin-bottom:4px">★ Aaj ka nakshatra</div>
@@ -668,7 +672,7 @@ const STORIES=[
   cta:{t:'Poora Panchang dekhein',a:()=>{closeStory();openCal();}}},
  /* Gita — the one slide that is purely to be shared. Its violet-to-amber dusk is pitched between
     Panchang's navy and Darshan's saffron so the rail still reads as one set. */
- {k:'gita',name:'Gita',img:gitaAvatar(),tag:'new',pat:'chakra',bg:'linear-gradient(180deg,#8B5CF6 0%,#B874B0 42%,#F0915E 78%,#F7B267 100%)',slides:[
+ {k:'gita',ring:'#8B5CF6,#F7B267',name:'Gita',img:gitaAvatar(),tag:'new',pat:'chakra',bg:'linear-gradient(180deg,#8B5CF6 0%,#B874B0 42%,#F0915E 78%,#F7B267 100%)',slides:[
   ()=>`<div class="bleed">${gitaArt()}</div>
    <div style="position:relative;flex:1;display:flex;flex-direction:column;justify-content:flex-end;gap:14px;padding-bottom:12px">
      <div class="s-eyebrow" style="text-align:center">Bhagavad Gita · 2.47</div>
@@ -785,7 +789,7 @@ function darshanArt(){
  </g>
  </svg>`;}
 function renderStories(){
-  $('#stories').innerHTML=STORIES.map((s,i)=>`<button class="story ${state.seen[s.k]?'seen':''}" data-i="${i}" aria-label="${s.name} story"><span class="ring"><img src="${s.img}" alt="">${s.tag==='new'?'<span class="tag">New</span>':s.tag==='live'?'<span class="tag live"><i></i>Live</span>':''}</span><span class="lb">${s.name}</span></button>`).join('');
+  $('#stories').innerHTML=STORIES.map((s,i)=>`<button class="story ${state.seen[s.k]?'seen':''}" data-i="${i}" aria-label="${s.name} story"><span class="ring" style="--rg:linear-gradient(135deg,${s.ring})"><img src="${s.img}" alt="">${s.tag==='new'?'<span class="tag">New</span>':s.tag==='live'?'<span class="tag live"><i></i>Live</span>':''}</span><span class="lb">${s.name}</span></button>`).join('');
   $$('.story').forEach(b=>b.onclick=()=>openStory(+b.dataset.i));
 }
 let sv={i:0,j:0,t:0,raf:0,paused:false,last:0};const DUR=6000;
@@ -862,6 +866,7 @@ const REPLIES={
 $$('.mood').forEach(b=>b.onclick=()=>{
   if(state.mood)return;state.mood=b.dataset.m;
   $$('.mood').forEach(x=>{x.disabled=true;x.classList.toggle('pick',x===b);});
+  $('#ciCard').querySelector('.pill').classList.add('done');
   const th=$('#thread');
   th.innerHTML=`<div class="msg"><img src="assets/hemali.png" alt=""><div class="bb"><span class="typing"><i></i><i></i><i></i></span></div></div>`;
   setTimeout(()=>{
@@ -892,6 +897,7 @@ function bellBtn(id,label,key,msg){
 }
 bellBtn('remindBtn','Set reminder','remind','Kal subah 8 baje yaad dilayenge');
 bellBtn('freeRemind','Remind me','freeRemind','Free chat khulte hi bata denge');
+bellBtn('ciRemind','Set reminder','ciRemind','Roz subah 9 baje check-in ki yaad dilayenge');
 
 /* voice note — real audio, wave driven off playback position */
 (()=>{const W=34,a=$('#vAudio');$('#wave').innerHTML=wave(W,0);
@@ -1011,7 +1017,8 @@ $('#exps').innerHTML=EX.map(e=>`<div class="ex"><span class="ph" style="backgrou
 
 /* ---------- CALENDAR ---------- */
 const CT={fes:['Tyohaar','#F79009'],vrat:['Vrat & tithi','#A3B4F7'],love:['Love','#F472B6'],career:['Career','#60A5FA'],health:['Sehat','#4ADE80'],money:['Paisa','#FBBF24']};
-const FILT=[['all','Sab'],['fes','Tyohaar'],['vrat','Vrat'],['love','Love'],['career','Career'],['health','Sehat'],['money','Paisa']];
+/* the personal chips say what the day is good for, the way the event rows do */
+const FILT=[['all','Sab'],['fes','Tyohaar'],['vrat','Vrat'],['love','Love ke liye lucky'],['career','Career ke liye lucky'],['health','Sehat ke liye lucky'],['money','Paisa ke liye lucky']];
 const EVENTS={2:[['fes','Gandhi Jayanti','Rashtriya chhutti']],6:[['vrat','Indira Ekadashi','Pitron ki shanti ke liye vrat'],['money','Paisa ke liye lucky','Naya invest ya kharid sochein']],10:[['vrat','Sarva Pitru Amavasya','Pitru Paksha ka aakhri din']],11:[['fes','Navratri shuru','Ghatasthapana · Shukla Pratipada']],17:[['fes','Tula Sankranti','Surya Tula mein']],19:[['fes','Durga Ashtami','Kanya pujan']],20:[['fes','Dussehra','Vijayadashami']],22:[['vrat','Papankusha Ekadashi','Shukla Ekadashi']],25:[['fes','Kojagari Lakshmi Puja','Raat bhar Lakshmi puja']],26:[['vrat','Sharad Purnima','Poornima']],29:[['vrat','Karwa Chauth','Chandrodaya par vrat kholein']],
  4:[['health','Sehat ke liye achha','Walk aur jaldi neend']],5:[['career','Career ke liye achha','Boss se baat 10:28–11:28']],7:[['love','Love ke liye lucky','Dil ki baat kehne ka din']],8:[['love','Rishton ke liye achha','Purani baat suljhaayein']],9:[['health','Sehat ke liye achha','Yoga se shuru karein']],
  13:[['love','Love ke liye lucky','']],14:[['career','Career ke liye achha','']],18:[['health','Sehat ke liye achha','']],21:[['money','Paisa ke liye lucky','']],23:[['love','Love ke liye lucky','']],27:[['career','Career ke liye achha','']]};
@@ -1045,7 +1052,7 @@ const EARN=d=>d<=3?3+2*d:d<=10?7+2*(d-4):21;
 const CLAIMED={1:1,2:1,4:1},MISSED={3:1};
 const clSt=d=>CLAIMED[d]?'c':MISSED[d]?'m':d===5?(state.claimed?'c':'t'):'f';
 const MK={
- c:'<span class="mk" style="background:#12B76A"><svg width="10" height="10" viewBox="0 0 14 14"><path d="M3 7.2l2.6 2.6L11 4.3" fill="none" stroke="#fff" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/></svg></span>',
+ c:'<span class="mk" style="background:#EF6939"><svg width="10" height="10" viewBox="0 0 14 14"><path d="M3 7.2l2.6 2.6L11 4.3" fill="none" stroke="#fff" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/></svg></span>',
  m:'<span class="mk" style="background:#F2F4F7;box-shadow:inset 0 0 0 1px #D0D5DD"><svg width="9" height="9" viewBox="0 0 14 14"><path d="M4.2 4.2l5.6 5.6M9.8 4.2l-5.6 5.6" fill="none" stroke="#98A2B3" stroke-width="2.2" stroke-linecap="round"/></svg></span>',
  /* today is not a tick yet and not a cross — the amount under it is still up for grabs */
  t:'<span class="mk" style="box-shadow:inset 0 0 0 1.6px var(--or)"><span style="width:6px;height:6px;border-radius:50%;background:var(--or)"></span></span>',
@@ -1060,7 +1067,7 @@ function relD(d){return d===5?'Aaj':d===6?'Kal':d<5?`${5-d} din pehle`:`${d-5} d
 function renderCal(){
  const cells=['','','',''].map(()=>'<span></span>');
  for(let d=1;d<=31;d++){const ev=shows(d),st=clSt(d);
-  cells.push(`<button class="cd ${d===5?'today':''} ${d===cal.sel?'sel':''} ${cal.f!=='all'&&!ev.length?'dim':''}" data-d="${d}"><span class="nr"><span class="n">${d}</span><span class="ti">${panch(d).sh}</span></span>${MK[st]}<span class="am ${d>10?'bl':''}">₹${EARN(d)}</span><span class="dts">${ev.slice(0,3).map(e=>`<i style="background:${CT[e[0]][1]}"></i>`).join('')}</span></button>`);}
+  cells.push(`<button class="cd ${d===5?'today':''} ${d===cal.sel?'sel':''} ${cal.f!=='all'&&!ev.length?'dim':''}" data-d="${d}"><span class="nr"><span class="n">${d}</span></span>${MK[st]}<span class="am ${d>10?'bl':''}">₹${EARN(d)}</span><span class="dts">${ev.slice(0,3).map(e=>`<i style="background:${CT[e[0]][1]}"></i>`).join('')}</span></button>`);}
  let got=0,lost=0;for(let d=1;d<=31;d++){const s=clSt(d);if(s==='c')got+=EARN(d);if(s==='m')lost+=EARN(d);}
  const sel=EVENTS[cal.sel]||[],p=panch(cal.sel),tt=[p.pk==='-'?p.ti:p.pk==='K'?'Krishna '+p.ti:'Shukla '+p.ti,p.nak];
  const pub=sel.filter(e=>!PERSONAL.includes(e[0])),me=sel.filter(e=>PERSONAL.includes(e[0]));
@@ -1069,9 +1076,9 @@ function renderCal(){
  $('#cal').innerHTML=`<svg width="0" height="0" style="position:absolute"><defs><radialGradient id="ml" cx=".38" cy=".32" r=".85"><stop offset="0" stop-color="#FDB022"/><stop offset="1" stop-color="#EF6939"/></radialGradient></defs></svg>
  <div class="calhd"><button class="x" id="calX" aria-label="Close"><svg width="16" height="16" viewBox="0 0 24 24"><path d="M6 6l12 12M18 6 6 18" stroke="#101828" stroke-width="2.2" stroke-linecap="round"/></svg></button><div style="flex:1"><b>October 2026</b><small>Ashwin · Kartik · Mumbai</small></div>
   <button class="a" data-toast="September 2026" aria-label="Previous month"><svg width="16" height="16" viewBox="0 0 24 24"><path d="M15 5l-7 7 7 7" fill="none" stroke="#101828" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg></button><button class="a" data-toast="November · Diwali 8 Nov" aria-label="Next month"><svg width="16" height="16" viewBox="0 0 24 24"><path d="M9 5l7 7-7 7" fill="none" stroke="#101828" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg></button></div>
- <div class="calsum"><div class="s"><i style="background:#12B76A"><svg width="10" height="10" viewBox="0 0 14 14"><path d="M3 7.2l2.6 2.6L11 4.3" fill="none" stroke="#fff" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/></svg></i><span><b>₹${got} mile</b><small>claim kiye</small></span></div>
-  <div class="s"><i style="background:#F2F4F7;box-shadow:inset 0 0 0 1px #D0D5DD"><svg width="9" height="9" viewBox="0 0 14 14"><path d="M4.2 4.2l5.6 5.6M9.8 4.2l-5.6 5.6" fill="none" stroke="#98A2B3" stroke-width="2.2" stroke-linecap="round"/></svg></i><span><b>₹${lost} chhoot gaye</b><small>claim nahi kiya</small></span></div>
-  <span class="sp"></span><em>Roz claim = ₹21 tak</em></div>
+ <div class="calsum"><div class="s"><i style="background:#EF6939"><svg width="10" height="10" viewBox="0 0 14 14"><path d="M3 7.2l2.6 2.6L11 4.3" fill="none" stroke="#fff" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/></svg></i><span><b>₹${got} mile</b><small>claim kiye</small></span></div>
+  <div class="s"><i style="background:#F2F4F7;box-shadow:inset 0 0 0 1px #D0D5DD"><svg width="9" height="9" viewBox="0 0 14 14"><path d="M4.2 4.2l5.6 5.6M9.8 4.2l-5.6 5.6" fill="none" stroke="#98A2B3" stroke-width="2.2" stroke-linecap="round"/></svg></i><span><b>₹${lost} chhoot gaye</b><small>claim nahi kiya</small></span></div></div>
+ <div class="filters">${FILT.map(([k,l])=>`<button class="fl ${cal.f===k?'on':''}" data-f="${k}">${k!=='all'?`<i style="background:${CT[k][1]}"></i>`:''}${l}</button>`).join('')}</div>
  <div class="grid" id="grid"><div class="wk">${['S','M','T','W','T','F','S'].map(x=>`<span>${x}</span>`).join('')}</div><div class="gr">${cells.join('')}</div>
   <div class="weekband" id="band"></div>
  </div>
@@ -1085,7 +1092,6 @@ function renderCal(){
   <span><small>Sooryoday</small><b>${p.rise}</b></span><span><small>Sooryast</small><b>${p.set}</b></span>
   <span><small>Rahu kaal</small><b class="warn">${p.rahu}</b></span><span><small>Chandra rashi</small><b>${p.ras}</b></span>
  </div></div>
- <div class="filters">${FILT.map(([k,l])=>`<button class="fl ${cal.f===k?'on':''}" data-f="${k}">${k!=='all'?`<i style="background:${CT[k][1]}"></i>`:''}${l}</button>`).join('')}</div>
  <div class="evlist"><h5>Is hafte · ${wkList.length}</h5>${wkList.map(([d,e])=>evRow(d,e,false)).join('')||'<p style="color:var(--mute);font-size:14px">Is hafte kuch nahi</p>'}
   <h5>Aage is mahine</h5>${later.map(([d,e])=>evRow(d,e,PERSONAL.includes(e[0]))).join('')}</div>
  <div class="calnote">Tithi aur tyohaar Kalnirnay ke hisaab se · Mumbai · Lucky din aapki kundli se andaaza hain</div>`;
