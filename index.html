@@ -88,8 +88,8 @@ img{display:block;max-width:100%}
 .remind-row{display:none;margin:8px 16px 0;align-items:center;gap:10px;padding:10px 12px;border-radius:14px;background:var(--purplebg)}
 .remind-row.on{display:flex;animation:fade .3s}
 .remind-row span{flex:1;font-size:12px;line-height:16px;color:#42307D}
-.remind-row button{border:0;border-radius:10px;background:#7F56D9;color:#fff;font-size:12px;font-weight:600;padding:8px 10px;white-space:nowrap}
-.remind-row button.set{background:#fff;color:#7F56D9}
+.remind-row button{display:flex;align-items:center;gap:5px;border:0;border-radius:10px;background:#7F56D9;color:#fff;font-size:12px;font-weight:600;padding:8px 10px;white-space:nowrap}
+.remind-row button.set{background:#fff;color:#7F56D9;padding:8px}
 
 /* cards */
 .sec{padding:24px 16px 0}
@@ -110,10 +110,14 @@ img{display:block;max-width:100%}
 .freepill b{font-variant-numeric:tabular-nums}
 .freepill .sp{flex:1}
 .freepill button{display:flex;align-items:center;gap:5px;border:1px solid var(--line-solid);border-radius:999px;background:#fff;color:var(--ink);font-size:12px;font-weight:600;padding:6px 12px}
-.freepill button.set{background:#7F56D9;color:#fff;border-color:#7F56D9}
+/* once set the label goes and only the bell-with-tick stays */
+.freepill button.set{background:#7F56D9;color:#fff;border-color:#7F56D9;padding:6px;gap:0}
+@keyframes bellring{0%,100%{transform:rotate(0)}8%,40%{transform:rotate(16deg)}24%,56%{transform:rotate(-16deg)}72%{transform:rotate(7deg)}86%{transform:rotate(-4deg)}}
+.ring svg{animation:bellring .8s ease;transform-origin:50% 15%}
 .hav{width:44px;height:44px;flex:none}
-/* one radius scale inside the card: bubble 20, pill 999, icon 10 — nothing in between */
-.bubble{margin:14px 20px 0;background:var(--bubble);border:1px solid var(--bubble-line);border-radius:20px;padding:16px}
+/* one radius scale inside the card: bubble 20, pill 999, icon 10 — nothing in between.
+   Top-left is nicked to 6px (Figma 2358:13918) so the bubble points back at Hemali's avatar. */
+.bubble{margin:14px 20px 0;background:var(--bubble);border:1px solid var(--bubble-line);border-radius:6px 20px 20px 20px;padding:16px}
 .bhd{font-size:16px;line-height:22px;font-weight:600;margin-bottom:12px}
 .voice{display:flex;align-items:center;gap:10px;background:#fff;border-radius:999px;padding:5px 14px 5px 5px}
 .voice .pb{width:32px;height:32px;border-radius:50%;border:0;background:var(--or);display:grid;place-items:center;padding:0;flex:none}
@@ -125,12 +129,18 @@ img{display:block;max-width:100%}
 .ins:first-of-type{padding-top:14px}
 .ins img{width:32px;height:32px;flex:none;border-radius:10px}
 .ins p{margin:0;font-size:14px;line-height:20px;color:var(--ink2)}
-.freebar{display:flex;align-items:center;gap:6px;margin:16px 20px 0;padding:0 4px;font-size:12px;color:var(--purple)}
+/* free-chat band + reply, Figma 2391:73456 — the band is a flat full-width lilac pill sitting
+   directly on top of the reply row, no gap */
+.freebar{display:flex;align-items:center;gap:8px;margin:16px 20px 0;height:26px;padding:0 12px;border-radius:999px;background:#F5EEFE;font-size:12px;line-height:18px;color:var(--purple)}
 .freebar b{font-variant-numeric:tabular-nums}
-.replyrow{display:flex;align-items:center;gap:8px;margin:10px 20px 20px;height:48px;border:0;border-radius:999px;padding:0 6px 0 16px;background:#F9FAFB}
-.replyrow input{flex:1;min-width:0;border:0;outline:0;font:14px Inter;color:var(--ink);background:transparent}
-.replyrow input::placeholder{color:var(--mute2)}
-.btn-p{display:flex;align-items:center;border:0;border-radius:999px;background:var(--or);color:#fff;font-size:14px;font-weight:600;height:36px;padding:0 16px;white-space:nowrap}
+.replyrow{position:relative;display:flex;align-items:center;margin:0 20px 20px;height:48px;border:1px solid #D8DCE3;border-radius:24px;padding:0 5px 0 16px;background:#F9FAFB}
+.replyrow input{flex:1;min-width:0;border:0;outline:0;font:14px/20px Inter;color:var(--ink);background:transparent}
+/* the typed placeholder lives in its own clipped track so a long question slides out of the left
+   edge instead of being chopped off against the Chat button */
+.phtrack{position:absolute;left:16px;right:118px;top:0;bottom:0;display:flex;align-items:center;overflow:hidden;pointer-events:none}
+.phtrack span{white-space:nowrap;font-size:14px;line-height:20px;color:var(--mute2)}
+.replyrow.typed .phtrack{display:none}
+.btn-p{display:flex;align-items:center;justify-content:center;border:0;border-radius:19px;background:var(--or);color:#fff;font-size:14px;line-height:20px;font-weight:600;height:38px;padding:0 12px;white-space:nowrap}
 
 /* check-in */
 .ci{padding:18px 20px 20px}
@@ -146,13 +156,15 @@ img{display:block;max-width:100%}
 .thread{display:flex;flex-direction:column;gap:10px;margin-top:14px}
 .msg{display:flex;gap:8px;align-items:flex-end;animation:fade .3s}
 .msg img{width:28px;height:28px;flex:none}
-.msg .bb{background:#F2F4F7;border-radius:16px 16px 16px 4px;padding:10px 12px;font-size:14px;line-height:20px;color:var(--ink)}
+.msg .bb{background:var(--bubble);border-radius:16px 16px 16px 4px;padding:10px 12px;font-size:14px;line-height:20px;color:var(--ink)}
 .msg.me{justify-content:flex-end}
 .msg.me .bb{background:var(--ink);color:#fff;border-radius:16px 16px 4px 16px}
 .typing{display:inline-flex;gap:4px}.typing i{width:6px;height:6px;border-radius:50%;background:var(--mute2);animation:ty 1s infinite}.typing i:nth-child(2){animation-delay:.15s}.typing i:nth-child(3){animation-delay:.3s}
 @keyframes ty{50%{transform:translateY(-4px);opacity:.5}}
 .credit{display:flex;align-items:center;gap:10px;padding:12px;border-radius:14px;background:var(--greenbg);color:var(--green);font-size:14px;font-weight:600;animation:fade .3s}
-.credit img{width:28px;height:28px}
+.credit img{width:28px;height:28px;flex:none}
+/* the second line is the whole point of the band: it names tomorrow's number */
+.credit small{display:block;margin-top:2px;font-size:12px;line-height:16px;font-weight:500;color:#05603A}
 .msg .act{margin-top:8px;border:0;border-radius:12px;background:var(--or);color:#fff;font-size:12px;font-weight:600;padding:8px 12px}
 
 /* tasks */
@@ -317,25 +329,52 @@ img{display:block;max-width:100%}
 .cal.on{display:block;animation:up .3s cubic-bezier(.2,.8,.2,1)}
 .calhd{position:sticky;top:0;z-index:4;display:flex;align-items:center;gap:12px;padding:calc(env(safe-area-inset-top,0px) + 16px) 16px 12px;background:rgba(252,251,250,.92);backdrop-filter:blur(10px);border-bottom:1px solid var(--line)}
 .calhd .x,.calhd .a{width:40px;height:40px;border-radius:50%;border:1px solid var(--bubble-line);background:var(--bubble);display:grid;place-items:center;padding:0;color:var(--ink)}
-.calhd b{display:block;font-family:'Cormorant Infant',serif;font-size:28px;line-height:30px}
+.calhd b{display:block;font-size:22px;line-height:28px;font-weight:700;letter-spacing:-.2px}
 .calhd small{display:block;font-size:12px;color:var(--mute)}
-.grid{margin:14px 16px 0;background:var(--bubble);border:1px solid var(--bubble-line);border-radius:22px;padding:12px 6px 10px;position:relative}
+/* claimed-vs-missed summary — the first thing the month has to answer is "how much did I leave
+   on the table", so it sits above the grid */
+.calsum{display:flex;align-items:center;margin:12px 16px 0;padding:10px 12px;border-radius:14px;background:var(--bubble);border:1px solid var(--bubble-line)}
+.calsum .s{display:flex;align-items:center;gap:7px}
+.calsum .s+.s{margin-left:14px;padding-left:14px;border-left:1px solid var(--bubble-line)}
+.calsum .s i{width:18px;height:18px;border-radius:50%;display:grid;place-items:center;flex:none}
+.calsum .s b{display:block;font-size:14px;line-height:18px}
+.calsum .s small{display:block;font-size:11px;line-height:14px;color:var(--mute)}
+.calsum .sp{flex:1}
+.calsum em{font-size:11px;line-height:14px;color:var(--mute);font-style:normal;text-align:right;max-width:92px}
+.grid{margin:12px 16px 0;background:var(--bubble);border:1px solid var(--bubble-line);border-radius:22px;padding:12px 6px 10px;position:relative}
 .wk,.gr{display:grid;grid-template-columns:repeat(7,1fr);text-align:center}
 .wk span{font-size:12px;color:var(--mute);font-weight:600;padding-bottom:6px}
-.cd{border:0;background:none;color:var(--ink);display:flex;flex-direction:column;align-items:center;gap:2px;padding:6px 0 4px;border-radius:14px}
+.cd{border:0;background:none;color:var(--ink);display:flex;flex-direction:column;align-items:center;gap:3px;padding:6px 0 5px;border-radius:14px}
+.cd .nr{display:flex;align-items:baseline;gap:2px}
 .cd .n{font-size:14px;font-weight:600;line-height:18px}
+/* kalnirnay-style tithi shorthand next to the date: K9, S8, Ama, Pur */
+.cd .ti{font-size:8.5px;line-height:10px;font-weight:700;color:var(--mute);letter-spacing:.2px}
+/* the moon is gone from the cells — this mark says whether the day's money was claimed */
+.cd .mk{width:16px;height:16px;border-radius:50%;display:grid;place-items:center;flex:none}
+.cd .am{font-size:10px;line-height:12px;font-weight:700;color:var(--ink2);font-variant-numeric:tabular-nums}
+/* only the coming weeks' amounts are hidden; the day itself stays readable */
+.cd .am.bl{filter:blur(3px)}
 .cd .dts{display:flex;gap:3px;height:6px}.cd .dts i{width:6px;height:6px;border-radius:50%}
-.cd.today .n{background:var(--or);color:#fff;border-radius:8px;padding:0 6px}
+.cd.today{background:#FFF1E8}
+.cd.today .n{background:var(--or);color:#fff;border-radius:8px;padding:0 5px}
 .cd.sel{background:#F2EBE2}
+.cd.sel.today{background:#FFE1CF}
 .cd.dim{opacity:.35}
-.cd.lock{filter:blur(3.5px);opacity:.5;pointer-events:none}
 .weekband{position:absolute;left:6px;right:6px;border:1.5px solid rgba(239,105,57,.5);border-radius:16px;pointer-events:none}
-.lockcard{position:absolute;left:24px;right:24px;z-index:2;background:rgba(255,255,255,.92);backdrop-filter:blur(4px);border:1px solid var(--bubble-line);border-radius:18px;padding:14px;display:flex;gap:12px;align-items:center;box-shadow:0 6px 20px rgba(16,24,40,.08)}
+.lockcard{display:flex;gap:12px;align-items:center;margin:12px 16px 0;background:#fff;border:1px solid var(--bubble-line);border-radius:18px;padding:14px}
 .lockcard .lk{width:40px;height:40px;border-radius:50%;background:#FFF6ED;display:grid;place-items:center;flex:none}
 .lockcard b{display:block;font-size:14px;line-height:20px}
 .lockcard small{display:block;font-size:12px;line-height:16px;color:var(--mute)}
 .lockcard .bar{height:6px;border-radius:3px;background:#F2F4F7;margin-top:8px;overflow:hidden}
 .lockcard .bar i{display:block;height:100%;width:28%;background:linear-gradient(90deg,#FDB022,#EF6939);border-radius:3px}
+/* full panchang for the selected day */
+.panch{margin:12px 16px 0;background:var(--bubble);border:1px solid var(--bubble-line);border-radius:20px;padding:12px 14px 14px}
+.panch>b{display:block;font-size:12px;letter-spacing:.6px;text-transform:uppercase;color:var(--mute);font-weight:600}
+.pg{display:grid;grid-template-columns:1fr 1fr;gap:10px 12px;margin-top:10px}
+.pg>span{display:block;min-width:0}
+.pg small{display:block;font-size:11px;line-height:14px;color:var(--mute)}
+.pg b{display:block;font-size:13px;line-height:18px;font-weight:600;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.pg b.warn{color:#B54708}
 .seld{margin:14px 16px 0;background:var(--bubble);border:1px solid var(--bubble-line);border-radius:20px;padding:14px;display:flex;gap:12px}
 .seld .tx{flex:1;min-width:0}
 .seld small{display:block;font-size:12px;letter-spacing:.6px;text-transform:uppercase;color:var(--mute);font-weight:600}
@@ -391,7 +430,7 @@ img{display:block;max-width:100%}
       </div>
       <div class="daytip" id="daytip"></div>
       <button class="claim" id="claim">Claim today’s ₹9</button>
-      <div class="remind-row" id="remindRow"><span><b>Kal ₹11 milenge.</b> Subah 8 baje yaad dilayein?</span><button id="remindBtn">Set reminder</button></div>
+      <div class="remind-row" id="remindRow"><span><b>Kal ₹11 milenge.</b> Subah 8 baje yaad dilayein?</span><button id="remindBtn"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><path d="M6 16V11a6 6 0 0 1 12 0v5l1.5 2h-15ZM10 21h4" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>Set reminder</button></div>
     </div>
 
     <!-- Hemali -->
@@ -407,7 +446,7 @@ img{display:block;max-width:100%}
         <div class="ins"><img src="assets/ic-calendar.png" alt=""><p>Ek faisla abhi clear nahi. Thursday tak rukiye.</p></div>
       </div>
       <div class="freebar"><svg width="14" height="14" viewBox="0 0 24 24"><path d="M12 2c.8 5.2 4.8 9.2 10 10-5.2.8-9.2 4.8-10 10-.8-5.2-4.8-9.2-10-10 5.2-.8 9.2-4.8 10-10Z" fill="#7F56D9"/></svg>FREE 2-min chat in <b id="freeT2">14h 33min 23 sec</b></div>
-      <div class="replyrow"><input id="reply" aria-label="Reply to Hemali"><button class="btn-p" data-chat="Astro Hemali" data-rate="10">Chat ₹10/min</button></div>
+      <div class="replyrow" id="replyRow"><span class="phtrack"><span id="phTx"></span></span><input id="reply" aria-label="Reply to Hemali"><button class="btn-p" data-chat="Astro Hemali" data-rate="10">Chat ₹10/min</button></div>
     </div></div>
 
     <!-- Check-in -->
@@ -668,7 +707,7 @@ $$('.mood').forEach(b=>b.onclick=()=>{
   setTimeout(()=>{
     th.innerHTML=`<div class="msg"><img src="assets/hemali.png" alt=""><div class="bb">${REPLIES[state.mood]}${state.mood==='pareshaan'?'<br><button class="act" data-chat="Astro Hemali" data-rate="10">Hemali ji se baat karein</button>':''}</div></div>`;
     setTimeout(()=>{
-      th.insertAdjacentHTML('beforeend',`<div class="credit" id="credit"><img src="assets/coin.png" alt="">₹9 aapke wallet mein jud gaye</div>`);
+      th.insertAdjacentHTML('beforeend',`<div class="credit" id="credit"><img src="assets/coin.png" alt=""><span>₹9 aapke wallet mein jud gaye<small>Kal aaiye aur ₹11 kamaiye</small></span></div>`);
       addMoney(9,$('#credit'));
       state.claimed=true;DAYS[1].st='done';DAYS[1].tip='<b>Aaj</b> · ₹9 mil gaye ✓ Kal ₹11 milenge.';renderDays();
       const cl=$('#claim');cl.classList.add('done');cl.innerHTML='<svg width="16" height="16" viewBox="0 0 14 14"><path d="M3 7.2l2.6 2.6L11 4.3" fill="none" stroke="#12B76A" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>Aaj ka ₹9 mil gaya · Kal ₹11';
@@ -676,8 +715,23 @@ $$('.mood').forEach(b=>b.onclick=()=>{
     },900);
   },1400);
 });
-$('#remindBtn').onclick=()=>{state.remind=!state.remind;const b=$('#remindBtn');b.classList.toggle('set',state.remind);b.textContent=state.remind?'✓ Set · 8 AM':'Set reminder';if(state.remind)toast('Kal subah 8 baje yaad dilayenge');};
-$('#freeRemind').onclick=()=>{state.freeRemind=!state.freeRemind;const b=$('#freeRemind');b.classList.toggle('set',state.freeRemind);b.lastChild.textContent=state.freeRemind?'Reminder set':'Remind me';if(state.freeRemind)toast('Free chat khulte hi bata denge');};
+/* reminder buttons — a click swings the bell, then the label drops away and all that is left is a
+   bell-with-tick. No "Set ✓" text: the icon is the state. */
+const BELL='<svg width="14" height="14" viewBox="0 0 24 24" fill="none"><path d="M6 16V11a6 6 0 0 1 12 0v5l1.5 2h-15ZM10 21h4" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>',
+      BELLSET='<svg width="15" height="15" viewBox="0 0 24 24" fill="none"><path d="M5.5 16.5V11a6.5 6.5 0 0 1 8.4-6.2M18.5 12.6v3.9l1.5 2H4M10 21.5h4" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/><path d="M15.1 5.7l2 2 3.6-3.9" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg>';
+function bellBtn(id,label,key,msg){
+  const b=$('#'+id);
+  b.onclick=()=>{
+    const on=state[key]=!state[key];
+    b.classList.remove('ring');void b.offsetWidth;b.classList.add('ring');
+    const swap=()=>{b.classList.toggle('set',on);b.innerHTML=on?BELLSET:BELL+label;b.setAttribute('aria-label',on?'Reminder set':label);};
+    /* let the swing finish before the label goes, unless motion is off */
+    matchMedia('(prefers-reduced-motion:reduce)').matches?swap():setTimeout(swap,800);
+    if(on)toast(msg);
+  };
+}
+bellBtn('remindBtn','Set reminder','remind','Kal subah 8 baje yaad dilayenge');
+bellBtn('freeRemind','Remind me','freeRemind','Free chat khulte hi bata denge');
 
 /* voice note — real audio, wave driven off playback position */
 (()=>{const W=34,a=$('#vAudio');$('#wave').innerHTML=wave(W,0);
@@ -691,13 +745,18 @@ $('#freeRemind').onclick=()=>{state.freeRemind=!state.freeRemind;const b=$('#fre
  $('#vPlay').onclick=()=>{if(a.paused){a.play().then(()=>$('#vIcon').innerHTML=PAUSE).catch(()=>toast('Audio chalane ke liye tap karein'));}
    else{a.pause();$('#vIcon').innerHTML=PLAY;}};})();
 
-/* animated placeholder — one letter at a time, then wiped for the next question */
-(()=>{const el=$('#reply'),Q=['Rahul kab jawab dega?','Kya mujhe move on karna chahiye?','Shaadi kab hogi?','Job change karun ya nahi?','Aaj ka din kaisa rahega?'];
- if(matchMedia('(prefers-reduced-motion:reduce)').matches){el.placeholder=Q[0];return;}
+/* animated placeholder — one letter at a time, then wiped for the next question.
+   It is a span, not a real placeholder, so once a question outgrows the field the track slides
+   left and the tail stays readable instead of being cut against the Chat button. */
+(()=>{const el=$('#reply'),row=$('#replyRow'),track=$('.phtrack'),tx=$('#phTx'),
+  Q=['Rahul kab jawab dega?','Kya mujhe move on karna chahiye?','Shaadi kab hogi?','Job change karun ya nahi?','Aaj ka din kaisa rahega?'];
+ el.oninput=()=>row.classList.toggle('typed',!!el.value);
+ const put=s=>{tx.textContent=s;tx.style.transform=`translateX(${-Math.max(0,tx.scrollWidth-track.clientWidth)}px)`;};
+ if(matchMedia('(prefers-reduced-motion:reduce)').matches){put(Q[0]);return;}
  let i=0,j=0,del=false;
  (function step(){
    const q=Q[i];
-   el.placeholder=q.slice(0,j)+(del?'':'|');
+   put(q.slice(0,j)+(del?'':'|'));
    if(!del){j++;if(j>q.length){del=true;return setTimeout(step,1400);}}
    else{j--;if(j<=0){del=false;i=(i+1)%Q.length;return setTimeout(step,260);}}
    setTimeout(step,del?26:62);
@@ -788,46 +847,86 @@ const FILT=[['all','Sab'],['fes','Tyohaar'],['vrat','Vrat'],['love','Love'],['ca
 const EVENTS={2:[['fes','Gandhi Jayanti','Rashtriya chhutti']],6:[['vrat','Indira Ekadashi','Pitron ki shanti ke liye vrat'],['money','Paisa ke liye lucky','Naya invest ya kharid sochein']],10:[['vrat','Sarva Pitru Amavasya','Pitru Paksha ka aakhri din']],11:[['fes','Navratri shuru','Ghatasthapana · Shukla Pratipada']],17:[['fes','Tula Sankranti','Surya Tula mein']],19:[['fes','Durga Ashtami','Kanya pujan']],20:[['fes','Dussehra','Vijayadashami']],22:[['vrat','Papankusha Ekadashi','Shukla Ekadashi']],25:[['fes','Kojagari Lakshmi Puja','Raat bhar Lakshmi puja']],26:[['vrat','Sharad Purnima','Poornima']],29:[['vrat','Karwa Chauth','Chandrodaya par vrat kholein']],
  4:[['health','Sehat ke liye achha','Walk aur jaldi neend']],5:[['career','Career ke liye achha','Boss se baat 10:28–11:28']],7:[['love','Love ke liye lucky','Dil ki baat kehne ka din']],8:[['love','Rishton ke liye achha','Purani baat suljhaayein']],9:[['health','Sehat ke liye achha','Yoga se shuru karein']],
  13:[['love','Love ke liye lucky','']],14:[['career','Career ke liye achha','']],18:[['health','Sehat ke liye achha','']],21:[['money','Paisa ke liye lucky','']],23:[['love','Love ke liye lucky','']],27:[['career','Career ke liye achha','']]};
-const TITHI={4:['Krishna Navami','Ardra'],5:['Krishna Dashami','Punarvasu'],6:['Krishna Ekadashi','Pushya'],7:['Krishna Dwadashi','Ashlesha'],8:['Krishna Trayodashi','Magha'],9:['Krishna Chaturdashi','Purva Phalguni'],10:['Amavasya','Uttara Phalguni']};
+/* ---- kalnirnay markings, whole month ----
+   Anchors: 10 Oct = Amavasya, 26 Oct = Sharad Purnima, 29 Oct = Karwa Chauth (Krishna Chaturthi).
+   Shukla Saptami and Ekadashi get a vriddhi day, Shukla Navami and Krishna Tritiya a kshaya,
+   which is what makes 19 = Durga Ashtami, 20 = Dussehra (Dashami) and 22 = Papankusha Ekadashi
+   land on the dates Kalnirnay prints. [paksha, tithi, short form] */
+const TI=['K','Shashthi','K6','K','Saptami','K7','K','Ashtami','K8','K','Navami','K9','K','Dashami','K10','K','Ekadashi','K11','K','Dwadashi','K12','K','Trayodashi','K13','K','Chaturdashi','K14','-','Amavasya','Ama','S','Pratipada','S1','S','Dwitiya','S2','S','Tritiya','S3','S','Chaturthi','S4','S','Panchami','S5','S','Shashthi','S6','S','Saptami','S7','S','Saptami','S7','S','Ashtami','S8','S','Dashami','S10','S','Ekadashi','S11','S','Ekadashi','S11','S','Dwadashi','S12','S','Trayodashi','S13','S','Chaturdashi','S14','-','Purnima','Pur','K','Pratipada','K1','K','Dwitiya','K2','K','Chaturthi','K4','K','Panchami','K5','K','Shashthi','K6'];
+const NAK=['Ashwini','Bharani','Krittika','Rohini','Mrigashira','Ardra','Punarvasu','Pushya','Ashlesha','Magha','Purva Phalguni','Uttara Phalguni','Hasta','Chitra','Swati','Vishakha','Anuradha','Jyeshtha','Mula','Purva Ashadha','Uttara Ashadha','Shravana','Dhanishta','Shatabhisha','Purva Bhadrapada','Uttara Bhadrapada','Revati'];
+const YOG=['Vishkambha','Priti','Ayushman','Saubhagya','Shobhana','Atiganda','Sukarma','Dhriti','Shula','Ganda','Vriddhi','Dhruva','Vyaghata','Harshana','Vajra','Siddhi','Vyatipata','Variyana','Parigha','Shiva','Siddha','Sadhya','Shubha','Shukla','Brahma','Indra','Vaidhriti'];
+const KRN=['Bava','Balava','Kaulava','Taitila','Garaja','Vanija','Vishti'];
+const RASHI=['Mesh','Vrishabh','Mithun','Kark','Singh','Kanya','Tula','Vrishchik','Dhanu','Makar','Kumbh','Meen'];
+/* Rahu kaal by weekday, Mumbai — eighth-of-day slots off a 6:27 sunrise, which is why Monday
+   reads 7:57–9:27 exactly like Hemali's note on the Today page. */
+const RAHU={Sun:'4:57–6:27 PM',Mon:'7:57–9:27 AM',Tue:'3:27–4:57 PM',Wed:'12:27–1:57 PM',Thu:'1:57–3:27 PM',Fri:'10:57 AM–12:27 PM',Sat:'9:27–10:57 AM'};
 const WK=['Thu','Fri','Sat','Sun','Mon','Tue','Wed'];
 const PERSONAL=['love','career','health','money'];
+const pad2=n=>String(n).padStart(2,'0');
+function panch(d){
+  const i=(d-1)*3,nk=NAK[(5+(d-4)+27*2)%27],ri=Math.floor(((5+(d-4)+27*2)%27)/2.25);
+  /* Mumbai drifts ~6:28→6:39 sunrise and 6:25→6:03 sunset across October */
+  const sr=388+Math.round((d-1)*11/30),ss=1105-Math.round((d-1)*22/30);
+  return {pk:TI[i],ti:TI[i+1],sh:TI[i+2],nak:nk,yog:YOG[(d+12)%27],krn:KRN[(d*2)%7],ras:RASHI[ri],
+    rise:`${Math.floor(sr/60)}:${pad2(sr%60)} AM`,set:`${Math.floor(ss/60)-12}:${pad2(ss%60)} PM`,
+    rahu:RAHU[WK[(d-1)%7]]};
+}
+/* ---- the money ladder for the month ----
+   3 Oct was missed, so the streak reset and 4 Oct started again at ₹7. 11 Oct onward is capped. */
+const EARN=d=>d<=3?3+2*d:d<=10?7+2*(d-4):21;
+const CLAIMED={1:1,2:1,4:1},MISSED={3:1};
+const clSt=d=>CLAIMED[d]?'c':MISSED[d]?'m':d===5?(state.claimed?'c':'t'):'f';
+const MK={
+ c:'<span class="mk" style="background:#12B76A"><svg width="10" height="10" viewBox="0 0 14 14"><path d="M3 7.2l2.6 2.6L11 4.3" fill="none" stroke="#fff" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/></svg></span>',
+ m:'<span class="mk" style="background:#F2F4F7;box-shadow:inset 0 0 0 1px #D0D5DD"><svg width="9" height="9" viewBox="0 0 14 14"><path d="M4.2 4.2l5.6 5.6M9.8 4.2l-5.6 5.6" fill="none" stroke="#98A2B3" stroke-width="2.2" stroke-linecap="round"/></svg></span>',
+ /* today is not a tick yet and not a cross — the amount under it is still up for grabs */
+ t:'<span class="mk" style="box-shadow:inset 0 0 0 1.6px var(--or)"><span style="width:6px;height:6px;border-radius:50%;background:var(--or)"></span></span>',
+ f:'<span class="mk" style="box-shadow:inset 0 0 0 1.2px #DCD6CC"></span>'};
 let cal={sel:5,f:'all'};
 function moonAge(d){return (((d-10)/29.53)%1+1)%1;}
 function moon(d,sz){const k=moonAge(d),r=12,cx=14,cy=14,c=Math.cos(2*Math.PI*k),wax=k<.5,cres=c>0,rx=(r*Math.abs(c)).toFixed(2);const os=wax?1:0,bs=wax?(cres?0:1):(cres?1:0);
  const lit=k<.02||k>.98?'':`<path d="M${cx} ${cy-r} A${r} ${r} 0 0 ${os} ${cx} ${cy+r} A${rx} ${r} 0 0 ${bs} ${cx} ${cy-r}Z" fill="url(#ml)"/>`;
  return `<svg viewBox="0 0 28 28" width="${sz}" height="${sz}" aria-hidden="true"><circle cx="14" cy="14" r="12" fill="#F0E7DB"/>${lit}</svg>`;}
-const inWeek=d=>d>=4&&d<=10;
 const shows=(d)=>(EVENTS[d]||[]).filter(e=>cal.f==='all'||cal.f===e[0]||(cal.f==='vrat'&&e[0]==='vrat'));
 function relD(d){return d===5?'Aaj':d===6?'Kal':d<5?`${5-d} din pehle`:`${d-5} din mein`;}
 function renderCal(){
  const cells=['','','',''].map(()=>'<span></span>');
- for(let d=1;d<=31;d++){const ev=shows(d),lock=!inWeek(d);
-  cells.push(`<button class="cd ${d===5?'today':''} ${d===cal.sel?'sel':''} ${cal.f!=='all'&&!ev.length&&!lock?'dim':''} ${lock?'lock':''}" data-d="${d}">${moon(d,26)}<span class="n">${d}</span><span class="dts">${ev.slice(0,3).map(e=>`<i style="background:${CT[e[0]][1]}"></i>`).join('')}</span></button>`);}
- const sel=EVENTS[cal.sel]||[],tt=TITHI[cal.sel];
+ for(let d=1;d<=31;d++){const ev=shows(d),st=clSt(d);
+  cells.push(`<button class="cd ${d===5?'today':''} ${d===cal.sel?'sel':''} ${cal.f!=='all'&&!ev.length?'dim':''}" data-d="${d}"><span class="nr"><span class="n">${d}</span><span class="ti">${panch(d).sh}</span></span>${MK[st]}<span class="am ${d>10?'bl':''}">₹${EARN(d)}</span><span class="dts">${ev.slice(0,3).map(e=>`<i style="background:${CT[e[0]][1]}"></i>`).join('')}</span></button>`);}
+ let got=0,lost=0;for(let d=1;d<=31;d++){const s=clSt(d);if(s==='c')got+=EARN(d);if(s==='m')lost+=EARN(d);}
+ const sel=EVENTS[cal.sel]||[],p=panch(cal.sel),tt=[p.pk==='-'?p.ti:p.pk==='K'?'Krishna '+p.ti:'Shukla '+p.ti,p.nak];
  const pub=sel.filter(e=>!PERSONAL.includes(e[0])),me=sel.filter(e=>PERSONAL.includes(e[0]));
  const wkList=[];for(let d=4;d<=10;d++)shows(d).forEach(e=>wkList.push([d,e]));
  const later=[];for(let d=11;d<=31;d++)shows(d).forEach(e=>later.push([d,e]));
  $('#cal').innerHTML=`<svg width="0" height="0" style="position:absolute"><defs><radialGradient id="ml" cx=".38" cy=".32" r=".85"><stop offset="0" stop-color="#FDB022"/><stop offset="1" stop-color="#EF6939"/></radialGradient></defs></svg>
  <div class="calhd"><button class="x" id="calX" aria-label="Close"><svg width="16" height="16" viewBox="0 0 24 24"><path d="M6 6l12 12M18 6 6 18" stroke="#101828" stroke-width="2.2" stroke-linecap="round"/></svg></button><div style="flex:1"><b>October 2026</b><small>Ashwin · Kartik · Mumbai</small></div>
   <button class="a" data-toast="September 2026" aria-label="Previous month"><svg width="16" height="16" viewBox="0 0 24 24"><path d="M15 5l-7 7 7 7" fill="none" stroke="#101828" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg></button><button class="a" data-toast="November · Diwali 8 Nov" aria-label="Next month"><svg width="16" height="16" viewBox="0 0 24 24"><path d="M9 5l7 7-7 7" fill="none" stroke="#101828" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg></button></div>
+ <div class="calsum"><div class="s"><i style="background:#12B76A"><svg width="10" height="10" viewBox="0 0 14 14"><path d="M3 7.2l2.6 2.6L11 4.3" fill="none" stroke="#fff" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/></svg></i><span><b>₹${got} mile</b><small>claim kiye</small></span></div>
+  <div class="s"><i style="background:#F2F4F7;box-shadow:inset 0 0 0 1px #D0D5DD"><svg width="9" height="9" viewBox="0 0 14 14"><path d="M4.2 4.2l5.6 5.6M9.8 4.2l-5.6 5.6" fill="none" stroke="#98A2B3" stroke-width="2.2" stroke-linecap="round"/></svg></i><span><b>₹${lost} chhoot gaye</b><small>claim nahi kiya</small></span></div>
+  <span class="sp"></span><em>Roz claim = ₹21 tak</em></div>
  <div class="grid" id="grid"><div class="wk">${['S','M','T','W','T','F','S'].map(x=>`<span>${x}</span>`).join('')}</div><div class="gr">${cells.join('')}</div>
   <div class="weekband" id="band"></div>
-  <div class="lockcard" id="lockcard"><span class="lk"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#EF6939" stroke-width="2"><rect x="5" y="10.5" width="14" height="10" rx="2.5"/><path d="M8 10.5V8a4 4 0 0 1 8 0v2.5"/></svg></span><div style="flex:1"><b>Poora mahina kholiye</b><small>7 din ki streak poori karein — Navratri aur aapke lucky din dikh jayenge · 2/7</small><div class="bar"><i style="width:${state.claimed?28:14}%"></i></div></div></div>
  </div>
- <div class="seld">${moon(cal.sel,44)}<div class="tx"><small>${WK[(cal.sel-1)%7]}, ${cal.sel} Oct · ${relD(cal.sel)}</small><b>${pub[0]?pub[0][1]:(tt?tt[0]:'')}</b><p>${pub[0]?pub[0][2]+(tt?' · '+tt[0]:''):(tt?tt[1]+' nakshatra':'')}</p>
+ <div class="lockcard"><span class="lk"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#EF6939" stroke-width="2"><rect x="5" y="10.5" width="14" height="10" rx="2.5"/><path d="M8 10.5V8a4 4 0 0 1 8 0v2.5"/></svg></span><div style="flex:1"><b>Aage ke hafton ka amount chhupa hai</b><small>7 din ki streak poori karein — har din ka inaam aur aapke lucky din khul jayenge · 2/7</small><div class="bar"><i style="width:${state.claimed?28:14}%"></i></div></div></div>
+ <div class="seld">${moon(cal.sel,44)}<div class="tx"><small>${WK[(cal.sel-1)%7]}, ${cal.sel} Oct · ${relD(cal.sel)}</small><b>${pub[0]?pub[0][1]:tt[0]}</b><p>${pub[0]?pub[0][2]+' · '+tt[0]:tt[1]+' nakshatra'}</p>
   ${me.length?`<div class="foryou">${me.map(e=>`<span><i style="background:${CT[e[0]][1]}"></i>${e[1]}</span>`).join('')}</div>${me[0][2]?`<p style="margin-top:6px">Mansi ke liye: ${me[0][2]}</p>`:''}`:''}</div>
   <button class="ask" data-chat="Astro Hemali" data-rate="10" aria-label="Ask Hemali about this day">${icoChat('#fff','#EF6939',18)}</button></div>
+ <div class="panch"><b>Panchang · ${cal.sel} Oct, Mumbai</b><div class="pg">
+  <span><small>Tithi</small><b>${tt[0]}</b></span><span><small>Nakshatra</small><b>${p.nak}</b></span>
+  <span><small>Yog</small><b>${p.yog}</b></span><span><small>Karan</small><b>${p.krn}</b></span>
+  <span><small>Sooryoday</small><b>${p.rise}</b></span><span><small>Sooryast</small><b>${p.set}</b></span>
+  <span><small>Rahu kaal</small><b class="warn">${p.rahu}</b></span><span><small>Chandra rashi</small><b>${p.ras}</b></span>
+ </div></div>
  <div class="filters">${FILT.map(([k,l])=>`<button class="fl ${cal.f===k?'on':''}" data-f="${k}">${k!=='all'?`<i style="background:${CT[k][1]}"></i>`:''}${l}</button>`).join('')}</div>
  <div class="evlist"><h5>Is hafte · ${wkList.length}</h5>${wkList.map(([d,e])=>evRow(d,e,false)).join('')||'<p style="color:var(--mute);font-size:14px">Is hafte kuch nahi</p>'}
   <h5>Aage is mahine</h5>${later.map(([d,e])=>evRow(d,e,PERSONAL.includes(e[0]))).join('')}</div>
  <div class="calnote">Tithi aur tyohaar Kalnirnay ke hisaab se · Mumbai · Lucky din aapki kundli se andaaza hain</div>`;
- const g=$('#grid'),btns=$$('.cd'),f=btns.find(b=>+b.dataset.d===4),l=btns.find(b=>+b.dataset.d===10);
- const gr=g.getBoundingClientRect(),fr=f.getBoundingClientRect(),lr=l.getBoundingClientRect();
+ const g=$('#grid'),btns=$$('.cd'),f=btns.find(b=>+b.dataset.d===4);
+ const gr=g.getBoundingClientRect(),fr=f.getBoundingClientRect();
  $('#band').style.top=(fr.top-gr.top-3)+'px';$('#band').style.height=(fr.height+6)+'px';
- const lc=$('#lockcard');lc.style.top=(lr.bottom-gr.top+16)+'px';
  $$('.cd').forEach(b=>b.onclick=()=>{cal.sel=+b.dataset.d;renderCal();});
  $$('.fl').forEach(b=>b.onclick=()=>{cal.f=b.dataset.f;const st=$('#cal').scrollTop;renderCal();$('#cal').scrollTop=st;});
- $$('.ev').forEach(b=>b.onclick=()=>{const d=+b.dataset.d;if(b.classList.contains('locked')){toast('Streak poori karke ye din dekhein');return;}if(inWeek(d)){cal.sel=d;renderCal();$('#cal').scrollTo({top:0,behavior:'smooth'});}else toast(b.dataset.n+' · '+d+' Oct');});
+ $$('.ev').forEach(b=>b.onclick=()=>{const d=+b.dataset.d;if(b.classList.contains('locked')){toast('Streak poori karke ye din dekhein');return;}cal.sel=d;renderCal();$('#cal').scrollTo({top:0,behavior:'smooth'});});
  $('#calX').onclick=()=>$('#cal').classList.remove('on');
 }
 function evRow(d,e,locked){return `<button class="ev ${locked?'locked':''}" data-d="${d}" data-n="${e[1]}"><span class="dt"><b>${d}</b><small>${WK[(d-1)%7]}</small></span><span class="tx"><b>${e[1]}</b><small><i style="background:${CT[e[0]][1]}"></i>${CT[e[0]][0]}${PERSONAL.includes(e[0])?' · aapke liye':''}</small></span><span class="rel">${locked?'<svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#EF6939" stroke-width="2.4"><rect x="5" y="10.5" width="14" height="10" rx="2.5"/><path d="M8 10.5V8a4 4 0 0 1 8 0v2.5"/></svg>Locked':relD(d)}</span></button>`;}
