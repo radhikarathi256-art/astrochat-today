@@ -3,7 +3,9 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-<meta name="theme-color" content="#FCFBFA">
+<!-- the hero's own top tint, so the strip the OS paints behind the status bar reads as part of
+     the image instead of a white band above it -->
+<meta name="theme-color" content="#FCDFD5">
 <title>AstroChat Today</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -17,7 +19,7 @@
   --r-card:24px;
 }
 *{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
-html{height:100%}
+html{height:100%;background:#FCDFD5}
 body{margin:0;height:100%;font-family:Inter,system-ui,sans-serif;color:var(--ink);background:var(--bg);display:flex;justify-content:center;align-items:center;overflow:hidden}
 button{font-family:inherit;color:inherit;cursor:pointer}
 img{display:block;max-width:100%}
@@ -32,8 +34,10 @@ img{display:block;max-width:100%}
 .scroll::-webkit-scrollbar{display:none}
 /* runs under the real OS status bar — nothing is drawn over it */
 .hero{position:absolute;left:0;right:0;top:0;height:560px;background:url(assets/hero.jpg) top/cover no-repeat;opacity:.55;pointer-events:none}
-.top{position:relative;padding-bottom:4px;padding-top:calc(env(safe-area-inset-top,0px) + 14px)}
-.hd{display:flex;align-items:center;gap:12px;padding:8px 16px 4px}
+.top{position:relative;padding-bottom:4px}
+/* sticky: transparent over the hero at rest, white once the page moves under it */
+.hd{position:sticky;top:0;z-index:20;display:flex;align-items:center;gap:12px;padding:calc(env(safe-area-inset-top,0px) + 22px) 16px 8px;transition:background .2s,box-shadow .2s}
+.hd.stuck{background:rgba(255,255,255,.94);-webkit-backdrop-filter:blur(12px);backdrop-filter:blur(12px);box-shadow:0 1px 0 var(--line)}
 .hd .g{flex:1}.hd .g small{display:block;font-size:12px;color:var(--ink2);line-height:16px}.hd .g b{font-size:16px;line-height:24px}
 .iconbtn{width:36px;height:36px;border-radius:50%;border:1px solid var(--line);background:rgba(255,255,255,.85);display:grid;place-items:center;padding:0}
 .wallet{display:flex;align-items:center;gap:8px;height:36px;padding:0 6px 0 12px;border-radius:18px;border:1px solid var(--line);background:rgba(255,255,255,.9);font-weight:600;font-size:12px}
@@ -367,14 +371,15 @@ img{display:block;max-width:100%}
 <div class="app" id="app">
   <div class="scroll" id="scroll">
     <div class="hero"></div>
-    <div class="top">
-      <div class="hd">
+    <!-- direct child of the scrollport so it stays stuck for the whole page, not just .top -->
+    <div class="hd" id="hd">
         <button class="iconbtn" style="border:0;background:none" aria-label="Menu" data-toast="Menu"><svg width="22" height="22" viewBox="0 0 24 24"><path d="M3 6h18M3 12h18M3 18h18" stroke="#101828" stroke-width="2" stroke-linecap="round"/></svg></button>
         <div class="g"><small>Good Morning,</small><b>Mansi ji</b></div>
         <button class="wallet" id="wallet" aria-label="Wallet"><svg width="16" height="16" viewBox="0 0 24 24" fill="none"><rect x="2.5" y="6" width="19" height="13" rx="3" stroke="#344054" stroke-width="1.8"/><path d="M16 12.5h2" stroke="#344054" stroke-width="2" stroke-linecap="round"/><path d="M5 6l9-3 1.5 3" stroke="#344054" stroke-width="1.8" stroke-linejoin="round"/></svg><b id="bal">₹0</b><span class="gift"><svg width="14" height="14" viewBox="0 0 24 24"><rect x="3" y="9" width="18" height="12" rx="2" fill="#F79009"/><rect x="2" y="6" width="20" height="5" rx="1.5" fill="#FDB022"/><rect x="11" y="6" width="2" height="15" fill="#D92D20"/><path d="M12 6C10 2 6 3 7.5 5.5 8.5 7 12 6 12 6Zm0 0c2-4 6-3 4.5-.5C15.5 7 12 6 12 6Z" fill="#D92D20"/></svg></span></button>
         <button class="iconbtn" aria-label="Chats" data-chat="Astro Hemali" data-rate="10"><svg width="20" height="20" viewBox="0 0 20 20"><path d="M10 1.7c-4.6 0-8.3 3.3-8.3 7.5 0 2 .9 3.9 2.3 5.2.1 1.2-.4 2.8-1.5 3.9 2.2-.1 3.9-.9 4.9-1.7 1 .3 1.8.4 2.6.4 4.6 0 8.3-3.3 8.3-7.5S14.6 1.7 10 1.7Z" fill="#101828"/><circle cx="6.6" cy="9.2" r="1.15" fill="#fff"/><circle cx="10" cy="9.2" r="1.15" fill="#fff"/><circle cx="13.4" cy="9.2" r="1.15" fill="#fff"/></svg></button>
-      </div>
+    </div>
 
+    <div class="top">
       <div class="stories" id="stories"></div>
 
       <div class="streak">
@@ -452,7 +457,7 @@ img{display:block;max-width:100%}
 
     <!-- Experts -->
     <div class="sec"><div class="card">
-      <div class="th"><span class="node"></span><div class="tx"><small>4 astrologers online</small><b>Abhi baat karein</b></div><button class="sablink" data-toast="Saare astrologers yahan khulenge">Sab dekhein</button></div>
+      <div class="th"><span class="node"></span><div class="tx"><small>4 astrologers online</small><b>Abhi baat karein</b></div><button class="sablink" data-experts>Sab dekhein</button></div>
       <div class="exps" id="exps"></div>
     </div></div>
     <div style="height:30px"></div>
@@ -460,7 +465,7 @@ img{display:block;max-width:100%}
 
   <nav class="nav">
     <button class="on"><svg width="22" height="22" viewBox="0 0 24 24"><g fill="#EF6939"><ellipse cx="12" cy="12" rx="11" ry="5.6" transform="rotate(45 12 12)"/><ellipse cx="12" cy="12" rx="11" ry="5.6" transform="rotate(-45 12 12)"/></g><g fill="none" stroke="#fff" stroke-width="1.1"><ellipse cx="12" cy="12" rx="11" ry="5.6" transform="rotate(45 12 12)"/><ellipse cx="12" cy="12" rx="11" ry="5.6" transform="rotate(-45 12 12)"/></g><circle cx="12" cy="12" r="3.3" fill="#fff"/></svg>Today</button>
-    <button data-toast="Experts tab"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#667085" stroke-width="1.8"><circle cx="9" cy="8" r="3.5"/><path d="M2.5 20c.8-4 3.4-6 6.5-6s5.7 2 6.5 6M16 4.5a3.5 3.5 0 0 1 0 7M18 14c2 .7 3.2 2.6 3.5 6" stroke-linecap="round"/></svg>Experts</button>
+    <button data-experts><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#667085" stroke-width="1.8"><circle cx="9" cy="8" r="3.5"/><path d="M2.5 20c.8-4 3.4-6 6.5-6s5.7 2 6.5 6M16 4.5a3.5 3.5 0 0 1 0 7M18 14c2 .7 3.2 2.6 3.5 6" stroke-linecap="round"/></svg>Experts</button>
     <button data-toast="History tab"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#667085" stroke-width="1.8" stroke-linecap="round"><path d="M9 6h11M9 12h11M9 18h11M4 6h.5M4 12h.5M4 18h.5"/></svg>History</button>
     <button data-toast="Explore tab"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#667085" stroke-width="1.8"><circle cx="12" cy="12" r="9"/><path d="m15.5 8.5-2 5-5 2 2-5Z" stroke-linejoin="round"/></svg>Explore</button>
   </nav>
@@ -490,6 +495,9 @@ const $=s=>document.querySelector(s), $$=s=>[...document.querySelectorAll(s)];
 const app=$('#app'), scroll=$('#scroll');
 const state={bal:0,claimed:false,mood:null,tasks:{tarot:false,report:false},seen:{darshan:true,panchang:true},remind:false,freeRemind:false};
 
+/* header turns white once the page slides under it */
+scroll.addEventListener('scroll',()=>$('#hd').classList.toggle('stuck',scroll.scrollTop>6),{passive:true});
+
 /* toast */
 let tt;function toast(m){const t=$('#toast');t.textContent=m;t.classList.add('on');clearTimeout(tt);tt=setTimeout(()=>t.classList.remove('on'),2200);}
 document.addEventListener('click',e=>{
@@ -497,6 +505,8 @@ document.addEventListener('click',e=>{
   const s=e.target.closest('[data-sheet]');if(s)openSheet(s.dataset.sheet);
   /* any Chat button anywhere -> insufficient balance flow; drop whatever is on top first */
   const c=e.target.closest('[data-chat]');if(c){closeSheet();$('#cal').classList.remove('on');openWallet('listingChat',c.dataset.rate||10);}
+  /* Experts tab + "Sab dekhein" -> the pricing prototype's expert listing */
+  const x=e.target.closest('[data-experts]');if(x){closeSheet();$('#cal').classList.remove('on');openWallet('home');}
 });
 
 /* ---------- wallet + recharge ----------
@@ -504,12 +514,15 @@ document.addEventListener('click',e=>{
    its Home/Today/History tabs are THIS page, so those routes come back here instead. */
 function openWallet(route,rate){
   const f=$('#wvFrame');
+  /* the Experts screen IS pricing-v2's `home`, so when that is what we mounted the route has to
+     stay inside the iframe; every other mount treats Home/Today as "back to this page". */
+  const exits=route==='home'?['today']:['home','today','history'];
   f.src=`wallet.html?view=mobile&start=${route}`+(rate?`&rate=${rate}`:'');
   f.onload=()=>{
     const w=f.contentWindow;
     if(!w||typeof w.go!=='function')return;
     const go=w.go;
-    w.go=(r,rt)=>{ if(r==='home'||r==='today'||r==='history')return closeWallet(); go(r,rt); };
+    w.go=(r,rt)=>{ if(exits.includes(r))return closeWallet(); go(r,rt); };
   };
   $('#wv').classList.add('on');
 }
@@ -751,8 +764,12 @@ $('#scrim').onclick=closeSheet;
    const t0=performance.now(),D=1100;
    const tick=now=>{const p=Math.min(1,(now-t0)/D),e=1-Math.pow(1-p,3);put(target*e);if(p<1)requestAnimationFrame(tick);};
    requestAnimationFrame(tick);};
- const io=new IntersectionObserver(es=>{if(es.some(e=>e.isIntersecting)){run();io.disconnect();}},{root:scroll,threshold:.45});
- io.observe(svg);
+ /* IntersectionObserver rooted on the scrollport never delivered an entry here, so the trigger is
+    a plain scroll check: play once the arc is 60px inside the scrollport. */
+ const check=()=>{if(played)return;const r=svg.getBoundingClientRect();
+   if(r.top<scroll.clientHeight-60&&r.bottom>0){run();scroll.removeEventListener('scroll',check);}};
+ scroll.addEventListener('scroll',check,{passive:true});
+ check();
 })();
 $('#panCal').onclick=()=>openCal();
 
