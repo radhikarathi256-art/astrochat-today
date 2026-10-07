@@ -94,16 +94,18 @@ img{display:block;max-width:100%}
 .node{width:14px;align-self:stretch;display:flex;justify-content:center;position:relative;flex:none}
 .node:before{content:"";position:absolute;top:4px;bottom:4px;width:1.5px;background:var(--ink)}
 .node:after{content:"";position:absolute;top:50%;width:11px;height:11px;margin-top:-5.5px;border-radius:50%;border:1.5px solid var(--ink);background:#fff}
-.node.gold:before{background:#F79009}.node.gold:after{border-color:#F79009;transform:rotate(45deg);border-radius:2px;width:9px;height:9px;margin-top:-4.5px}
+.node.gold:before{background:#F79009}.node.gold:after{border-color:#F79009}
+.node.or:before{background:var(--or)}.node.or:after{border-color:var(--or)}
+.node.gold:after,.node.or:after{border-width:2px;transform:rotate(45deg);border-radius:2px;width:12px;height:12px;margin-top:-6px}
 .th .tx{flex:1;min-width:0}
 .th small{display:block;font-size:12px;line-height:16px;color:var(--mute);font-weight:600}
 .th b{display:block;font-size:20px;line-height:28px;letter-spacing:-.2px}
 
 /* hemali */
-.freepill{display:flex;align-items:center;gap:8px;padding:8px 12px 8px 16px;background:linear-gradient(90deg,#F4EBFF,#fff);font-size:12px;color:var(--purple)}
+.freepill{display:flex;align-items:center;gap:8px;padding:8px 12px 8px 16px;background:linear-gradient(90deg,#F4EBFF,#fff 72%);font-size:12px;color:var(--purple)}
 .freepill b{font-variant-numeric:tabular-nums}
 .freepill .sp{flex:1}
-.freepill button{display:flex;align-items:center;gap:5px;border:1px solid var(--line);border-radius:14px;background:#fff;font-size:12px;font-weight:600;padding:5px 10px}
+.freepill button{display:flex;align-items:center;gap:5px;border:1px solid var(--line-solid);border-radius:999px;background:#fff;color:var(--ink);font-size:12px;font-weight:600;padding:6px 12px}
 .freepill button.set{background:#7F56D9;color:#fff;border-color:#7F56D9}
 .hav{width:44px;height:44px;flex:none}
 /* one radius scale inside the card: bubble 20, pill 999, icon 10 — nothing in between */
@@ -115,17 +117,16 @@ img{display:block;max-width:100%}
 .wave i{flex:1;border-radius:2px;background:#F9C8B6;transition:background .12s}
 .wave i.on{background:var(--or)}
 .voice small{font-size:12px;color:var(--mute);font-variant-numeric:tabular-nums}
-.ins{display:flex;gap:12px;align-items:center;padding:12px 0;border-top:1px dotted var(--mute2)}
-.ins:first-of-type{border-top:0;padding-top:14px}
-.ins:last-child{padding-bottom:0}
-.ins img{width:36px;height:36px;flex:none;border-radius:10px}
+.ins{display:flex;gap:12px;align-items:center;padding:10px 0 0}
+.ins:first-of-type{padding-top:14px}
+.ins img{width:32px;height:32px;flex:none;border-radius:10px}
 .ins p{margin:0;font-size:14px;line-height:20px;color:var(--ink2)}
-.freebar{display:flex;align-items:center;gap:6px;margin:16px 20px 0;padding:7px 12px;border-radius:999px;background:var(--purplebg);font-size:12px;color:var(--purple)}
+.freebar{display:flex;align-items:center;gap:6px;margin:16px 20px 0;padding:0 4px;font-size:12px;color:var(--purple)}
 .freebar b{font-variant-numeric:tabular-nums}
 .replyrow{display:flex;align-items:center;gap:8px;margin:10px 20px 20px;height:48px;border:0;border-radius:999px;padding:0 6px 0 16px;background:#F9FAFB}
 .replyrow input{flex:1;min-width:0;border:0;outline:0;font:14px Inter;color:var(--ink);background:transparent}
 .replyrow input::placeholder{color:var(--mute2)}
-.btn-p{display:flex;align-items:center;gap:6px;border:0;border-radius:999px;background:var(--or);color:#fff;font-size:14px;font-weight:600;height:36px;padding:0 14px;white-space:nowrap}
+.btn-p{display:flex;align-items:center;border:0;border-radius:999px;background:var(--or);color:#fff;font-size:14px;font-weight:600;height:36px;padding:0 16px;white-space:nowrap}
 
 /* check-in */
 .ci{padding:18px 20px 20px}
@@ -222,7 +223,7 @@ img{display:block;max-width:100%}
 .ex small{font-size:12px;line-height:16px;color:var(--mute)}
 .ex .pr{font-size:14px;font-weight:600;color:var(--green);margin-top:6px}
 .ex .pr s{color:var(--mute2);font-weight:500;margin-right:4px;font-size:12px}
-.btn-o{margin-top:10px;width:100%;height:36px;border:0;border-radius:12px;background:var(--or);color:#fff;font-size:14px;font-weight:600;display:flex;align-items:center;justify-content:center;gap:6px}
+.btn-o{margin-top:10px;width:100%;height:36px;border:1.5px solid var(--or);border-radius:999px;background:#fff;color:var(--or);font-size:14px;font-weight:600;display:flex;align-items:center;justify-content:center;gap:6px}
 .sablink{border:0;background:none;font-size:14px;font-weight:600;color:var(--ink2);padding:0}
 
 /* nav */
@@ -370,7 +371,7 @@ img{display:block;max-width:100%}
         <button class="iconbtn" style="border:0;background:none" aria-label="Menu" data-toast="Menu"><svg width="22" height="22" viewBox="0 0 24 24"><path d="M3 6h18M3 12h18M3 18h18" stroke="#101828" stroke-width="2" stroke-linecap="round"/></svg></button>
         <div class="g"><small>Good Morning,</small><b>Mansi ji</b></div>
         <button class="wallet" id="wallet" aria-label="Wallet"><svg width="16" height="16" viewBox="0 0 24 24" fill="none"><rect x="2.5" y="6" width="19" height="13" rx="3" stroke="#344054" stroke-width="1.8"/><path d="M16 12.5h2" stroke="#344054" stroke-width="2" stroke-linecap="round"/><path d="M5 6l9-3 1.5 3" stroke="#344054" stroke-width="1.8" stroke-linejoin="round"/></svg><b id="bal">₹0</b><span class="gift"><svg width="14" height="14" viewBox="0 0 24 24"><rect x="3" y="9" width="18" height="12" rx="2" fill="#F79009"/><rect x="2" y="6" width="20" height="5" rx="1.5" fill="#FDB022"/><rect x="11" y="6" width="2" height="15" fill="#D92D20"/><path d="M12 6C10 2 6 3 7.5 5.5 8.5 7 12 6 12 6Zm0 0c2-4 6-3 4.5-.5C15.5 7 12 6 12 6Z" fill="#D92D20"/></svg></span></button>
-        <button class="iconbtn" aria-label="Chats" data-chat="Astro Hemali" data-rate="10"><svg width="20" height="20" viewBox="0 0 20 20"><path d="M10 1.7c-4.6 0-8.3 3.3-8.3 7.5 0 2 .9 3.9 2.3 5.2.1 1.2-.4 2.8-1.5 3.9 2.2-.1 3.9-.9 4.9-1.7 1 .3 1.8.4 2.6.4 4.6 0 8.3-3.3 8.3-7.5S14.6 1.7 10 1.7Z" fill="#EF6939"/><circle cx="6.6" cy="9.2" r="1.15" fill="#fff"/><circle cx="10" cy="9.2" r="1.15" fill="#fff"/><circle cx="13.4" cy="9.2" r="1.15" fill="#fff"/></svg></button>
+        <button class="iconbtn" aria-label="Chats" data-chat="Astro Hemali" data-rate="10"><svg width="20" height="20" viewBox="0 0 20 20"><path d="M10 1.7c-4.6 0-8.3 3.3-8.3 7.5 0 2 .9 3.9 2.3 5.2.1 1.2-.4 2.8-1.5 3.9 2.2-.1 3.9-.9 4.9-1.7 1 .3 1.8.4 2.6.4 4.6 0 8.3-3.3 8.3-7.5S14.6 1.7 10 1.7Z" fill="#101828"/><circle cx="6.6" cy="9.2" r="1.15" fill="#fff"/><circle cx="10" cy="9.2" r="1.15" fill="#fff"/><circle cx="13.4" cy="9.2" r="1.15" fill="#fff"/></svg></button>
       </div>
 
       <div class="stories" id="stories"></div>
@@ -389,18 +390,18 @@ img{display:block;max-width:100%}
 
     <!-- Hemali -->
     <div class="sec"><div class="card" id="hemCard">
-      <div class="freepill"><svg width="14" height="14" viewBox="0 0 24 24"><path d="M12 2c.8 5.2 4.8 9.2 10 10-5.2.8-9.2 4.8-10 10-.8-5.2-4.8-9.2-10-10 5.2-.8 9.2-4.8 10-10Z" fill="#7F56D9"/></svg><span>FREE 2-min chat</span><b id="freeT">14h 33m</b><span class="sp"></span><button id="freeRemind"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><path d="M6 16V11a6 6 0 0 1 12 0v5l1.5 2h-15ZM10 21h4" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>Remind me</button></div>
+      <div class="freepill"><svg width="14" height="14" viewBox="0 0 24 24"><path d="M12 2c.8 5.2 4.8 9.2 10 10-5.2.8-9.2 4.8-10 10-.8-5.2-4.8-9.2-10-10 5.2-.8 9.2-4.8 10-10Z" fill="#7F56D9"/></svg><span>FREE 2-min chat in</span><b id="freeT">14h 33m</b><span class="sp"></span><button id="freeRemind"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><path d="M6 16V11a6 6 0 0 1 12 0v5l1.5 2h-15ZM10 21h4" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>Remind me</button></div>
       <div class="th"><span class="node"></span><img class="hav" src="assets/hemali.png" alt=""><div class="tx"><small>Aapki chats se · AI notes</small><b>Astro Hemali</b></div></div>
       <div class="bubble">
         <div class="bhd">Aaj ke liye · 5 Oct</div>
-        <div class="voice"><button class="pb" id="vPlay" aria-label="Play voice note"><svg id="vIcon" width="14" height="14" viewBox="0 0 16 16"><path d="M4 2.5l9 5.5-9 5.5Z" fill="#fff"/></svg></button><div class="wave" id="wave"></div><small id="vTime">0:00</small></div>
+        <div class="voice"><button class="pb" id="vPlay" aria-label="Play voice note"><svg id="vIcon" width="14" height="14" viewBox="0 0 16 16"><path d="M4 2.5l9 5.5-9 5.5Z" fill="#fff"/></svg></button><div class="wave" id="wave"></div><small id="vTime">0:42</small></div>
         <audio id="vAudio" src="assets/hemali.m4a" preload="metadata"></audio>
         <div class="ins"><img src="assets/ic-rings.png" alt=""><p>Is hafte rishte aur bharosa sabse zaroori hain.</p></div>
         <div class="ins"><img src="assets/ic-chat.png" alt=""><p>Rahul ke saath baat-cheet aasaan ho rahi hai.</p></div>
         <div class="ins"><img src="assets/ic-calendar.png" alt=""><p>Ek faisla abhi clear nahi. Thursday tak rukiye.</p></div>
       </div>
       <div class="freebar"><svg width="14" height="14" viewBox="0 0 24 24"><path d="M12 2c.8 5.2 4.8 9.2 10 10-5.2.8-9.2 4.8-10 10-.8-5.2-4.8-9.2-10-10 5.2-.8 9.2-4.8 10-10Z" fill="#7F56D9"/></svg>FREE 2-min chat in <b id="freeT2">14h 33min 23 sec</b></div>
-      <div class="replyrow"><input id="reply" aria-label="Reply to Hemali"><button class="btn-p" data-chat="Astro Hemali" data-rate="10"><svg width="16" height="16" viewBox="0 0 20 20"><path d="M10 1.7c-4.6 0-8.3 3.3-8.3 7.5 0 2 .9 3.9 2.3 5.2.1 1.2-.4 2.8-1.5 3.9 2.2-.1 3.9-.9 4.9-1.7 1 .3 1.8.4 2.6.4 4.6 0 8.3-3.3 8.3-7.5S14.6 1.7 10 1.7Z" fill="#fff"/><circle cx="6.6" cy="9.2" r="1.15" fill="#EF6939"/><circle cx="10" cy="9.2" r="1.15" fill="#EF6939"/><circle cx="13.4" cy="9.2" r="1.15" fill="#EF6939"/></svg>Chat ₹10/min</button></div>
+      <div class="replyrow"><input id="reply" aria-label="Reply to Hemali"><button class="btn-p" data-chat="Astro Hemali" data-rate="10">Chat ₹10/min</button></div>
     </div></div>
 
     <!-- Check-in -->
@@ -429,7 +430,7 @@ img{display:block;max-width:100%}
     <div class="sec" style="padding-top:12px"><button class="card evcard" id="evCard">
       <img class="evart" src="assets/diya.png" alt="">
       <span class="evfade"></span>
-      <span class="node gold"></span>
+      <span class="node or"></span>
       <span class="evtx"><small>Kal</small><b>Indira Ekadashi,<br>keep vrat for good luck</b></span>
       <svg class="evchev" width="18" height="18" viewBox="0 0 24 24"><path d="M9 5l7 7-7 7" fill="none" stroke="#101828" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
     </button></div>
@@ -457,7 +458,7 @@ img{display:block;max-width:100%}
   </div>
 
   <nav class="nav">
-    <button class="on"><svg width="22" height="22" viewBox="0 0 24 24"><circle cx="12" cy="12" r="4.2" fill="#EF6939"/><g stroke="#EF6939" stroke-width="2" stroke-linecap="round"><path d="M12 2.5v2.2M12 19.3v2.2M2.5 12h2.2M19.3 12h2.2M5.3 5.3l1.6 1.6M17.1 17.1l1.6 1.6M18.7 5.3l-1.6 1.6M6.9 17.1l-1.6 1.6"/></g></svg>Today</button>
+    <button class="on"><svg width="22" height="22" viewBox="0 0 24 24"><g fill="#EF6939"><ellipse cx="12" cy="12" rx="11" ry="5.6" transform="rotate(45 12 12)"/><ellipse cx="12" cy="12" rx="11" ry="5.6" transform="rotate(-45 12 12)"/></g><g fill="none" stroke="#fff" stroke-width="1.1"><ellipse cx="12" cy="12" rx="11" ry="5.6" transform="rotate(45 12 12)"/><ellipse cx="12" cy="12" rx="11" ry="5.6" transform="rotate(-45 12 12)"/></g><circle cx="12" cy="12" r="3.3" fill="#fff"/></svg>Today</button>
     <button data-toast="Experts tab"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#667085" stroke-width="1.8"><circle cx="9" cy="8" r="3.5"/><path d="M2.5 20c.8-4 3.4-6 6.5-6s5.7 2 6.5 6M16 4.5a3.5 3.5 0 0 1 0 7M18 14c2 .7 3.2 2.6 3.5 6" stroke-linecap="round"/></svg>Experts</button>
     <button data-toast="History tab"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#667085" stroke-width="1.8" stroke-linecap="round"><path d="M9 6h11M9 12h11M9 18h11M4 6h.5M4 12h.5M4 18h.5"/></svg>History</button>
     <button data-toast="Explore tab"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#667085" stroke-width="1.8"><circle cx="12" cy="12" r="9"/><path d="m15.5 8.5-2 5-5 2 2-5Z" stroke-linejoin="round"/></svg>Explore</button>
@@ -577,7 +578,11 @@ const STORIES=[
        <div class="row"><div><b>Vishti</b><small>Karan</small></div><span>2:09 AM tak</span></div></div></div>`],
   cta:{t:'Poora Panchang dekhein',a:()=>{closeStory();openCal();}}}
 ];
-function wave(n,on){let s='';for(let i=0;i<n;i++){const h=6+Math.round(Math.abs(Math.sin(i*1.7))*14);s+=`<i style="height:${h}px" class="${i<on?'on':''}"></i>`;}return s;}
+/* amplitude envelope: loud at the top of the note, tapering off at the end — like the Figma wave */
+function wave(n,on){let s='';for(let i=0;i<n;i++){
+ const env=.4+.6*Math.pow(Math.sin(Math.PI*Math.min(1,i/(n-1)*1.12)),.55);
+ const h=Math.max(4,Math.round((4+Math.abs(Math.sin(i*2.1))*17)*env));
+ s+=`<i style="height:${h}px" class="${i<on?'on':''}"></i>`;}return s;}
 /* the one chat mark (Figma 2358:14265) — bubble takes `fill`, the three dots take `dot` */
 function icoChat(fill,dot,sz){return `<svg width="${sz}" height="${sz}" viewBox="0 0 20 20"><path d="M10 1.7c-4.6 0-8.3 3.3-8.3 7.5 0 2 .9 3.9 2.3 5.2.1 1.2-.4 2.8-1.5 3.9 2.2-.1 3.9-.9 4.9-1.7 1 .3 1.8.4 2.6.4 4.6 0 8.3-3.3 8.3-7.5S14.6 1.7 10 1.7Z" fill="${fill}"/><circle cx="6.6" cy="9.2" r="1.15" fill="${dot}"/><circle cx="10" cy="9.2" r="1.15" fill="${dot}"/><circle cx="13.4" cy="9.2" r="1.15" fill="${dot}"/></svg>`;}
 function darshanArt(){return `<svg viewBox="0 0 240 230" width="210" height="200" aria-hidden="true"><defs><radialGradient id="dg" cx=".5" cy=".55" r=".5"><stop offset="0" stop-color="#FFD48A" stop-opacity=".55"/><stop offset="1" stop-color="#FFD48A" stop-opacity="0"/></radialGradient><linearGradient id="lg" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#3B3F4A"/><stop offset="1" stop-color="#14161C"/></linearGradient><linearGradient id="gd" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#FDE68A"/><stop offset="1" stop-color="#C47F17"/></linearGradient></defs>
@@ -757,7 +762,7 @@ $$('.hr').forEach(b=>b.onclick=()=>toast(b.dataset.tip));
 
 /* experts */
 const EX=[['Astro Hemali','Tarot · ★ 4.9','<s>₹20/min</s>₹10/min','img','',10],['Acharya Ravi','Vedic · ★ 4.8','₹25/min','AR','#EEF0FF',25],['Meera Shah','Numerology · ★ 4.7','₹15/min','MS','#ECFDF3',15],['Pandit Arun','KP · ★ 4.8','₹18/min','PA','#FFF6ED',18]];
-$('#exps').innerHTML=EX.map(e=>`<div class="ex"><span class="ph" style="background:${e[4]||'none'}">${e[3]==='img'?'<img src="assets/hemali.png" alt="">':e[3]+'<i></i>'}</span><b>${e[0]}</b><small>${e[1]}</small><span class="pr">${e[2]}</span><button class="btn-o" data-chat="${e[0]}" data-rate="${e[5]}">${icoChat('#fff','#EF6939',16)}Chat</button></div>`).join('');
+$('#exps').innerHTML=EX.map(e=>`<div class="ex"><span class="ph" style="background:${e[4]||'none'}">${e[3]==='img'?'<img src="assets/hemali.png" alt="">':e[3]+'<i></i>'}</span><b>${e[0]}</b><small>${e[1]}</small><span class="pr">${e[2]}</span><button class="btn-o" data-chat="${e[0]}" data-rate="${e[5]}">${icoChat('#EF6939','#fff',16)}Chat</button></div>`).join('');
 
 /* ---------- CALENDAR ---------- */
 const CT={fes:['Tyohaar','#F79009'],vrat:['Vrat & tithi','#A3B4F7'],love:['Love','#F472B6'],career:['Career','#60A5FA'],health:['Sehat','#4ADE80'],money:['Paisa','#FBBF24']};
