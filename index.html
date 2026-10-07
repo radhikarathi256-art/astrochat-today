@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <!-- the hero's own top tint, so the strip the OS paints behind the status bar reads as part of
      the image instead of a white band above it -->
-<meta name="theme-color" content="#FCDFD5">
+<meta name="theme-color" content="#FDC2A6">
 <title>AstroChat Today</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -19,7 +19,7 @@
   --r-card:24px;
 }
 *{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
-html{height:100%;background:linear-gradient(180deg,#FBD5C4,#FCDFD5)}
+html{height:100%;background:linear-gradient(180deg,#FDC2A6,#FCDFD5)}
 body{margin:0;height:100%;font-family:Inter,system-ui,sans-serif;color:var(--ink);background:var(--bg);display:flex;justify-content:center;align-items:center;overflow:hidden}
 button{font-family:inherit;color:inherit;cursor:pointer}
 img{display:block;max-width:100%}
@@ -32,10 +32,13 @@ img{display:block;max-width:100%}
 }
 .scroll{position:absolute;inset:0;overflow-y:auto;overflow-x:hidden;scrollbar-width:none;padding-bottom:120px}
 .scroll::-webkit-scrollbar{display:none}
-/* The art runs all the way to the top of the viewport — the header sits on it, not on a band of
-   flat colour. Only the OS status strip above the viewport is tinted, from html's background. */
-.hero{position:absolute;left:0;right:0;top:0;height:600px;background:url(assets/hero.jpg) center top/cover no-repeat;
- opacity:.6;pointer-events:none}
+/* The lotus is dropped 72px so its crown clears the greeting instead of sitting flat behind it.
+   The strip that opens up above is not a band of invented colour: it is the image's own first row
+   sampled across the visible crop and extended upward, so the art's edge still meets the page top
+   with no seam. #FDC2A6 — that row averaged at this layer's opacity — is the status-bar tint. */
+.hero{position:absolute;left:0;right:0;top:0;height:672px;pointer-events:none;opacity:.6;
+ background:url(assets/hero.jpg) center 72px/450px 600px no-repeat,
+  linear-gradient(90deg,#FED5C1 0%,#FDCCB5 10%,#FEC1A2 20%,#FEA77A 30%,#FD945A 40%,#FE9C68 50%,#FB9A62 60%,#FEA679 70%,#FEC1A2 80%,#FEC7B0 90%,#FDD2BF 100%)}
 .top{position:relative;padding-bottom:4px}
 /* sticky: transparent over the hero at rest, white once the page moves under it */
 .hd{position:sticky;top:0;z-index:20;display:flex;align-items:center;gap:12px;padding:calc(env(safe-area-inset-top,0px) + 12px) 16px 8px;transition:background .2s,box-shadow .2s}
@@ -349,18 +352,6 @@ img{display:block;max-width:100%}
 /* Mahadev is cropped hard at his left edge, so hold that edge and let the empty right go */
 .mahadev{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:left top}
 .mdscrim{position:absolute;left:0;right:0;bottom:0;height:54%;background:linear-gradient(180deg,rgba(4,14,43,0) 0%,rgba(4,14,43,.5) 34%,rgba(4,14,43,.88) 66%,rgba(4,14,43,.97) 100%)}
-/* the light-slide equivalent of .mdscrim — a warm cream wash so the words clear the orb's glow */
-.ltscrim{position:absolute;left:0;right:0;bottom:0;height:56%;background:linear-gradient(180deg,rgba(255,241,232,0) 0%,rgba(255,240,230,.5) 30%,rgba(255,238,227,.88) 64%,rgba(255,237,225,.98) 100%)}
-/* Gita's artwork is a pale violet-to-peach wash, so white chrome would vanish on it. The light
-   tone leaves the art alone and inverts the viewer's own text to the deepest colour inside it. */
-.sv.light{color:#3B1E63}
-.sv.light .svtop{background:linear-gradient(rgba(255,255,255,.45),transparent)}
-.sv.light .bars span{background:rgba(59,30,99,.25)}
-.sv.light .bars span i{background:#3B1E63}
-.sv.light .svhd small,.sv.light .s-eyebrow,.sv.light .shlok-tr,.sv.light .svmark{color:rgba(59,30,99,.72)}
-.sv.light .svmark b,.sv.light .shlok{color:#3B1E63}
-.sv.light .ghostw{border-color:rgba(59,30,99,.35);background:rgba(255,255,255,.55);color:#3B1E63}
-.sv.light .svhd .x svg path{stroke:#3B1E63}
 .bleed{position:absolute;inset:0;z-index:0}
 
 /* CALENDAR — same light theme as Today: cream surfaces, ink text, orange accent */
@@ -678,15 +669,17 @@ const STORIES=[
        <div class="row"><div><b>Siddh</b><small>Yog</small></div><span>7:21 AM tak</span></div>
        <div class="row"><div><b>Vishti</b><small>Karan</small></div><span>2:09 AM tak</span></div></div></div>`],
   cta:{t:'Poora Panchang dekhein',a:()=>{closeStory();openCal();}}},
- /* Gita — the one slide that is purely to be shared. Its violet-to-amber dusk is pitched between
-    Panchang's navy and Darshan's saffron so the rail still reads as one set. */
- {k:'gita',ring:'#B08CE8,#F0A37A',name:'Gita',img:gitaAvatar(),tag:'new',tone:'light',bg:'#E8B49B',slides:[
-  ()=>`<div class="bleed">${gitaArt()}<span class="ltscrim"></span></div>
-   <div style="position:relative;flex:1;display:flex;flex-direction:column;justify-content:flex-end;gap:14px;padding-bottom:12px">
+ /* Gita — the one slide that is purely to be shared. It is built exactly like Darshan: its own
+    artwork full-bleed, the same dark scrim under the words, gold eyebrow, white body. The violet
+    ground is pitched between Panchang's navy and Darshan's indigo so the rail reads as one set. */
+ {k:'gita',ring:'#B08CE8,#F0A37A',name:'Gita',img:gitaAvatar(),tag:'new',pat:'chakra',bg:'radial-gradient(120% 70% at 50% 0%,#5B3A8E,#1A1033 72%)',slides:[
+  /* this artwork is far brighter than Darshan's, so the same scrim gets a longer ramp to carry it */
+  ()=>`<div class="bleed">${gitaArt()}<span class="mdscrim" style="height:66%"></span></div>
+   <div style="position:relative;flex:1;display:flex;flex-direction:column;justify-content:flex-end;gap:14px;padding-bottom:24px">
      <div class="s-eyebrow" style="text-align:center;color:#F6C27A">Bhagavad Gita · 2.47</div>
      <div class="shlok">कर्मण्येवाधिकारस्ते<br>मा फलेषु कदाचन</div>
      <div class="shlok-tr">karmaṇy-evādhikāras te mā phaleṣu kadāchana</div>
-     <p style="margin:0;font-size:16px;line-height:24px;text-align:center">Apna kaam karne ka haq aapka hai, phal ka nahi. Natije ki chinta chhodiye — aaj ka kaam poora kijiye.</p></div>`],
+     <p style="margin:0;font-size:16px;line-height:24px;text-align:center;color:rgba(255,255,255,.85)">Apna kaam karne ka haq aapka hai, phal ka nahi. Natije ki chinta chhodiye — aaj ka kaam poora kijiye.</p></div>`],
   cta:{t:'Aaj ka arth samjhein',a:()=>toast('Gita ka arth khulega')}}
 ];
 /* the rail thumbnail — a Sudarshan chakra, so Gita needs no png of its own */
@@ -697,7 +690,7 @@ function gitaAvatar(){const sp=Array.from({length:12},(_,i)=>{const a=i*30*Math.
 /* cupped hands holding a light, after the reference: a dusk wash, a glow, and moths rising */
 /* Gita — a gold Sudarshan chakra over a dark ground, the same line-art register the other
    slides use, so the rail reads as one set instead of one bright outlier. */
-function gitaArt(){return `<img class="mahadev" src="assets/story-gita.webp" alt="">`;}
+function gitaArt(){return `<img class="mahadev" style="object-position:center top" src="assets/story-gita.webp" alt="">`;}
 /* amplitude envelope: loud at the top of the note, tapering off at the end — like the Figma wave */
 function wave(n,on){let s='';for(let i=0;i<n;i++){
  const env=.4+.6*Math.pow(Math.sin(Math.PI*Math.min(1,i/(n-1)*1.12)),.55);
@@ -735,7 +728,6 @@ function patternUrl(k){const [c,n,body]=PAT[k];
 function showSlide(){const s=STORIES[sv.i];state.seen[s.k]=true;
   const sv_=$('#sv');
   sv_.style.background=s.bg;
-  sv_.classList.toggle('light',s.tone==='light');
   $('#slide').innerHTML=s.slides[sv.j]();
   /* the motif layers over the slide's wash — a flat colour needs no second layer, a gradient does */
   if(s.pat)sv_.style.backgroundImage=patternUrl(s.pat)+(/gradient\(/.test(s.bg)?`,${s.bg}`:'');
