@@ -82,7 +82,11 @@ img{display:block;max-width:100%}
 .story{flex:none;width:78px;border:0;background:none;padding:0;display:flex;flex-direction:column;align-items:center;gap:14px}
 /* No stroke on the ring. The avatar artwork carries its own edge — every border I put here
    (gold, then per-story gradient, then one gradient) was invented, not in the design. */
-.ring{position:relative;width:78px;height:78px;border-radius:39px}
+/* One gradient on every ring — the border is the free-chat cue, so it has to read the same on
+   all of them. It is not a per-story colour and it is not decoration; removing it removed the cue. */
+.ring{position:relative;width:78px;height:78px;border-radius:39px;padding:1px;border:2px solid transparent;box-shadow:0 4px 4px rgba(16,24,40,.14);
+ background-image:linear-gradient(#fff,#fff),linear-gradient(135deg,#FDB022,#EF6939);background-origin:border-box;background-clip:padding-box,border-box}
+.story.seen .ring{background-image:linear-gradient(#fff,#fff),linear-gradient(135deg,#D0D5DD,#D0D5DD);box-shadow:none}
 .ring img{width:100%;height:100%;border-radius:39px;display:block}
 .tag{position:absolute;left:50%;bottom:-10px;transform:translateX(-50%);height:22px;padding:0 9px;border-radius:11px;font-size:12px;font-weight:600;display:flex;align-items:center;gap:4px;white-space:nowrap;background:#fff;border:1px solid #FBD3E2;box-shadow:0 2px 6px rgba(232,90,147,.18)}
 .tag.live{background:#D92D20;color:#fff;border-color:#D92D20;box-shadow:none}
