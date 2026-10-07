@@ -218,7 +218,8 @@ img{display:block;max-width:100%}
 .ex{flex:none;width:136px;border:1px solid var(--line);border-radius:20px;padding:14px 12px 12px;display:flex;flex-direction:column;align-items:center;text-align:center}
 .ex .ph{width:64px;height:64px;border-radius:50%;position:relative;display:grid;place-items:center;font-size:16px;font-weight:600;color:var(--ink2);background:#EEF0FF}
 .ex .ph img{width:64px;height:64px}
-.ex .ph i{position:absolute;right:1px;top:1px;width:14px;height:14px;border-radius:50%;background:#12B76A;border:2px solid #fff}
+/* availability dot — same as the Experts page on pricing-v2: Success/500, 16px, 2.3px white ring */
+.ex .ph i{position:absolute;right:0;top:0;width:16px;height:16px;border-radius:50%;background:#12B76A;border:2.3px solid #fff}
 .ex b{font-size:14px;line-height:20px;margin-top:10px}
 .ex small{font-size:12px;line-height:16px;color:var(--mute)}
 .ex .pr{font-size:14px;font-weight:600;color:var(--green);margin-top:6px}
@@ -762,7 +763,7 @@ $$('.hr').forEach(b=>b.onclick=()=>toast(b.dataset.tip));
 
 /* experts */
 const EX=[['Astro Hemali','Tarot · ★ 4.9','<s>₹20/min</s>₹10/min','img','',10],['Acharya Ravi','Vedic · ★ 4.8','₹25/min','AR','#EEF0FF',25],['Meera Shah','Numerology · ★ 4.7','₹15/min','MS','#ECFDF3',15],['Pandit Arun','KP · ★ 4.8','₹18/min','PA','#FFF6ED',18]];
-$('#exps').innerHTML=EX.map(e=>`<div class="ex"><span class="ph" style="background:${e[4]||'none'}">${e[3]==='img'?'<img src="assets/hemali.png" alt="">':e[3]+'<i></i>'}</span><b>${e[0]}</b><small>${e[1]}</small><span class="pr">${e[2]}</span><button class="btn-o" data-chat="${e[0]}" data-rate="${e[5]}">${icoChat('#EF6939','#fff',16)}Chat</button></div>`).join('');
+$('#exps').innerHTML=EX.map(e=>`<div class="ex"><span class="ph" style="background:${e[4]||'none'}">${e[3]==='img'?'<img src="assets/hemali.png" alt="">':e[3]}<i></i></span><b>${e[0]}</b><small>${e[1]}</small><span class="pr">${e[2]}</span><button class="btn-o" data-chat="${e[0]}" data-rate="${e[5]}">${icoChat('#EF6939','#fff',16)}Chat</button></div>`).join('');
 
 /* ---------- CALENDAR ---------- */
 const CT={fes:['Tyohaar','#F79009'],vrat:['Vrat & tithi','#A3B4F7'],love:['Love','#F472B6'],career:['Career','#60A5FA'],health:['Sehat','#4ADE80'],money:['Paisa','#FBBF24']};
