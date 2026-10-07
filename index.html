@@ -13,26 +13,26 @@
   --bg:#FCFBFA;--ink:#101828;--ink2:#344054;--mute:#667085;--mute2:#98A2B3;
   --line:rgba(208,213,221,.6);--line-solid:#D0D5DD;--soft:#F2F4F7;
   --or:#EF6939;--or2:#FDB022;--green:#027A48;--greenbg:#ECFDF3;--purple:#6941C6;--purplebg:#F4EBFF;
+  --bubble:#FAF7F2;--bubble-line:#EADFD3;
   --r-card:24px;
 }
 *{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
-html,body{margin:0;height:100%}
-body{font-family:Inter,system-ui,sans-serif;color:var(--ink);background:#E9E6E1;display:flex;justify-content:center;align-items:center}
+html{height:100%}
+body{margin:0;height:100%;font-family:Inter,system-ui,sans-serif;color:var(--ink);background:var(--bg);display:flex;justify-content:center;align-items:center;overflow:hidden}
 button{font-family:inherit;color:inherit;cursor:pointer}
 img{display:block;max-width:100%}
 
-/* phone shell: full screen on phones, framed on desktop */
-.app{position:relative;width:100%;height:100dvh;background:var(--bg);overflow:hidden}
+/* phone shell: edge-to-edge on phones (no faked status bar), framed on desktop */
+.app{position:relative;width:100%;height:100%;background:var(--bg);overflow:hidden}
 @media (min-width:520px){
-  body{padding:24px}
+  body{padding:24px;background:#E9E6E1}
   .app{width:390px;height:844px;max-height:calc(100dvh - 48px);border-radius:44px;box-shadow:0 0 0 10px #111,0 30px 80px rgba(0,0,0,.25)}
 }
 .scroll{position:absolute;inset:0;overflow-y:auto;overflow-x:hidden;scrollbar-width:none;padding-bottom:120px}
 .scroll::-webkit-scrollbar{display:none}
-.hero{position:absolute;left:0;right:0;top:0;height:520px;background:url(assets/hero.jpg) top/cover no-repeat;opacity:.55;pointer-events:none}
-.top{position:relative;padding-bottom:4px}
-.sb{display:flex;justify-content:space-between;align-items:center;padding:14px 26px 6px 32px;font-weight:600;font-size:15px}
-.sb .ico{display:flex;gap:6px;align-items:center}
+/* runs under the real OS status bar — nothing is drawn over it */
+.hero{position:absolute;left:0;right:0;top:0;height:560px;background:url(assets/hero.jpg) top/cover no-repeat;opacity:.55;pointer-events:none}
+.top{position:relative;padding-bottom:4px;padding-top:calc(env(safe-area-inset-top,0px) + 14px)}
 .hd{display:flex;align-items:center;gap:12px;padding:8px 16px 4px}
 .hd .g{flex:1}.hd .g small{display:block;font-size:12px;color:var(--ink2);line-height:16px}.hd .g b{font-size:16px;line-height:24px}
 .iconbtn{width:36px;height:36px;border-radius:50%;border:1px solid var(--line);background:rgba(255,255,255,.85);display:grid;place-items:center;padding:0}
@@ -58,20 +58,22 @@ img{display:block;max-width:100%}
 
 /* streak */
 .streak{display:flex;gap:8px;padding:14px 16px 0}
-.strip{flex:1;background:rgba(242,244,247,.92);border-radius:20px;padding:12px 10px 10px;position:relative}
-.strip .line{position:absolute;left:30px;right:30px;top:27px;height:2px;background:#D0D5DD}
+.strip{flex:1;background:var(--bubble);border:1px solid var(--bubble-line);border-radius:20px;padding:12px 10px 10px;position:relative}
+.strip .line{position:absolute;left:30px;right:30px;top:27px;height:2px;background:#E3D8CB}
 .strip .line i{display:block;height:100%;width:33%;background:var(--or);transition:width .6s}
 .days{position:relative;display:grid;grid-template-columns:repeat(4,1fr)}
 .dy{border:0;background:none;padding:0;display:flex;flex-direction:column;align-items:center;gap:4px}
-.dy .dot{width:30px;height:30px;border-radius:50%;background:#fff;border:2px solid #D0D5DD;display:grid;place-items:center;transition:all .3s}
+.dy .dot{width:30px;height:30px;border-radius:50%;background:#fff;border:2px solid #E3D8CB;display:grid;place-items:center;transition:all .3s}
 .dy.done .dot{background:var(--or);border-color:var(--or)}
-.dy.today .dot{width:38px;height:38px;margin-top:-4px;background:var(--or);border-color:#fff;box-shadow:0 0 0 4px rgba(239,105,57,.25)}
+.dy.today .dot{width:38px;height:38px;margin-top:-4px;background:var(--or);border-color:#fff;animation:tokpulse 2s ease-out infinite}
+.dy.today.done .dot{animation:none;box-shadow:0 0 0 4px rgba(239,105,57,.25)}
+@keyframes tokpulse{0%{box-shadow:0 0 0 0 rgba(239,105,57,.45)}70%{box-shadow:0 0 0 10px rgba(239,105,57,0)}100%{box-shadow:0 0 0 0 rgba(239,105,57,0)}}
 .dy small{font-size:12px;line-height:16px;color:var(--mute)}
 .dy.today small{color:var(--ink);font-weight:600}
 .dy em{font-style:normal;font-size:12px;line-height:16px;font-weight:600;color:var(--or)}
 .dy.done em{color:var(--mute2);text-decoration:line-through;font-weight:500}
 .dy.sel small{text-decoration:underline;text-underline-offset:3px}
-.calbtn{width:64px;border:0;border-radius:20px;background:rgba(242,244,247,.92);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:8px;font-size:12px;font-weight:600;padding:0}
+.calbtn{width:64px;border:1px solid var(--bubble-line);border-radius:20px;background:var(--bubble);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:8px;font-size:12px;font-weight:600;padding:0}
 .calbtn span{width:32px;height:32px;border-radius:50%;background:var(--or);display:grid;place-items:center}
 .daytip{margin:8px 16px 0;padding:10px 12px;border-radius:14px;background:#fff;border:1px solid var(--line);font-size:12px;line-height:16px;color:var(--ink2);display:none;gap:8px;align-items:center}
 .daytip.on{display:block;animation:fade .2s}
@@ -104,21 +106,26 @@ img{display:block;max-width:100%}
 .freepill button{display:flex;align-items:center;gap:5px;border:1px solid var(--line);border-radius:14px;background:#fff;font-size:12px;font-weight:600;padding:5px 10px}
 .freepill button.set{background:#7F56D9;color:#fff;border-color:#7F56D9}
 .hav{width:44px;height:44px;flex:none}
-.bubble{margin:14px 20px 0;background:#FAF7F2;border:1px solid #EADFD3;border-radius:20px;padding:16px}
-.voice{display:flex;align-items:center;gap:10px;background:#fff;border-radius:22px;padding:5px 14px 5px 5px}
+/* one radius scale inside the card: bubble 20, pill 999, icon 10 — nothing in between */
+.bubble{margin:14px 20px 0;background:var(--bubble);border:1px solid var(--bubble-line);border-radius:20px;padding:16px}
+.bhd{font-size:16px;line-height:22px;font-weight:600;margin-bottom:12px}
+.voice{display:flex;align-items:center;gap:10px;background:#fff;border-radius:999px;padding:5px 14px 5px 5px}
 .voice .pb{width:32px;height:32px;border-radius:50%;border:0;background:var(--or);display:grid;place-items:center;padding:0;flex:none}
 .wave{flex:1;display:flex;gap:2px;align-items:center;height:22px}
-.wave i{flex:1;border-radius:2px;background:#F9C8B6;transition:background .2s}
+.wave i{flex:1;border-radius:2px;background:#F9C8B6;transition:background .12s}
 .wave i.on{background:var(--or)}
 .voice small{font-size:12px;color:var(--mute);font-variant-numeric:tabular-nums}
-.quote{font-size:16px;line-height:24px;margin:12px 0 4px}
-.ins{display:flex;gap:12px;align-items:center;padding:10px 0;border-top:1px dashed #E7DED4}
-.ins:first-of-type{border-top:0}
-.ins img{width:36px;height:36px;flex:none}
+.ins{display:flex;gap:12px;align-items:center;padding:12px 0;border-top:1px solid #EFE7DE}
+.ins:first-of-type{border-top:0;padding-top:14px}
+.ins:last-child{padding-bottom:0}
+.ins img{width:36px;height:36px;flex:none;border-radius:10px}
 .ins p{margin:0;font-size:14px;line-height:20px;color:var(--ink2)}
-.replyrow{display:flex;align-items:center;gap:8px;margin:14px 20px 20px;height:48px;border:1px solid var(--line);border-radius:24px;padding:0 6px 0 16px}
+.freebar{display:flex;align-items:center;gap:6px;margin:16px 20px 0;padding:7px 12px;border-radius:999px;background:var(--purplebg);font-size:12px;color:var(--purple)}
+.freebar b{font-variant-numeric:tabular-nums}
+.replyrow{display:flex;align-items:center;gap:8px;margin:10px 20px 20px;height:48px;border:1px solid var(--line);border-radius:999px;padding:0 6px 0 16px;background:#fff}
 .replyrow input{flex:1;min-width:0;border:0;outline:0;font:14px Inter;color:var(--ink);background:transparent}
-.btn-p{border:0;border-radius:18px;background:var(--or);color:#fff;font-size:14px;font-weight:600;height:36px;padding:0 14px;white-space:nowrap}
+.replyrow input::placeholder{color:var(--mute2)}
+.btn-p{display:flex;align-items:center;gap:6px;border:0;border-radius:999px;background:var(--or);color:#fff;font-size:14px;font-weight:600;height:36px;padding:0 14px;white-space:nowrap}
 
 /* check-in */
 .ci{padding:18px 20px 20px}
@@ -166,12 +173,22 @@ img{display:block;max-width:100%}
 .task.done .go{background:#12B76A}
 .task.done b{color:var(--mute)}
 
+/* event row */
+.evcard{display:flex;align-items:center;gap:0;height:92px;padding:0 20px;width:100%;text-align:left}
+.evcard .evart{position:absolute;right:34px;top:10px;width:141px;height:77px;z-index:0}
+.evcard .evfade{position:absolute;right:30px;top:10px;width:146px;height:85px;z-index:1;background:linear-gradient(90deg,#fff 0%,rgba(255,255,255,0) 42%)}
+.evcard .node{height:40px;align-self:center;z-index:2}
+.evtx{flex:1;min-width:0;margin-left:26px;z-index:2}
+.evtx small{display:block;font-size:12px;line-height:18px;color:var(--mute);font-weight:600}
+.evtx b{display:block;font-size:17px;line-height:24px;letter-spacing:-.2px}
+.evchev{flex:none;z-index:2}
+
 /* aaj ka din */
 .pan{background:url(assets/scene.jpg) center/cover;border:1px solid var(--line)}
-.pan:before{content:"";position:absolute;left:0;right:0;top:0;height:190px;background:linear-gradient(#fff,rgba(255,255,255,0))}
+.pan:before{content:"";position:absolute;left:0;right:0;top:0;height:260px;background:linear-gradient(#fff 10%,rgba(255,255,255,0))}
 .pan>*{position:relative}
 .chev{width:28px;height:28px;border:0;background:none;display:grid;place-items:center;padding:0}
-.arc{padding:8px 20px 0}
+.arc{padding:4px 20px 0}
 .arc svg{width:100%;height:auto;display:block}
 .suntimes{display:flex;justify-content:space-between;padding:4px 20px 0;font-size:12px;color:#7A5A3A;text-shadow:0 0 6px #fff,0 0 6px #fff}
 .pgrid{display:grid;grid-template-columns:1fr 1fr;gap:10px;padding:12px 20px 20px}
@@ -184,7 +201,7 @@ img{display:block;max-width:100%}
 .pc.lk b{display:block;font-size:16px;line-height:24px}
 .pc .bad{width:8px;height:8px;border-radius:50%;background:#F04438;display:inline-block;margin-right:6px}
 .pc .good{width:8px;height:8px;border-radius:50%;background:#12B76A;display:inline-block;margin-right:6px}
-.hours{display:flex;gap:12px;overflow-x:auto;padding:12px 16px 2px;scrollbar-width:none;scroll-snap-type:x mandatory}
+.hours{display:flex;gap:12px;overflow-x:auto;padding:12px 20px 2px;scrollbar-width:none;scroll-snap-type:x mandatory;scroll-padding-left:20px}
 .hours::-webkit-scrollbar{display:none}
 .hr{flex:none;display:flex;flex-direction:column;align-items:flex-start;justify-content:flex-start;width:140px;height:151px;border-radius:20px;border:1px solid var(--line);background:#fff;position:relative;overflow:hidden;padding:13px 14px;text-align:left;scroll-snap-align:start}
 .hr .st{font-size:12px;line-height:16px;font-weight:600}
@@ -205,13 +222,18 @@ img{display:block;max-width:100%}
 .ex small{font-size:12px;line-height:16px;color:var(--mute)}
 .ex .pr{font-size:14px;font-weight:600;color:var(--green);margin-top:6px}
 .ex .pr s{color:var(--mute2);font-weight:500;margin-right:4px;font-size:12px}
-.btn-o{margin-top:10px;width:100%;height:36px;border:1.5px solid var(--or);border-radius:12px;background:#fff;color:var(--or);font-size:14px;font-weight:600;display:flex;align-items:center;justify-content:center;gap:6px}
+.btn-o{margin-top:10px;width:100%;height:36px;border:0;border-radius:12px;background:var(--or);color:#fff;font-size:14px;font-weight:600;display:flex;align-items:center;justify-content:center;gap:6px}
 .sablink{border:0;background:none;font-size:14px;font-weight:600;color:var(--ink2);padding:0}
 
 /* nav */
 .nav{position:absolute;left:16px;right:16px;bottom:16px;height:60px;display:flex;border-radius:30px;background:rgba(255,255,255,.96);border:1px solid var(--line-solid);padding:4px 8px;z-index:10;backdrop-filter:blur(8px)}
 .nav button{flex:1;border:0;background:none;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px;font-size:12px;color:var(--mute);padding:0}
 .nav button.on{color:var(--or);font-weight:600}
+
+/* wallet / recharge, served from wallet.html */
+.wv{position:absolute;inset:0;z-index:45;display:none;background:#fff}
+.wv.on{display:block;animation:up .3s cubic-bezier(.2,.8,.2,1)}
+.wv iframe{display:block;width:100%;height:100%;border:0}
 
 /* overlays */
 .ov{position:absolute;inset:0;z-index:30;display:none}
@@ -283,58 +305,58 @@ img{display:block;max-width:100%}
 .svoice .pb{width:40px;height:40px;border-radius:50%;background:#fff;display:grid;place-items:center;flex:none;border:0;padding:0}
 .svoice .wave i{background:rgba(255,255,255,.4)}.svoice .wave i.on{background:#fff}
 
-/* CALENDAR */
-.cal{position:absolute;inset:0;z-index:35;display:none;background:radial-gradient(120% 60% at 80% 0%,#4B3A7A 0%,#221C3D 45%,#14112A 100%);color:#fff;overflow-y:auto;scrollbar-width:none}
+/* CALENDAR — same light theme as Today: cream surfaces, ink text, orange accent */
+.cal{position:absolute;inset:0;z-index:35;display:none;background:var(--bg);color:var(--ink);overflow-y:auto;scrollbar-width:none}
 .cal::-webkit-scrollbar{display:none}
 .cal.on{display:block;animation:up .3s cubic-bezier(.2,.8,.2,1)}
-.calhd{display:flex;align-items:center;gap:12px;padding:52px 16px 14px}
-.calhd .x,.calhd .a{width:40px;height:40px;border-radius:50%;border:0;background:rgba(255,255,255,.1);display:grid;place-items:center;padding:0;color:#fff}
+.calhd{position:sticky;top:0;z-index:4;display:flex;align-items:center;gap:12px;padding:calc(env(safe-area-inset-top,0px) + 16px) 16px 12px;background:rgba(252,251,250,.92);backdrop-filter:blur(10px);border-bottom:1px solid var(--line)}
+.calhd .x,.calhd .a{width:40px;height:40px;border-radius:50%;border:1px solid var(--bubble-line);background:var(--bubble);display:grid;place-items:center;padding:0;color:var(--ink)}
 .calhd b{display:block;font-family:'Cormorant Infant',serif;font-size:28px;line-height:30px}
-.calhd small{display:block;font-size:12px;color:rgba(255,255,255,.65)}
-.grid{margin:0 16px;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.08);border-radius:22px;padding:12px 6px 10px;position:relative}
+.calhd small{display:block;font-size:12px;color:var(--mute)}
+.grid{margin:14px 16px 0;background:var(--bubble);border:1px solid var(--bubble-line);border-radius:22px;padding:12px 6px 10px;position:relative}
 .wk,.gr{display:grid;grid-template-columns:repeat(7,1fr);text-align:center}
-.wk span{font-size:12px;color:rgba(255,255,255,.55);font-weight:600;padding-bottom:6px}
-.cd{border:0;background:none;color:#fff;display:flex;flex-direction:column;align-items:center;gap:2px;padding:6px 0 4px;border-radius:14px}
+.wk span{font-size:12px;color:var(--mute);font-weight:600;padding-bottom:6px}
+.cd{border:0;background:none;color:var(--ink);display:flex;flex-direction:column;align-items:center;gap:2px;padding:6px 0 4px;border-radius:14px}
 .cd .n{font-size:14px;font-weight:600;line-height:18px}
 .cd .dts{display:flex;gap:3px;height:6px}.cd .dts i{width:6px;height:6px;border-radius:50%}
-.cd.today .n{background:#fff;color:#14112A;border-radius:8px;padding:0 6px}
-.cd.sel{background:rgba(255,255,255,.12)}
-.cd.dim{opacity:.3}
-.cd.lock{filter:blur(3.5px);opacity:.55;pointer-events:none}
-.weekband{position:absolute;left:6px;right:6px;border:1.5px solid rgba(253,176,34,.6);border-radius:16px;pointer-events:none}
-.lockcard{position:absolute;left:24px;right:24px;z-index:2;background:rgba(20,17,42,.82);backdrop-filter:blur(4px);border:1px solid rgba(255,255,255,.14);border-radius:18px;padding:14px;display:flex;gap:12px;align-items:center}
-.lockcard .lk{width:40px;height:40px;border-radius:50%;background:rgba(253,176,34,.16);display:grid;place-items:center;flex:none}
+.cd.today .n{background:var(--or);color:#fff;border-radius:8px;padding:0 6px}
+.cd.sel{background:#F2EBE2}
+.cd.dim{opacity:.35}
+.cd.lock{filter:blur(3.5px);opacity:.5;pointer-events:none}
+.weekband{position:absolute;left:6px;right:6px;border:1.5px solid rgba(239,105,57,.5);border-radius:16px;pointer-events:none}
+.lockcard{position:absolute;left:24px;right:24px;z-index:2;background:rgba(255,255,255,.92);backdrop-filter:blur(4px);border:1px solid var(--bubble-line);border-radius:18px;padding:14px;display:flex;gap:12px;align-items:center;box-shadow:0 6px 20px rgba(16,24,40,.08)}
+.lockcard .lk{width:40px;height:40px;border-radius:50%;background:#FFF6ED;display:grid;place-items:center;flex:none}
 .lockcard b{display:block;font-size:14px;line-height:20px}
-.lockcard small{display:block;font-size:12px;line-height:16px;color:rgba(255,255,255,.7)}
-.lockcard .bar{height:6px;border-radius:3px;background:rgba(255,255,255,.15);margin-top:8px;overflow:hidden}
+.lockcard small{display:block;font-size:12px;line-height:16px;color:var(--mute)}
+.lockcard .bar{height:6px;border-radius:3px;background:#F2F4F7;margin-top:8px;overflow:hidden}
 .lockcard .bar i{display:block;height:100%;width:28%;background:linear-gradient(90deg,#FDB022,#EF6939);border-radius:3px}
-.seld{margin:14px 16px 0;background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.08);border-radius:20px;padding:14px;display:flex;gap:12px}
+.seld{margin:14px 16px 0;background:var(--bubble);border:1px solid var(--bubble-line);border-radius:20px;padding:14px;display:flex;gap:12px}
 .seld .tx{flex:1;min-width:0}
-.seld small{display:block;font-size:12px;letter-spacing:.6px;text-transform:uppercase;color:rgba(255,255,255,.6);font-weight:600}
+.seld small{display:block;font-size:12px;letter-spacing:.6px;text-transform:uppercase;color:var(--mute);font-weight:600}
 .seld b{display:block;font-size:18px;line-height:24px;margin-top:2px}
-.seld p{margin:2px 0 0;font-size:14px;line-height:20px;color:rgba(255,255,255,.75)}
+.seld p{margin:2px 0 0;font-size:14px;line-height:20px;color:var(--ink2)}
 .seld .foryou{margin-top:10px;display:flex;flex-wrap:wrap;gap:6px}
-.seld .foryou span{display:inline-flex;align-items:center;gap:6px;font-size:12px;font-weight:600;padding:5px 10px;border-radius:12px;background:rgba(255,255,255,.1)}
+.seld .foryou span{display:inline-flex;align-items:center;gap:6px;font-size:12px;font-weight:600;padding:5px 10px;border-radius:12px;background:#fff;border:1px solid var(--bubble-line)}
 .seld .foryou i{width:7px;height:7px;border-radius:50%}
 .seld .ask{width:40px;height:40px;border-radius:50%;border:0;background:var(--or);display:grid;place-items:center;flex:none;padding:0}
-.filters{display:flex;gap:8px;overflow-x:auto;padding:16px 16px 4px;scrollbar-width:none}
+.filters{display:flex;gap:8px;overflow-x:auto;padding:16px 16px 4px;scrollbar-width:none;scroll-padding-left:16px}
 .filters::-webkit-scrollbar{display:none}
-.fl{flex:none;height:34px;border-radius:17px;border:1px solid rgba(255,255,255,.2);background:transparent;color:#fff;font-size:14px;font-weight:600;padding:0 14px;display:flex;align-items:center;gap:6px}
+.fl{flex:none;height:34px;border-radius:17px;border:1px solid var(--line-solid);background:#fff;color:var(--ink2);font-size:14px;font-weight:600;padding:0 14px;display:flex;align-items:center;gap:6px}
 .fl i{width:8px;height:8px;border-radius:50%}
-.fl.on{background:#fff;color:#14112A;border-color:#fff}
+.fl.on{background:var(--ink);color:#fff;border-color:var(--ink)}
 .evlist{padding:8px 16px 40px}
-.evlist h5{margin:14px 0 4px;font-size:12px;letter-spacing:1px;text-transform:uppercase;color:rgba(255,255,255,.55)}
-.ev{display:flex;align-items:center;gap:12px;padding:12px 2px;border-bottom:1px solid rgba(255,255,255,.08);width:100%;background:none;border-left:0;border-right:0;border-top:0;color:#fff;text-align:left}
-.ev .dt{width:46px;height:46px;border-radius:14px;background:rgba(255,255,255,.08);display:flex;flex-direction:column;align-items:center;justify-content:center;flex:none}
-.ev .dt b{font-size:16px;line-height:18px}.ev .dt small{font-size:12px;color:rgba(255,255,255,.6)}
+.evlist h5{margin:14px 0 4px;font-size:12px;letter-spacing:1px;text-transform:uppercase;color:var(--mute)}
+.ev{display:flex;align-items:center;gap:12px;padding:12px 2px;border-bottom:1px solid var(--line);width:100%;background:none;border-left:0;border-right:0;border-top:0;color:var(--ink);text-align:left}
+.ev .dt{width:46px;height:46px;border-radius:14px;background:var(--bubble);border:1px solid var(--bubble-line);display:flex;flex-direction:column;align-items:center;justify-content:center;flex:none}
+.ev .dt b{font-size:16px;line-height:18px}.ev .dt small{font-size:12px;color:var(--mute)}
 .ev .tx{flex:1;min-width:0}
 .ev .tx b{display:block;font-size:16px;line-height:22px}
-.ev .tx small{display:flex;align-items:center;gap:6px;font-size:12px;color:rgba(255,255,255,.65);margin-top:2px}
+.ev .tx small{display:flex;align-items:center;gap:6px;font-size:12px;color:var(--mute);margin-top:2px}
 .ev .tx small i{width:7px;height:7px;border-radius:50%}
-.ev .rel{font-size:12px;color:rgba(255,255,255,.6);white-space:nowrap}
+.ev .rel{font-size:12px;color:var(--mute);white-space:nowrap}
 .ev.locked .tx b{filter:blur(5px)}
-.ev.locked .rel{display:flex;align-items:center;gap:4px;color:#FDB022}
-.calnote{font-size:12px;line-height:16px;color:rgba(255,255,255,.5);text-align:center;padding:0 24px 30px}
+.ev.locked .rel{display:flex;align-items:center;gap:4px;color:var(--or)}
+.calnote{font-size:12px;line-height:16px;color:var(--mute2);text-align:center;padding:0 24px 30px}
 
 @media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
 </style>
@@ -344,16 +366,11 @@ img{display:block;max-width:100%}
   <div class="scroll" id="scroll">
     <div class="hero"></div>
     <div class="top">
-      <div class="sb"><span id="clock">9:41</span><span class="ico">
-        <svg width="18" height="12" viewBox="0 0 18 12"><rect x="0" y="8" width="3" height="4" rx="1" fill="#101828"/><rect x="5" y="5.5" width="3" height="6.5" rx="1" fill="#101828"/><rect x="10" y="3" width="3" height="9" rx="1" fill="#101828"/><rect x="15" y="0" width="3" height="12" rx="1" fill="#101828"/></svg>
-        <svg width="16" height="12" viewBox="0 0 16 12"><path d="M8 11.5 5.6 9a3.4 3.4 0 0 1 4.8 0Zm-4.2-4.3a6 6 0 0 1 8.4 0l1.4-1.4a8 8 0 0 0-11.2 0ZM.9 4.3a10.2 10.2 0 0 1 14.2 0L16.5 3a12.2 12.2 0 0 0-17 0Z" fill="#101828"/></svg>
-        <svg width="26" height="12" viewBox="0 0 26 12"><rect x=".5" y=".5" width="22" height="11" rx="3" fill="none" stroke="#101828" opacity=".4"/><rect x="2" y="2" width="17" height="8" rx="1.8" fill="#101828"/><rect x="23.5" y="4" width="2" height="4" rx="1" fill="#101828" opacity=".4"/></svg>
-      </span></div>
       <div class="hd">
         <button class="iconbtn" style="border:0;background:none" aria-label="Menu" data-toast="Menu"><svg width="22" height="22" viewBox="0 0 24 24"><path d="M3 6h18M3 12h18M3 18h18" stroke="#101828" stroke-width="2" stroke-linecap="round"/></svg></button>
         <div class="g"><small>Good Morning,</small><b>Mansi ji</b></div>
-        <div class="wallet" id="wallet"><svg width="16" height="16" viewBox="0 0 24 24" fill="none"><rect x="2.5" y="6" width="19" height="13" rx="3" stroke="#344054" stroke-width="1.8"/><path d="M16 12.5h2" stroke="#344054" stroke-width="2" stroke-linecap="round"/><path d="M5 6l9-3 1.5 3" stroke="#344054" stroke-width="1.8" stroke-linejoin="round"/></svg><b id="bal">₹120</b><span class="gift"><svg width="14" height="14" viewBox="0 0 24 24"><rect x="3" y="9" width="18" height="12" rx="2" fill="#F79009"/><rect x="2" y="6" width="20" height="5" rx="1.5" fill="#FDB022"/><rect x="11" y="6" width="2" height="15" fill="#D92D20"/><path d="M12 6C10 2 6 3 7.5 5.5 8.5 7 12 6 12 6Zm0 0c2-4 6-3 4.5-.5C15.5 7 12 6 12 6Z" fill="#D92D20"/></svg></span></div>
-        <button class="iconbtn" aria-label="Chats" data-sheet="chat"><svg width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M4 5.5A2.5 2.5 0 0 1 6.5 3h11A2.5 2.5 0 0 1 20 5.5v9a2.5 2.5 0 0 1-2.5 2.5H9l-5 4Z" stroke="#101828" stroke-width="1.8" stroke-linejoin="round"/><circle cx="8.5" cy="10" r="1.2" fill="#101828"/><circle cx="12" cy="10" r="1.2" fill="#101828"/><circle cx="15.5" cy="10" r="1.2" fill="#101828"/></svg></button>
+        <button class="wallet" id="wallet" aria-label="Wallet"><svg width="16" height="16" viewBox="0 0 24 24" fill="none"><rect x="2.5" y="6" width="19" height="13" rx="3" stroke="#344054" stroke-width="1.8"/><path d="M16 12.5h2" stroke="#344054" stroke-width="2" stroke-linecap="round"/><path d="M5 6l9-3 1.5 3" stroke="#344054" stroke-width="1.8" stroke-linejoin="round"/></svg><b id="bal">₹0</b><span class="gift"><svg width="14" height="14" viewBox="0 0 24 24"><rect x="3" y="9" width="18" height="12" rx="2" fill="#F79009"/><rect x="2" y="6" width="20" height="5" rx="1.5" fill="#FDB022"/><rect x="11" y="6" width="2" height="15" fill="#D92D20"/><path d="M12 6C10 2 6 3 7.5 5.5 8.5 7 12 6 12 6Zm0 0c2-4 6-3 4.5-.5C15.5 7 12 6 12 6Z" fill="#D92D20"/></svg></span></button>
+        <button class="iconbtn" aria-label="Chats" data-chat="Astro Hemali" data-rate="10"><svg width="20" height="20" viewBox="0 0 20 20"><path d="M10 1.7c-4.6 0-8.3 3.3-8.3 7.5 0 2 .9 3.9 2.3 5.2.1 1.2-.4 2.8-1.5 3.9 2.2-.1 3.9-.9 4.9-1.7 1 .3 1.8.4 2.6.4 4.6 0 8.3-3.3 8.3-7.5S14.6 1.7 10 1.7Z" fill="#EF6939"/><circle cx="6.6" cy="9.2" r="1.15" fill="#fff"/><circle cx="10" cy="9.2" r="1.15" fill="#fff"/><circle cx="13.4" cy="9.2" r="1.15" fill="#fff"/></svg></button>
       </div>
 
       <div class="stories" id="stories"></div>
@@ -375,13 +392,15 @@ img{display:block;max-width:100%}
       <div class="freepill"><svg width="14" height="14" viewBox="0 0 24 24"><path d="M12 2c.8 5.2 4.8 9.2 10 10-5.2.8-9.2 4.8-10 10-.8-5.2-4.8-9.2-10-10 5.2-.8 9.2-4.8 10-10Z" fill="#7F56D9"/></svg><span>FREE 2-min chat</span><b id="freeT">14h 33m</b><span class="sp"></span><button id="freeRemind"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><path d="M6 16V11a6 6 0 0 1 12 0v5l1.5 2h-15ZM10 21h4" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>Remind me</button></div>
       <div class="th"><span class="node"></span><img class="hav" src="assets/hemali.png" alt=""><div class="tx"><small>Aapki chats se · AI notes</small><b>Astro Hemali</b></div></div>
       <div class="bubble">
-        <div class="voice"><button class="pb" id="vPlay" aria-label="Play voice note"><svg id="vIcon" width="14" height="14" viewBox="0 0 16 16"><path d="M4 2.5l9 5.5-9 5.5Z" fill="#fff"/></svg></button><div class="wave" id="wave"></div><small id="vTime">0:42</small></div>
-        <p class="quote">“Is hafte Rahul par zor mat daaliye, unhe khud aane dijiye.”</p>
+        <div class="bhd">Aaj ke liye · 5 Oct</div>
+        <div class="voice"><button class="pb" id="vPlay" aria-label="Play voice note"><svg id="vIcon" width="14" height="14" viewBox="0 0 16 16"><path d="M4 2.5l9 5.5-9 5.5Z" fill="#fff"/></svg></button><div class="wave" id="wave"></div><small id="vTime">0:00</small></div>
+        <audio id="vAudio" src="assets/hemali.m4a" preload="metadata"></audio>
         <div class="ins"><img src="assets/ic-rings.png" alt=""><p>Is hafte rishte aur bharosa sabse zaroori hain.</p></div>
         <div class="ins"><img src="assets/ic-chat.png" alt=""><p>Rahul ke saath baat-cheet aasaan ho rahi hai.</p></div>
         <div class="ins"><img src="assets/ic-calendar.png" alt=""><p>Ek faisla abhi clear nahi. Thursday tak rukiye.</p></div>
       </div>
-      <div class="replyrow"><input placeholder="Jawab dein…" aria-label="Reply to Hemali"><button class="btn-p" data-sheet="chat">Chat ₹10/min</button></div>
+      <div class="freebar"><svg width="14" height="14" viewBox="0 0 24 24"><path d="M12 2c.8 5.2 4.8 9.2 10 10-5.2.8-9.2 4.8-10 10-.8-5.2-4.8-9.2-10-10 5.2-.8 9.2-4.8 10-10Z" fill="#7F56D9"/></svg>FREE 2-min chat in <b id="freeT2">14h 33min 23 sec</b></div>
+      <div class="replyrow"><input id="reply" aria-label="Reply to Hemali"><button class="btn-p" data-chat="Astro Hemali" data-rate="10"><svg width="16" height="16" viewBox="0 0 20 20"><path d="M10 1.7c-4.6 0-8.3 3.3-8.3 7.5 0 2 .9 3.9 2.3 5.2.1 1.2-.4 2.8-1.5 3.9 2.2-.1 3.9-.9 4.9-1.7 1 .3 1.8.4 2.6.4 4.6 0 8.3-3.3 8.3-7.5S14.6 1.7 10 1.7Z" fill="#fff"/><circle cx="6.6" cy="9.2" r="1.15" fill="#EF6939"/><circle cx="10" cy="9.2" r="1.15" fill="#EF6939"/><circle cx="13.4" cy="9.2" r="1.15" fill="#EF6939"/></svg>Chat ₹10/min</button></div>
     </div></div>
 
     <!-- Check-in -->
@@ -406,10 +425,19 @@ img{display:block;max-width:100%}
       </div>
     </div></div>
 
+    <!-- Event · next tithi -->
+    <div class="sec" style="padding-top:12px"><button class="card evcard" id="evCard">
+      <img class="evart" src="assets/diya.png" alt="">
+      <span class="evfade"></span>
+      <span class="node gold"></span>
+      <span class="evtx"><small>Kal</small><b>Indira Ekadashi,<br>keep vrat for good luck</b></span>
+      <svg class="evchev" width="18" height="18" viewBox="0 0 24 24"><path d="M9 5l7 7-7 7" fill="none" stroke="#101828" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+    </button></div>
+
     <!-- Aaj ka din -->
     <div class="sec"><div class="card pan">
       <div class="th"><span class="node gold"></span><div class="tx"><small>Mumbai · aaj</small><b>Aaj ka din</b></div><button class="chev" id="panCal" aria-label="Open calendar"><svg width="18" height="18" viewBox="0 0 24 24"><path d="M9 5l7 7-7 7" fill="none" stroke="#101828" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></button></div>
-      <div class="arc"><svg viewBox="0 0 316 86" id="arcSvg"></svg></div>
+      <div class="arc"><svg viewBox="0 0 316 172" id="arcSvg"></svg></div>
       <div class="suntimes"><span>Sunrise 6:28 AM</span><span>Sunset 6:24 PM</span></div>
       <div class="pgrid">
         <div class="pc"><img src="assets/ic-rahu.png" alt=""><small><span class="bad"></span>Rahu kaal · ashubh</small><b>7:57–9:27 AM</b></div>
@@ -447,6 +475,9 @@ img{display:block;max-width:100%}
   <!-- calendar -->
   <div class="cal" id="cal"></div>
 
+  <!-- wallet + insufficient balance: the pricing prototype, mounted whole -->
+  <div class="wv" id="wv"><iframe id="wvFrame" title="Wallet" src="about:blank"></iframe></div>
+
   <!-- sheets -->
   <div class="ov" id="ov"><div class="scrim" id="scrim"></div><div class="sheet" id="sheet"></div></div>
   <div class="toast" id="toast"></div>
@@ -455,11 +486,33 @@ img{display:block;max-width:100%}
 <script>
 const $=s=>document.querySelector(s), $$=s=>[...document.querySelectorAll(s)];
 const app=$('#app'), scroll=$('#scroll');
-const state={bal:120,claimed:false,mood:null,tasks:{tarot:false,report:false},seen:{darshan:true,panchang:true},remind:false,freeRemind:false};
+const state={bal:0,claimed:false,mood:null,tasks:{tarot:false,report:false},seen:{darshan:true,panchang:true},remind:false,freeRemind:false};
 
 /* toast */
 let tt;function toast(m){const t=$('#toast');t.textContent=m;t.classList.add('on');clearTimeout(tt);tt=setTimeout(()=>t.classList.remove('on'),2200);}
-document.addEventListener('click',e=>{const b=e.target.closest('[data-toast]');if(b)toast(b.dataset.toast);const s=e.target.closest('[data-sheet]');if(s)openSheet(s.dataset.sheet);});
+document.addEventListener('click',e=>{
+  const b=e.target.closest('[data-toast]');if(b)toast(b.dataset.toast);
+  const s=e.target.closest('[data-sheet]');if(s)openSheet(s.dataset.sheet);
+  /* any Chat button anywhere -> insufficient balance flow; drop whatever is on top first */
+  const c=e.target.closest('[data-chat]');if(c){closeSheet();$('#cal').classList.remove('on');openWallet('listingChat',c.dataset.rate||10);}
+});
+
+/* ---------- wallet + recharge ----------
+   wallet.html is the pricing prototype verbatim. Same origin, so its router can be patched:
+   its Home/Today/History tabs are THIS page, so those routes come back here instead. */
+function openWallet(route,rate){
+  const f=$('#wvFrame');
+  f.src=`wallet.html?view=mobile&start=${route}`+(rate?`&rate=${rate}`:'');
+  f.onload=()=>{
+    const w=f.contentWindow;
+    if(!w||typeof w.go!=='function')return;
+    const go=w.go;
+    w.go=(r,rt)=>{ if(r==='home'||r==='today'||r==='history')return closeWallet(); go(r,rt); };
+  };
+  $('#wv').classList.add('on');
+}
+function closeWallet(){$('#wv').classList.remove('on');$('#wvFrame').src='about:blank';}
+$('#wallet').onclick=()=>openWallet('wallet');
 
 /* wallet */
 function addMoney(n,fromEl){
@@ -484,7 +537,7 @@ const STORIES=[
      <div class="serif" style="font-size:44px;line-height:46px">Dheeraj.</div>
      <p style="margin:0;font-size:16px;line-height:24px;color:rgba(255,255,255,.85)">Shukra aapke 7th house ko dekh raha hai. Thursday ke baad baat aage badhegi. Tab tak apne kaam par dhyan dijiye.</p>
      <div style="background:rgba(255,255,255,.1);border-radius:16px;padding:12px 14px;font-size:14px;line-height:20px">Aaj ka chhota kaam: Shaam ko 5 minute Om Shukraya Namah ka jaap.</div></div>`],
-  cta:{t:'Hemali ji se poochein',a:()=>{closeStory();openSheet('chat');}}},
+  cta:{t:'Hemali ji se poochein',a:()=>{closeStory();openWallet('listingChat',10);}}},
  {k:'horoscope',name:'Horoscope',img:'assets/story-horoscope.png',tag:'',bg:'radial-gradient(120% 70% at 30% 0%,#2C6E7E,#0C2830 75%)',slides:[
   ()=>`<div style="flex:1;display:flex;flex-direction:column;justify-content:center;gap:14px">
      <div class="s-eyebrow">Kanya rashi · aaj</div>
@@ -525,6 +578,8 @@ const STORIES=[
   cta:{t:'Poora Panchang dekhein',a:()=>{closeStory();openCal();}}}
 ];
 function wave(n,on){let s='';for(let i=0;i<n;i++){const h=6+Math.round(Math.abs(Math.sin(i*1.7))*14);s+=`<i style="height:${h}px" class="${i<on?'on':''}"></i>`;}return s;}
+/* the one chat mark (Figma 2358:14265) — bubble takes `fill`, the three dots take `dot` */
+function icoChat(fill,dot,sz){return `<svg width="${sz}" height="${sz}" viewBox="0 0 20 20"><path d="M10 1.7c-4.6 0-8.3 3.3-8.3 7.5 0 2 .9 3.9 2.3 5.2.1 1.2-.4 2.8-1.5 3.9 2.2-.1 3.9-.9 4.9-1.7 1 .3 1.8.4 2.6.4 4.6 0 8.3-3.3 8.3-7.5S14.6 1.7 10 1.7Z" fill="${fill}"/><circle cx="6.6" cy="9.2" r="1.15" fill="${dot}"/><circle cx="10" cy="9.2" r="1.15" fill="${dot}"/><circle cx="13.4" cy="9.2" r="1.15" fill="${dot}"/></svg>`;}
 function darshanArt(){return `<svg viewBox="0 0 240 230" width="210" height="200" aria-hidden="true"><defs><radialGradient id="dg" cx=".5" cy=".55" r=".5"><stop offset="0" stop-color="#FFD48A" stop-opacity=".55"/><stop offset="1" stop-color="#FFD48A" stop-opacity="0"/></radialGradient><linearGradient id="lg" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#3B3F4A"/><stop offset="1" stop-color="#14161C"/></linearGradient><linearGradient id="gd" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#FDE68A"/><stop offset="1" stop-color="#C47F17"/></linearGradient></defs>
  <circle cx="120" cy="120" r="115" fill="url(#dg)"/>
  <path d="M60 196h120l-12 16H72Z" fill="url(#gd)"/><ellipse cx="120" cy="196" rx="68" ry="12" fill="url(#gd)"/><ellipse cx="120" cy="194" rx="56" ry="8" fill="#5A3A12"/>
@@ -592,7 +647,7 @@ $$('.mood').forEach(b=>b.onclick=()=>{
   const th=$('#thread');
   th.innerHTML=`<div class="msg"><img src="assets/hemali.png" alt=""><div class="bb"><span class="typing"><i></i><i></i><i></i></span></div></div>`;
   setTimeout(()=>{
-    th.innerHTML=`<div class="msg"><img src="assets/hemali.png" alt=""><div class="bb">${REPLIES[state.mood]}${state.mood==='pareshaan'?'<br><button class="act" data-sheet="chat">Hemali ji se baat karein</button>':''}</div></div>`;
+    th.innerHTML=`<div class="msg"><img src="assets/hemali.png" alt=""><div class="bb">${REPLIES[state.mood]}${state.mood==='pareshaan'?'<br><button class="act" data-chat="Astro Hemali" data-rate="10">Hemali ji se baat karein</button>':''}</div></div>`;
     setTimeout(()=>{
       th.insertAdjacentHTML('beforeend',`<div class="credit" id="credit"><img src="assets/coin.png" alt="">₹9 aapke wallet mein jud gaye</div>`);
       addMoney(9,$('#credit'));
@@ -605,15 +660,37 @@ $$('.mood').forEach(b=>b.onclick=()=>{
 $('#remindBtn').onclick=()=>{state.remind=!state.remind;const b=$('#remindBtn');b.classList.toggle('set',state.remind);b.textContent=state.remind?'✓ Set · 8 AM':'Set reminder';if(state.remind)toast('Kal subah 8 baje yaad dilayenge');};
 $('#freeRemind').onclick=()=>{state.freeRemind=!state.freeRemind;const b=$('#freeRemind');b.classList.toggle('set',state.freeRemind);b.lastChild.textContent=state.freeRemind?'Reminder set':'Remind me';if(state.freeRemind)toast('Free chat khulte hi bata denge');};
 
-/* voice note */
-(()=>{const W=34;$('#wave').innerHTML=wave(W,0);let p=0,iv=null;const total=42;
- $('#vPlay').onclick=()=>{if(iv){clearInterval(iv);iv=null;$('#vIcon').innerHTML='<path d="M4 2.5l9 5.5-9 5.5Z" fill="#fff"/>';return;}
-  $('#vIcon').innerHTML='<path d="M4 2h3v12H4zM9 2h3v12H9z" fill="#fff"/>';
-  iv=setInterval(()=>{p+=1;const on=Math.round(p/total*W);$$('#wave i').forEach((x,k)=>x.classList.toggle('on',k<on));const r=total-p;$('#vTime').textContent=`0:${String(r).padStart(2,'0')}`;
-   if(p>=total){clearInterval(iv);iv=null;p=0;$('#vIcon').innerHTML='<path d="M4 2.5l9 5.5-9 5.5Z" fill="#fff"/>';$('#vTime').textContent='0:42';$$('#wave i').forEach(x=>x.classList.remove('on'));}},250);};})();
+/* voice note — real audio, wave driven off playback position */
+(()=>{const W=34,a=$('#vAudio');$('#wave').innerHTML=wave(W,0);
+ const bars=$$('#wave i'),PLAY='<path d="M4 2.5l9 5.5-9 5.5Z" fill="#fff"/>',PAUSE='<path d="M4 2h3v12H4zM9 2h3v12H9z" fill="#fff"/>';
+ const mmss=s=>`${Math.floor(s/60)}:${String(Math.floor(s%60)).padStart(2,'0')}`;
+ const reset=()=>{$('#vIcon').innerHTML=PLAY;bars.forEach(x=>x.classList.remove('on'));$('#vTime').textContent=mmss(a.duration||0);};
+ a.addEventListener('loadedmetadata',reset);
+ a.addEventListener('timeupdate',()=>{const on=Math.round(a.currentTime/a.duration*W);
+   bars.forEach((x,k)=>x.classList.toggle('on',k<on));$('#vTime').textContent=mmss(a.duration-a.currentTime);});
+ a.addEventListener('ended',()=>{a.currentTime=0;reset();});
+ $('#vPlay').onclick=()=>{if(a.paused){a.play().then(()=>$('#vIcon').innerHTML=PAUSE).catch(()=>toast('Audio chalane ke liye tap karein'));}
+   else{a.pause();$('#vIcon').innerHTML=PLAY;}};})();
 
-/* free chat countdown */
-let remain=14*3600+33*60;setInterval(()=>{remain--;$('#freeT').textContent=`${Math.floor(remain/3600)}h ${String(Math.floor(remain%3600/60)).padStart(2,'0')}m`;},1000);
+/* animated placeholder — one letter at a time, then wiped for the next question */
+(()=>{const el=$('#reply'),Q=['Rahul kab jawab dega?','Kya mujhe move on karna chahiye?','Shaadi kab hogi?','Job change karun ya nahi?','Aaj ka din kaisa rahega?'];
+ if(matchMedia('(prefers-reduced-motion:reduce)').matches){el.placeholder=Q[0];return;}
+ let i=0,j=0,del=false;
+ (function step(){
+   const q=Q[i];
+   el.placeholder=q.slice(0,j)+(del?'':'|');
+   if(!del){j++;if(j>q.length){del=true;return setTimeout(step,1400);}}
+   else{j--;if(j<=0){del=false;i=(i+1)%Q.length;return setTimeout(step,260);}}
+   setTimeout(step,del?26:62);
+ })();})();
+
+/* free chat countdown — the card shows it twice, coarse at the top and to the second above reply */
+let remain=14*3600+33*60+23;
+setInterval(()=>{remain--;
+  const h=Math.floor(remain/3600),mi=Math.floor(remain%3600/60),s=remain%60;
+  $('#freeT').textContent=`${h}h ${String(mi).padStart(2,'0')}m`;
+  $('#freeT2').textContent=`${h}h ${mi}min ${s} sec`;
+},1000);
 
 /* ---------- tasks ---------- */
 function taskDone(k){if(state.tasks[k])return;state.tasks[k]=true;const el=k==='tarot'?$('#tTarot'):$('#tReport');el.classList.add('done');
@@ -627,10 +704,6 @@ $('#tReport').onclick=()=>state.tasks.report?toast('Report taiyaar hai — Histo
 /* ---------- sheets ---------- */
 const CARDS=[['The Lovers','Rishte mein naya mod — dil ki suniye.'],['The Star','Umeed rakhiye, jawab jald milega.'],['The Sun','Saaf baat se sab theek hoga.']];
 function openSheet(k){const sh=$('#sheet');let h='<div class="grab"></div>';
- if(k==='chat')h+=`<div style="display:flex;gap:12px;align-items:center"><img src="assets/hemali.png" style="width:52px;height:52px" alt=""><div><h4>Astro Hemali</h4><p style="margin:0">Tarot · ★ 4.9 · <b style="color:#027A48">₹10/min</b></p></div></div>
-   <div style="margin-top:16px;background:#F2F4F7;border-radius:16px;padding:12px 14px;font-size:14px;line-height:20px">“Mansi, aapki pichhli baat yaad hai. Rahul wali baat aage badhaate hain?”</div>
-   <button class="btn-full" onclick="closeSheet();toast('Chat shuru — prototype yahan tak')">Chat shuru karein · ₹10/min</button>
-   <button class="btn-ghost" onclick="closeSheet();toast('Free chat '+document.getElementById('freeT').textContent+' mein khulega')">Free 2-min chat ka intezaar karein</button>`;
  if(k==='tarot')h+=`<h4>Ek sawaal sochiye, ek card chuniye</h4><p>Aaj ka sawaal: <b style="color:#101828">Rahul ke saath aage kya?</b></p>
    <div class="tcards">${CARDS.map((c,i)=>`<button class="tc" data-c="${i}"><span class="b"></span><span class="f"><svg width="28" height="28" viewBox="0 0 24 24"><path d="M12 2c.8 5.2 4.8 9.2 10 10-5.2.8-9.2 4.8-10 10-.8-5.2-4.8-9.2-10-10 5.2-.8 9.2-4.8 10-10Z" fill="#F59E0B"/></svg>${c[0]}</span></button>`).join('')}</div>
    <div id="tRes" style="min-height:96px"></div>`;
@@ -646,16 +719,35 @@ function openSheet(k){const sh=$('#sheet');let h='<div class="grab"></div>';
 function closeSheet(){$('#ov').classList.remove('on');}
 $('#scrim').onclick=closeSheet;
 
-/* ---------- Aaj ka din arc ---------- */
-(()=>{const W=316,H=86,pad=10,base=80,ht=66;const P=t=>[pad+t*(W-2*pad),base-Math.sin(Math.PI*t)*ht];
- const seg=(a,b,n=40)=>{let d='';for(let i=0;i<=n;i++){const [x,y]=P(a+(b-a)*i/n);d+=(i?'L':'M')+x.toFixed(1)+' '+y.toFixed(1);}return d;};
- const m=v=>(v-388)/716;const now=m(9*60+41);const [sx,sy]=P(now);
- $('#arcSvg').innerHTML=`<defs><linearGradient id="ag" x1="0" x2="1"><stop offset="0" stop-color="#F04438"/><stop offset="1" stop-color="#FDB022"/></linearGradient><radialGradient id="sg"><stop offset="0" stop-color="#FDB022" stop-opacity=".6"/><stop offset="1" stop-color="#FDB022" stop-opacity="0"/></radialGradient></defs>
+/* ---------- Aaj ka din arc ----------
+   Semi-circle: the span is 2× the rise, so t sweeps a true half turn. The sun rides in from
+   sunrise the first time the card enters the viewport, then stays put. */
+(()=>{
+ const W=316,pad=14,base=164,ht=(W-2*pad)/2;
+ const P=t=>[pad+t*(W-2*pad), base-Math.sin(Math.PI*t)*ht];
+ const seg=(a,b,n=60)=>{let d='';for(let i=0;i<=n;i++){const [x,y]=P(a+(b-a)*i/n);d+=(i?'L':'M')+x.toFixed(1)+' '+y.toFixed(1);}return d;};
+ const m=v=>(v-388)/716;
+ const target=m(9*60+41);
+ const svg=$('#arcSvg');
+ svg.innerHTML=`<defs><linearGradient id="ag" x1="0" x2="1"><stop offset="0" stop-color="#F04438"/><stop offset="1" stop-color="#FDB022"/></linearGradient><radialGradient id="sg"><stop offset="0" stop-color="#FDB022" stop-opacity=".6"/><stop offset="1" stop-color="#FDB022" stop-opacity="0"/></radialGradient></defs>
   <line x1="2" y1="${base+2}" x2="${W-2}" y2="${base+2}" stroke="#98A2B3" stroke-dasharray="2 4"/>
   <path d="${seg(0,1)}" fill="none" stroke="#D0D5DD" stroke-width="3" stroke-linecap="round"/>
-  <path d="${seg(0,now)}" fill="none" stroke="url(#ag)" stroke-width="3.5" stroke-linecap="round"/>
+  <path id="arcDone" d="" fill="none" stroke="url(#ag)" stroke-width="3.5" stroke-linecap="round"/>
   <path d="${seg(m(722),m(770),10)}" fill="none" stroke="#12B76A" stroke-width="5" stroke-linecap="round"/>
-  <circle cx="${sx}" cy="${sy}" r="18" fill="url(#sg)"/><circle cx="${sx}" cy="${sy}" r="8" fill="#FDB27A" stroke="#fff" stroke-width="2.5"/>`;})();
+  <circle id="arcHalo" r="18" fill="url(#sg)" opacity="0"/><circle id="arcSun" r="8" fill="#FDB27A" stroke="#fff" stroke-width="2.5" opacity="0"/>`;
+ const done=svg.querySelector('#arcDone'),halo=svg.querySelector('#arcHalo'),sun=svg.querySelector('#arcSun');
+ const put=t=>{const [x,y]=P(t);done.setAttribute('d',t<=0.001?'':seg(0,t));
+   halo.setAttribute('cx',x);halo.setAttribute('cy',y);halo.setAttribute('opacity',1);
+   sun.setAttribute('cx',x);sun.setAttribute('cy',y);sun.setAttribute('opacity',1);};
+ let played=false;
+ const run=()=>{if(played)return;played=true;
+   if(matchMedia('(prefers-reduced-motion:reduce)').matches){put(target);return;}
+   const t0=performance.now(),D=1100;
+   const tick=now=>{const p=Math.min(1,(now-t0)/D),e=1-Math.pow(1-p,3);put(target*e);if(p<1)requestAnimationFrame(tick);};
+   requestAnimationFrame(tick);};
+ const io=new IntersectionObserver(es=>{if(es.some(e=>e.isIntersecting)){run();io.disconnect();}},{root:scroll,threshold:.45});
+ io.observe(svg);
+})();
 $('#panCal').onclick=()=>openCal();
 
 /* hours */
@@ -664,8 +756,8 @@ $('#hours').innerHTML=HOURS.map((h,i)=>`<button class="hr ${i===0?'now':''}" dat
 $$('.hr').forEach(b=>b.onclick=()=>toast(b.dataset.tip));
 
 /* experts */
-const EX=[['Astro Hemali','Tarot · ★ 4.9','<s>₹20/min</s>₹10/min','img'],['Acharya Ravi','Vedic · ★ 4.8','₹25/min','AR','#EEF0FF'],['Meera Shah','Numerology · ★ 4.7','₹15/min','MS','#ECFDF3'],['Pandit Arun','KP · ★ 4.8','₹18/min','PA','#FFF6ED']];
-$('#exps').innerHTML=EX.map(e=>`<div class="ex"><span class="ph" style="background:${e[4]||'none'}">${e[3]==='img'?'<img src="assets/hemali.png" alt="">':e[3]+'<i></i>'}</span><b>${e[0]}</b><small>${e[1]}</small><span class="pr">${e[2]}</span><button class="btn-o" data-sheet="chat"><svg width="16" height="16" viewBox="0 0 24 24" fill="none"><path d="M4 5.5A2.5 2.5 0 0 1 6.5 3h11A2.5 2.5 0 0 1 20 5.5v9a2.5 2.5 0 0 1-2.5 2.5H9l-5 4Z" stroke="#EF6939" stroke-width="2" stroke-linejoin="round"/></svg>Chat</button></div>`).join('');
+const EX=[['Astro Hemali','Tarot · ★ 4.9','<s>₹20/min</s>₹10/min','img','',10],['Acharya Ravi','Vedic · ★ 4.8','₹25/min','AR','#EEF0FF',25],['Meera Shah','Numerology · ★ 4.7','₹15/min','MS','#ECFDF3',15],['Pandit Arun','KP · ★ 4.8','₹18/min','PA','#FFF6ED',18]];
+$('#exps').innerHTML=EX.map(e=>`<div class="ex"><span class="ph" style="background:${e[4]||'none'}">${e[3]==='img'?'<img src="assets/hemali.png" alt="">':e[3]+'<i></i>'}</span><b>${e[0]}</b><small>${e[1]}</small><span class="pr">${e[2]}</span><button class="btn-o" data-chat="${e[0]}" data-rate="${e[5]}">${icoChat('#fff','#EF6939',16)}Chat</button></div>`).join('');
 
 /* ---------- CALENDAR ---------- */
 const CT={fes:['Tyohaar','#F79009'],vrat:['Vrat & tithi','#A3B4F7'],love:['Love','#F472B6'],career:['Career','#60A5FA'],health:['Sehat','#4ADE80'],money:['Paisa','#FBBF24']};
@@ -680,7 +772,7 @@ let cal={sel:5,f:'all'};
 function moonAge(d){return (((d-10)/29.53)%1+1)%1;}
 function moon(d,sz){const k=moonAge(d),r=12,cx=14,cy=14,c=Math.cos(2*Math.PI*k),wax=k<.5,cres=c>0,rx=(r*Math.abs(c)).toFixed(2);const os=wax?1:0,bs=wax?(cres?0:1):(cres?1:0);
  const lit=k<.02||k>.98?'':`<path d="M${cx} ${cy-r} A${r} ${r} 0 0 ${os} ${cx} ${cy+r} A${rx} ${r} 0 0 ${bs} ${cx} ${cy-r}Z" fill="url(#ml)"/>`;
- return `<svg viewBox="0 0 28 28" width="${sz}" height="${sz}" aria-hidden="true"><circle cx="14" cy="14" r="12" fill="#3A3366"/>${lit}</svg>`;}
+ return `<svg viewBox="0 0 28 28" width="${sz}" height="${sz}" aria-hidden="true"><circle cx="14" cy="14" r="12" fill="#F0E7DB"/>${lit}</svg>`;}
 const inWeek=d=>d>=4&&d<=10;
 const shows=(d)=>(EVENTS[d]||[]).filter(e=>cal.f==='all'||cal.f===e[0]||(cal.f==='vrat'&&e[0]==='vrat'));
 function relD(d){return d===5?'Aaj':d===6?'Kal':d<5?`${5-d} din pehle`:`${d-5} din mein`;}
@@ -692,18 +784,18 @@ function renderCal(){
  const pub=sel.filter(e=>!PERSONAL.includes(e[0])),me=sel.filter(e=>PERSONAL.includes(e[0]));
  const wkList=[];for(let d=4;d<=10;d++)shows(d).forEach(e=>wkList.push([d,e]));
  const later=[];for(let d=11;d<=31;d++)shows(d).forEach(e=>later.push([d,e]));
- $('#cal').innerHTML=`<svg width="0" height="0" style="position:absolute"><defs><radialGradient id="ml" cx=".38" cy=".32" r=".85"><stop offset="0" stop-color="#F7F4FF"/><stop offset="1" stop-color="#B7AEE0"/></radialGradient></defs></svg>
- <div class="calhd"><button class="x" id="calX" aria-label="Close"><svg width="16" height="16" viewBox="0 0 24 24"><path d="M6 6l12 12M18 6 6 18" stroke="#fff" stroke-width="2.2" stroke-linecap="round"/></svg></button><div style="flex:1"><b>October 2026</b><small>Ashwin · Kartik · Mumbai</small></div>
-  <button class="a" data-toast="September 2026" aria-label="Previous month"><svg width="16" height="16" viewBox="0 0 24 24"><path d="M15 5l-7 7 7 7" fill="none" stroke="#fff" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg></button><button class="a" data-toast="November · Diwali 8 Nov" aria-label="Next month"><svg width="16" height="16" viewBox="0 0 24 24"><path d="M9 5l7 7-7 7" fill="none" stroke="#fff" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg></button></div>
+ $('#cal').innerHTML=`<svg width="0" height="0" style="position:absolute"><defs><radialGradient id="ml" cx=".38" cy=".32" r=".85"><stop offset="0" stop-color="#FDB022"/><stop offset="1" stop-color="#EF6939"/></radialGradient></defs></svg>
+ <div class="calhd"><button class="x" id="calX" aria-label="Close"><svg width="16" height="16" viewBox="0 0 24 24"><path d="M6 6l12 12M18 6 6 18" stroke="#101828" stroke-width="2.2" stroke-linecap="round"/></svg></button><div style="flex:1"><b>October 2026</b><small>Ashwin · Kartik · Mumbai</small></div>
+  <button class="a" data-toast="September 2026" aria-label="Previous month"><svg width="16" height="16" viewBox="0 0 24 24"><path d="M15 5l-7 7 7 7" fill="none" stroke="#101828" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg></button><button class="a" data-toast="November · Diwali 8 Nov" aria-label="Next month"><svg width="16" height="16" viewBox="0 0 24 24"><path d="M9 5l7 7-7 7" fill="none" stroke="#101828" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg></button></div>
  <div class="grid" id="grid"><div class="wk">${['S','M','T','W','T','F','S'].map(x=>`<span>${x}</span>`).join('')}</div><div class="gr">${cells.join('')}</div>
   <div class="weekband" id="band"></div>
-  <div class="lockcard" id="lockcard"><span class="lk"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#FDB022" stroke-width="2"><rect x="5" y="10.5" width="14" height="10" rx="2.5"/><path d="M8 10.5V8a4 4 0 0 1 8 0v2.5"/></svg></span><div style="flex:1"><b>Poora mahina kholiye</b><small>7 din ki streak poori karein — Navratri aur aapke lucky din dikh jayenge · 2/7</small><div class="bar"><i style="width:${state.claimed?28:14}%"></i></div></div></div>
+  <div class="lockcard" id="lockcard"><span class="lk"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#EF6939" stroke-width="2"><rect x="5" y="10.5" width="14" height="10" rx="2.5"/><path d="M8 10.5V8a4 4 0 0 1 8 0v2.5"/></svg></span><div style="flex:1"><b>Poora mahina kholiye</b><small>7 din ki streak poori karein — Navratri aur aapke lucky din dikh jayenge · 2/7</small><div class="bar"><i style="width:${state.claimed?28:14}%"></i></div></div></div>
  </div>
  <div class="seld">${moon(cal.sel,44)}<div class="tx"><small>${WK[(cal.sel-1)%7]}, ${cal.sel} Oct · ${relD(cal.sel)}</small><b>${pub[0]?pub[0][1]:(tt?tt[0]:'')}</b><p>${pub[0]?pub[0][2]+(tt?' · '+tt[0]:''):(tt?tt[1]+' nakshatra':'')}</p>
   ${me.length?`<div class="foryou">${me.map(e=>`<span><i style="background:${CT[e[0]][1]}"></i>${e[1]}</span>`).join('')}</div>${me[0][2]?`<p style="margin-top:6px">Mansi ke liye: ${me[0][2]}</p>`:''}`:''}</div>
-  <button class="ask" data-sheet="chat" aria-label="Ask Hemali about this day"><svg width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M4 5.5A2.5 2.5 0 0 1 6.5 3h11A2.5 2.5 0 0 1 20 5.5v9a2.5 2.5 0 0 1-2.5 2.5H9l-5 4Z" stroke="#fff" stroke-width="2" stroke-linejoin="round"/></svg></button></div>
+  <button class="ask" data-chat="Astro Hemali" data-rate="10" aria-label="Ask Hemali about this day">${icoChat('#fff','#EF6939',18)}</button></div>
  <div class="filters">${FILT.map(([k,l])=>`<button class="fl ${cal.f===k?'on':''}" data-f="${k}">${k!=='all'?`<i style="background:${CT[k][1]}"></i>`:''}${l}</button>`).join('')}</div>
- <div class="evlist"><h5>Is hafte · ${wkList.length}</h5>${wkList.map(([d,e])=>evRow(d,e,false)).join('')||'<p style="color:rgba(255,255,255,.6);font-size:14px">Is hafte kuch nahi</p>'}
+ <div class="evlist"><h5>Is hafte · ${wkList.length}</h5>${wkList.map(([d,e])=>evRow(d,e,false)).join('')||'<p style="color:var(--mute);font-size:14px">Is hafte kuch nahi</p>'}
   <h5>Aage is mahine</h5>${later.map(([d,e])=>evRow(d,e,PERSONAL.includes(e[0]))).join('')}</div>
  <div class="calnote">Tithi aur tyohaar Kalnirnay ke hisaab se · Mumbai · Lucky din aapki kundli se andaaza hain</div>`;
  const g=$('#grid'),btns=$$('.cd'),f=btns.find(b=>+b.dataset.d===4),l=btns.find(b=>+b.dataset.d===10);
@@ -715,9 +807,10 @@ function renderCal(){
  $$('.ev').forEach(b=>b.onclick=()=>{const d=+b.dataset.d;if(b.classList.contains('locked')){toast('Streak poori karke ye din dekhein');return;}if(inWeek(d)){cal.sel=d;renderCal();$('#cal').scrollTo({top:0,behavior:'smooth'});}else toast(b.dataset.n+' · '+d+' Oct');});
  $('#calX').onclick=()=>$('#cal').classList.remove('on');
 }
-function evRow(d,e,locked){return `<button class="ev ${locked?'locked':''}" data-d="${d}" data-n="${e[1]}"><span class="dt"><b>${d}</b><small>${WK[(d-1)%7]}</small></span><span class="tx"><b>${e[1]}</b><small><i style="background:${CT[e[0]][1]}"></i>${CT[e[0]][0]}${PERSONAL.includes(e[0])?' · aapke liye':''}</small></span><span class="rel">${locked?'<svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#FDB022" stroke-width="2.4"><rect x="5" y="10.5" width="14" height="10" rx="2.5"/><path d="M8 10.5V8a4 4 0 0 1 8 0v2.5"/></svg>Locked':relD(d)}</span></button>`;}
-function openCal(){cal.sel=5;cal.f='all';$('#cal').classList.add('on');$('#cal').scrollTop=0;renderCal();}
-$('#openCal').onclick=openCal;
+function evRow(d,e,locked){return `<button class="ev ${locked?'locked':''}" data-d="${d}" data-n="${e[1]}"><span class="dt"><b>${d}</b><small>${WK[(d-1)%7]}</small></span><span class="tx"><b>${e[1]}</b><small><i style="background:${CT[e[0]][1]}"></i>${CT[e[0]][0]}${PERSONAL.includes(e[0])?' · aapke liye':''}</small></span><span class="rel">${locked?'<svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#EF6939" stroke-width="2.4"><rect x="5" y="10.5" width="14" height="10" rx="2.5"/><path d="M8 10.5V8a4 4 0 0 1 8 0v2.5"/></svg>Locked':relD(d)}</span></button>`;}
+function openCal(d){cal.sel=d||5;cal.f='all';$('#cal').classList.add('on');$('#cal').scrollTop=0;renderCal();}
+$('#evCard').onclick=()=>openCal(6);
+$('#openCal').onclick=()=>openCal();
 
 /* clock */
 (()=>{const n=new Date();})();
