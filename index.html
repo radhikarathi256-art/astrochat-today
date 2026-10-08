@@ -23,15 +23,20 @@
   --bg:#FCFBFA;--ink:#101828;--ink2:#344054;--mute:#667085;--mute2:#98A2B3;
   --line:rgba(208,213,221,.6);--line-solid:#D0D5DD;--soft:#F2F4F7;
   --or:#EF6939;--or2:#FDB022;--green:#027A48;--greenbg:#ECFDF3;--purple:#6941C6;--purplebg:#F4EBFF;
-  --bubble:#F7F5F2;--bubble-line:#EADFD3;--strip:#F3EFE8;
+  --bubble:#F7F5F2;--bubble-line:#EADFD3;--strip:#FFF3EB;
   --r-card:24px;
 }
+/* Type scale is 12 / 14 / 16 / 20 / 24 and nothing else, and 12px is always at least Medium —
+   the old 11px nav label and the 13px wallet/panchang values were the two places that broke it. */
 *{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
 /* Safari ignores theme-color in a normal tab and samples the page background instead, which is
    why the strip stayed white at rest. Both are now driven together, so the strip is the lotus
    peach over the hero and flips to white the moment the header sticks. */
+/* Safari tints its chrome from the *body* background, not html, and in a normal tab
+   env(safe-area-inset-top) is 0 so .sbar collapses and cannot help. body therefore carries the
+   lotus peach too — that was the last white surface left for Safari to sample at rest. */
 html{height:100%;background:#FEBC9D;transition:background .2s}
-body{margin:0;height:100%;font-family:Inter,system-ui,sans-serif;color:var(--ink);background:var(--bg);display:flex;justify-content:center;align-items:center;overflow:hidden}
+body{margin:0;height:100%;font-family:Inter,system-ui,sans-serif;color:var(--ink);background:#FEBC9D;display:flex;justify-content:center;align-items:center;overflow:hidden;transition:background .2s}
 button{font-family:inherit;color:inherit;cursor:pointer}
 img{display:block;max-width:100%}
 
@@ -52,7 +57,7 @@ img{display:block;max-width:100%}
    was what washed the lotus out and left a hard seam where the image ran out. aspect-ratio sizes
    the box to the file, so the band ends exactly where the picture does. */
 .hero{position:absolute;left:0;right:0;top:0;aspect-ratio:780/1040;pointer-events:none;
- background:url(assets/hero.webp) center top/100% auto no-repeat}
+ background:url(assets/hero.webp) center top/100% auto no-repeat,linear-gradient(180deg,#FDC2A6 0,#FDC2A6 72px,#fff 220px)}
 .top{position:relative;padding-bottom:4px}
 /* sticky: transparent over the hero at rest, white once the page moves under it */
 .hd{position:sticky;top:0;z-index:20;display:flex;align-items:center;gap:12px;padding:calc(env(safe-area-inset-top,0px) + 12px) 16px 8px;transition:background .2s,box-shadow .2s}
@@ -62,9 +67,9 @@ img{display:block;max-width:100%}
 .sbar{position:absolute;top:0;left:0;right:0;height:env(safe-area-inset-top,0px);z-index:30;background:#FEBC9D;transition:background .2s;pointer-events:none}
 .sbar.stuck{background:#fff}
 .hd.stuck{background:rgba(255,255,255,.94);-webkit-backdrop-filter:blur(12px);backdrop-filter:blur(12px);box-shadow:0 1px 0 var(--line)}
-.hd .g{flex:1}.hd .g small{display:block;font-size:12px;color:var(--ink2);line-height:16px}.hd .g b{font-size:16px;line-height:24px}
+.hd .g{flex:1}.hd .g small{display:block;font-size:12px;font-weight:500;color:var(--ink2);line-height:16px}.hd .g b{font-size:16px;line-height:24px}
 .iconbtn{width:36px;height:36px;border-radius:50%;border:1px solid var(--line);background:rgba(255,255,255,.85);display:grid;place-items:center;padding:0}
-.wallet{height:32px;display:flex;align-items:center;gap:6px;padding:0 3px 0 9px;background:#fff;border:1px solid var(--line-solid);border-radius:16px;white-space:nowrap;font-size:13px;font-weight:600;color:var(--ink);transition:transform .12s}
+.wallet{height:32px;display:flex;align-items:center;gap:6px;padding:0 3px 0 9px;background:#fff;border:1px solid var(--line-solid);border-radius:16px;white-space:nowrap;font-size:14px;font-weight:600;color:var(--ink);transition:transform .12s}
 .wallet:active{transform:scale(.96)}
 .wallet .bal{display:flex;align-items:center;gap:5px}
 /* the gift is not a static badge — it shakes, sparks, then flips to a plus, exactly as on Experts */
@@ -110,7 +115,9 @@ img{display:block;max-width:100%}
 
 /* streak */
 .streak{display:flex;gap:8px;padding:14px 16px 0}
-.strip{flex:1;background:var(--strip);border-radius:22px;padding:12px 10px 10px;position:relative}
+/* The path is a white card with a Gray-300 border — no colour fill. The only colour in the strip
+   is the orange that fills the path itself, which is what the money claim moves. */
+.strip{flex:1;background:#fff;border:1px solid var(--line-solid);border-radius:22px;padding:12px 10px 10px;position:relative}
 .strip .line{position:absolute;left:12.5%;right:12.5%;top:31px;height:2px;background:var(--line-solid)}
 .strip .line i{display:block;height:100%;width:33.33%;background:var(--or);transition:width .6s}
 .days{position:relative;display:grid;grid-template-columns:repeat(4,1fr)}
@@ -124,35 +131,45 @@ img{display:block;max-width:100%}
 .dy.today .dot::after{content:'';position:absolute;inset:-2px;border-radius:50%;pointer-events:none;animation:tokpulse 2s ease-out infinite}
 .dy.today.done .dot::after{animation:none;box-shadow:0 0 0 6px rgba(239,105,57,.18)}
 @keyframes tokpulse{0%{box-shadow:0 0 0 2px rgba(239,105,57,.28)}70%{box-shadow:0 0 0 12px rgba(239,105,57,0)}100%{box-shadow:0 0 0 2px rgba(239,105,57,0)}}
-.dy small{font-size:12px;line-height:16px;color:var(--mute)}
+.dy small{font-size:12px;font-weight:500;line-height:16px;color:var(--mute)}
 .dy.today small{color:var(--ink);font-weight:600}
 .dy em{font-style:normal;font-size:12px;line-height:16px;font-weight:600;color:var(--or)}
 .dy.done em{color:var(--mute2);text-decoration:line-through;font-weight:500}
 .dy.sel small{text-decoration:underline;text-underline-offset:3px}
-.calbtn{width:64px;border:0;border-radius:22px;background:var(--strip);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:8px;font-size:12px;font-weight:600;padding:0}
-.calbtn span{width:32px;height:32px;border-radius:50%;background:var(--or);display:grid;place-items:center}
-.daytip{margin:8px 16px 0;padding:10px 12px;border-radius:14px;background:#fff;border:1px solid var(--line);font-size:12px;line-height:16px;color:var(--ink2);display:none;gap:8px;align-items:center}
+.calbtn{width:64px;border:1px solid var(--line-solid);border-radius:22px;background:#fff;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:8px;font-size:12px;font-weight:500;padding:0}
+/* the chip itself carries no fill; the ink circle inside it is the only mark */
+.calbtn span{width:32px;height:32px;border-radius:50%;background:var(--ink);display:grid;place-items:center}
+.daytip{margin:8px 16px 0;padding:10px 12px;border-radius:14px;background:#fff;border:1px solid var(--line);font-size:12px;font-weight:500;line-height:16px;color:var(--ink2);display:none;gap:8px;align-items:center}
 .daytip.on{display:block;animation:fade .2s}
 .daytip b{color:var(--ink)}
 @keyframes fade{from{opacity:0;transform:translateY(-4px)}}
-.claim{margin:12px 16px 0;width:calc(100% - 32px);height:38px;border:0;border-radius:14px;background:var(--or);color:#fff;font-size:16px;font-weight:600;display:flex;align-items:center;justify-content:center;gap:8px;transition:background .3s}
-.claim.done{background:#F2F4F7;color:var(--ink2);font-size:14px}
-.remind-row{display:none;margin:8px 16px 0;align-items:center;gap:10px;padding:10px 12px;border-radius:14px;background:var(--bubble);border:1px solid var(--bubble-line)}
-.remind-row.on{display:flex;animation:fade .3s}
-.remind-row span{flex:1;font-size:12px;line-height:16px;color:var(--ink2)}
-/* Every reminder button on the page is this one neutral 28px control. Setting it must not change
-   its height — the label drops away and the control becomes a 28px square holding the bell-and-tick. */
-.rmb{display:flex;align-items:center;gap:5px;flex:none;height:28px;padding:0 10px;border:1px solid var(--line-solid);border-radius:10px;background:#fff;color:var(--ink2);font-size:12px;font-weight:600;white-space:nowrap;transition:padding .34s cubic-bezier(.33,0,.1,1)}
-.rmb .ic{display:flex;flex:none}
+.claim{margin:12px 16px 0;width:calc(100% - 32px);height:38px;border:0;border-radius:14px;background:var(--or);color:#fff;font-size:16px;font-weight:600;display:flex;align-items:center;justify-content:center;gap:8px;transition:background .3s,border-color .3s,color .3s}
+/* Answered state: one neutral control, not a grey receipt plus a purple reminder box. White,
+   orange border, orange text — and it is the reminder toggle, so the bell still swings. */
+.claim.done{height:44px;background:#fff;border:1.5px solid var(--or);color:var(--or);font-size:14px}
+/* Every reminder button on the page is this one neutral 28px control: white, orange border, orange
+   text. Setting it must not change its height — the label drops away and the control becomes a
+   28px square holding the bell-and-tick. */
+.rmb{display:flex;align-items:center;gap:5px;flex:none;height:28px;padding:0 10px;border:1px solid var(--or);border-radius:10px;background:#fff;color:var(--or);font-size:12px;font-weight:500;white-space:nowrap;transition:padding .34s cubic-bezier(.33,0,.1,1)}
+.rmb .ic,.chip-r .ic,.claim .ic{display:flex;flex:none}
 /* the label slides shut in step with the swing; the negative margin eats the gap so the control
    lands on a true 28px square (1 + 6 + 14 + 6 + 1, borders included) with no mid-animation stall */
 .rmb .rl{overflow:hidden;max-width:120px;opacity:1;transition:max-width .34s cubic-bezier(.33,0,.1,1),opacity .34s cubic-bezier(.33,0,.1,1),margin-left .34s cubic-bezier(.33,0,.1,1)}
 .rmb.set{padding:0 6px}
 .rmb.set .rl{max-width:0;opacity:0;margin-left:-5px}
+/* the full-width claim button keeps its label when set — only the compact pills collapse */
+.claim .rl{display:inline}
 
 /* cards */
 .sec{padding:24px 16px 0}
 .card{background:#fff;border:1px solid var(--line);border-radius:var(--r-card);overflow:hidden;position:relative}
+/* Hemali and the check-in both sit on the warm tint, held by a solid Gray-300 border rather than
+   the 60% hairline the plain cards use. The tint fades out downward so the card still ends white
+   under the reply row. */
+.card.tint{background:linear-gradient(180deg,#FFF3EB 0%,#FFF9F5 42%,#fff 100%);border-color:var(--line-solid)}
+/* "Border fades to white at the bottom" — a Moonly-style card. The border is painted as a
+   gradient on the border box, so it is solid Gray-300 at the top and gone at the bottom. */
+.card.fade{border:1px solid transparent;background-image:linear-gradient(#fff,#fff),linear-gradient(180deg,var(--line-solid),#fff);background-origin:border-box;background-clip:padding-box,border-box}
 .th{display:flex;align-items:center;gap:12px;padding:16px 20px 0}
 /* The node is a line with a hollow circle. Only the gold/orange markers — the ones that call out
    a dated event, like Ekadashi and Aaj ka din — rotate that circle into a diamond. Making every
@@ -164,11 +181,13 @@ img{display:block;max-width:100%}
 .node.or:before{background:var(--or)}.node.or:after{border-color:var(--or)}
 .node.gold:after,.node.or:after{border-width:2px;transform:rotate(45deg);border-radius:2px;width:12px;height:12px;margin-top:-6px}
 .th .tx{flex:1;min-width:0}
-.th small{display:block;font-size:12px;line-height:16px;color:var(--mute);font-weight:600}
+.th small{display:block;font-size:12px;line-height:16px;color:var(--mute);font-weight:500}
 .th b{display:block;font-size:20px;line-height:28px;letter-spacing:-.2px}
 
 /* hemali */
-.freepill{display:flex;align-items:center;gap:8px;padding:8px 12px 8px 16px;background:linear-gradient(90deg,#EBE1FF 0%,#F6F0FF 55%,#fff 100%);border-bottom:1px solid var(--line);font-size:12px;color:var(--purple)}
+/* "FREE 2-min chat · Remind me" stays at the top of the card — it is the one line that brings the
+   user back tomorrow. No gradient: the warm tint and a solid Gray-300 rule under it. */
+.freepill{display:flex;align-items:center;gap:8px;padding:8px 12px 8px 16px;background:#FFF3EB;border-bottom:1px solid var(--line-solid);font-size:12px;font-weight:500;color:var(--purple)}
 .freepill b{font-variant-numeric:tabular-nums}
 .freepill .sp{flex:1}
 @keyframes bellring{0%,100%{transform:rotate(0)}8%,40%{transform:rotate(16deg)}24%,56%{transform:rotate(-16deg)}72%{transform:rotate(7deg)}86%{transform:rotate(-4deg)}}
@@ -176,21 +195,25 @@ img{display:block;max-width:100%}
 .hav{width:44px;height:44px;flex:none}
 /* one radius scale inside the card: bubble 20, pill 999, icon 10 — nothing in between.
    Top-left is nicked to 6px (Figma 2358:13918) so the bubble points back at Hemali's avatar. */
-.bubble{margin:14px 20px 0;background:var(--bubble);border:1px solid var(--bubble-line);border-radius:6px 20px 20px 20px;padding:16px}
+.bubble{margin:14px 20px 0;background:#fff;border:1px solid var(--line-solid);border-radius:6px 20px 20px 20px;padding:16px}
 .bhd{font-size:16px;line-height:22px;font-weight:600;margin-bottom:12px}
-.voice{display:flex;align-items:center;gap:10px;background:#fff;border-radius:999px;padding:5px 14px 5px 5px}
+/* the voice note is a white pill on a Gray-300 border at radius 24, not a tinted chip */
+.voice{display:flex;align-items:center;gap:10px;background:#fff;border:1px solid var(--line-solid);border-radius:24px;padding:5px 14px 5px 5px}
 .voice .pb{width:32px;height:32px;border-radius:50%;border:0;background:var(--or);display:grid;place-items:center;padding:0;flex:none}
 .wave{flex:1;display:flex;gap:2px;align-items:center;height:22px}
 .wave i{flex:1;border-radius:2px;background:#F9C8B6;transition:background .12s}
 .wave i.on{background:var(--or)}
-.voice small{font-size:12px;color:var(--mute);font-variant-numeric:tabular-nums}
+.voice small{font-size:12px;font-weight:500;color:var(--mute);font-variant-numeric:tabular-nums}
+/* each insight is a tinted circle with a coloured line icon, the same register as the check-in
+   mood faces — pink heart for rishte, purple bubble for baat-cheet, orange clock for the wait */
 .ins{display:flex;gap:12px;align-items:center;padding:10px 0 0}
 .ins:first-of-type{padding-top:14px}
-.ins img{width:32px;height:32px;flex:none;border-radius:10px}
+.ins .ic{width:32px;height:32px;flex:none;border-radius:50%;display:grid;place-items:center}
+.ins .ic img{width:20px;height:20px}
 .ins p{margin:0;font-size:14px;line-height:20px;color:var(--ink2)}
-/* free-chat band + reply, Figma 2391:73456 — the band is a flat full-width lilac pill sitting
-   directly on top of the reply row, no gap */
-.freebar{display:flex;align-items:center;gap:8px;margin:16px 20px 0;height:26px;padding:0 12px;border-radius:999px;background:var(--bubble);border:1px solid var(--bubble-line);font-size:12px;line-height:18px;color:var(--purple)}
+/* The free-chat line is plain text, left-aligned, with a purple timer glyph. No pill, no gradient
+   — the gradient band was reading as a promo and the countdown is the thing that has to be read. */
+.freebar{display:flex;align-items:center;gap:6px;margin:16px 20px 8px;font-size:12px;font-weight:500;line-height:16px;color:var(--purple)}
 .freebar b{font-variant-numeric:tabular-nums}
 .replyrow{position:relative;display:flex;align-items:center;margin:0 20px 20px;height:48px;border:1px solid #D8DCE3;border-radius:24px;padding:0 5px 0 16px;background:#F9FAFB}
 .replyrow input{flex:1;min-width:0;border:0;outline:0;font:14px/20px Inter;color:var(--ink);background:transparent}
@@ -208,9 +231,13 @@ img{display:block;max-width:100%}
 .ci .pill{display:inline-flex;font-size:12px;font-weight:600;color:var(--purple);background:var(--purplebg);border-radius:8px;padding:3px 8px}
 /* once the question is answered the pill has no job left, so it drops back to neutral */
 .ci .pill.done{color:var(--mute);background:#F2F4F7}
-.ciremind{display:flex;align-items:center;gap:10px;margin-top:14px;padding-top:12px;border-top:1px solid var(--line)}
-.ciremind span{flex:1;font-size:12px;line-height:16px;color:var(--mute)}
-.ci h3{font-size:14px;line-height:20px;font-weight:500;color:var(--ink2);margin:10px 0 12px}
+/* answered, the card is a chat thread, so the reminder drops its label-and-button row and becomes
+   one of the reply chips instead */
+.chips{display:flex;flex-wrap:wrap;justify-content:flex-end;gap:8px;margin-top:12px}
+.chip-r{height:32px;padding:0 12px;border-radius:16px;border:1px solid var(--line-solid);background:#fff;color:var(--ink2);font-size:12px;font-weight:500;white-space:nowrap;display:inline-flex;align-items:center;gap:5px}
+.chip-r.or{border-color:var(--or);color:var(--or)}
+/* the question is the heading of the thread, not a caption under the pill */
+.ci h3{font-size:16px;line-height:22px;font-weight:600;color:var(--ink);margin:10px 0 12px}
 .moods{display:flex;gap:8px}
 .mood{flex:1;height:42px;border:1px solid var(--line-solid);border-radius:21px;background:#fff;display:flex;align-items:center;justify-content:center;gap:6px;font-size:14px;color:var(--ink2);transition:all .2s}
 .mood.pick{border-color:var(--ink);background:var(--ink);color:#fff}
@@ -221,40 +248,47 @@ img{display:block;max-width:100%}
 .thread{display:flex;flex-direction:column;gap:10px;margin-top:14px}
 .msg{display:flex;gap:8px;align-items:flex-end;animation:fade .3s}
 .msg img{width:28px;height:28px;flex:none}
-.msg .bb{background:var(--bubble);border-radius:16px 16px 16px 4px;padding:10px 12px;font-size:14px;line-height:20px;color:var(--ink)}
+.msg .bb{background:var(--soft);border-radius:16px 16px 16px 4px;padding:10px 12px;font-size:14px;line-height:20px;color:var(--ink)}
+/* the user's own answer reads back on the warm tint, not as an ink slab */
 .msg.me{justify-content:flex-end}
-.msg.me .bb{background:var(--ink);color:#fff;border-radius:16px 16px 4px 16px}
+.msg.me .bb{background:#FFF3EB;color:var(--ink);border:1px solid var(--line-solid);border-radius:16px 16px 4px 16px}
 .typing{display:inline-flex;gap:4px}.typing i{width:6px;height:6px;border-radius:50%;background:var(--mute2);animation:ty 1s infinite}.typing i:nth-child(2){animation-delay:.15s}.typing i:nth-child(3){animation-delay:.3s}
 @keyframes ty{50%{transform:translateY(-4px);opacity:.5}}
-.credit{display:flex;align-items:center;gap:10px;padding:12px;border-radius:14px;background:var(--greenbg);color:var(--green);font-size:14px;font-weight:600;animation:fade .3s}
-.credit img{width:28px;height:28px;flex:none}
-/* the second line is the whole point of the band: it names tomorrow's number */
-.credit small{display:block;margin-top:2px;font-size:12px;line-height:16px;font-weight:500;color:#05603A}
-.msg .act{margin-top:8px;border:0;border-radius:12px;background:var(--or);color:#fff;font-size:12px;font-weight:600;padding:8px 12px}
+/* The credit is a line in the thread, not a green box: a tick, the amount, and a hairline above
+   it that separates the conversation from the receipt. */
+.credit{display:flex;align-items:center;gap:8px;margin-top:4px;padding-top:12px;border-top:1px solid var(--line);color:var(--green);font-size:14px;font-weight:600;animation:fade .3s}
+.credit svg{flex:none}
+.credit small{font-size:12px;line-height:16px;font-weight:500;color:var(--mute)}
+.msg .act{margin-top:8px;border:1.5px solid var(--or);border-radius:12px;background:#fff;color:var(--or);font-size:12px;font-weight:600;padding:7px 12px}
 
-/* tasks */
-.tasks{padding:12px;display:flex;flex-direction:column;gap:10px}
+/* tasks — Figma 2448:10860. The outer card holds the heading and the progress; the two tiles sit
+   side by side underneath at 173px each, so they read as a pair of things to do rather than a list.
+   Each tile is white with a coloured 45%-opacity border and its own radial blush behind the art. */
 .prog{display:flex;align-items:center;gap:4px;margin-top:8px}
 .prog i{flex:1;height:6px;border-radius:3px;background:#EAECF0;overflow:hidden;position:relative}
 .prog i:after{content:"";position:absolute;inset:0;width:0;background:#12B76A;transition:width .5s}
 .prog i.f:after{width:100%}
 .prog span{font-size:12px;font-weight:600;color:var(--mute);width:28px;text-align:right;font-variant-numeric:tabular-nums}
-.task{display:flex;align-items:center;gap:14px;border:1px solid #E9E1FF;border-radius:20px;padding:14px 14px 14px 16px;background:#fff;position:relative;overflow:hidden;text-align:left;width:100%}
-.task.rep{border-color:#FDE3CC}
-.task:before{content:"";position:absolute;width:240px;height:200px;right:-90px;top:-60px;background:radial-gradient(closest-side,rgba(196,181,253,.75),rgba(196,181,253,0))}
-.task.rep:before{background:radial-gradient(closest-side,rgba(253,186,116,.75),rgba(253,186,116,0))}
-.task .body{flex:1;position:relative;display:flex;flex-direction:column;gap:12px}
+.tasks{display:flex;gap:10px;padding:0 8px 16px}
+.task{flex:1;min-width:0;display:flex;flex-direction:column;align-items:center;gap:16px;border:1px solid rgba(153,133,250,.45);border-radius:20px;padding:24px 16px 16px;background:#fff;position:relative;overflow:hidden;text-align:center;box-shadow:0 6px 16px -4px rgba(15,23,41,.06)}
+.task.rep{border-color:rgba(250,158,92,.45)}
+.task:before{content:"";position:absolute;width:260px;height:240px;left:-44px;top:-121px;
+ background:radial-gradient(closest-side,rgba(153,133,250,.5),rgba(153,133,250,.2) 55%,rgba(153,133,250,0))}
+.task.rep:before{background:radial-gradient(closest-side,rgba(250,158,92,.5),rgba(250,158,92,.2) 55%,rgba(250,158,92,0))}
+.task .body{position:relative;display:flex;flex-direction:column;gap:2px;width:100%}
 .task b{font-size:16px;line-height:22px;display:block}
-/* same treatment as the "Mumbai · aaj" eyebrow so the two section styles agree */
-.task small{font-size:12px;line-height:16px;color:var(--mute);font-weight:600;display:block;margin-top:2px}
-.chip2{display:inline-flex;align-items:center;gap:4px;align-self:flex-start;height:28px;padding:0 10px 0 5px;border-radius:14px;background:var(--greenbg);border:1px solid #ABEFC6;color:var(--green);font-size:14px;font-weight:600}
+.task small{font-size:12px;line-height:16px;color:var(--mute);font-weight:500;display:block}
+/* the reward chip and the link sit on one line, the chip left and "Shuru →" right */
+.task .foot{position:relative;display:flex;align-items:center;justify-content:space-between;width:100%;gap:6px}
+.chip2{display:inline-flex;align-items:center;gap:4px;height:28px;padding:0 10px 0 5px;border-radius:99px;background:var(--greenbg);border:1px solid #ABEFC6;color:var(--green);font-size:14px;font-weight:600;white-space:nowrap}
 .chip2 img{width:18px;height:18px}
-.art{position:relative;width:80px;height:80px;flex:none}
-.art .halo{position:absolute;inset:2px;border-radius:50%;background:rgba(255,255,255,.45);border:1px solid rgba(255,255,255,.9)}
-.art img{position:absolute;inset:0 0 0 2px;width:76px;height:76px}
-.art .go{position:absolute;right:-6px;bottom:-6px;width:28px;height:28px;border-radius:50%;background:var(--ink);border:2px solid #fff;display:grid;place-items:center;transition:background .3s}
-.task.done .go{background:#12B76A}
+.task .go{display:inline-flex;align-items:center;gap:2px;font-size:14px;line-height:20px;font-weight:600;color:#E8590C;white-space:nowrap}
+.art{position:relative;width:56px;height:56px;flex:none}
+.art img{width:56px;height:56px}
+.task.done{border-color:#ABEFC6}
+.task.done:before{background:radial-gradient(closest-side,rgba(18,183,106,.35),rgba(18,183,106,.12) 55%,rgba(18,183,106,0))}
 .task.done b{color:var(--mute)}
+.task.done .go{color:var(--green)}
 
 /* event row */
 .evcard{display:flex;align-items:center;gap:0;height:92px;padding:0 20px;width:100%;text-align:left}
@@ -263,34 +297,35 @@ img{display:block;max-width:100%}
 /* type and spacing straight off Figma 2392:73540: 12px gap, 12/16 eyebrow, 20/18.5 title */
 .evcard .evnode{flex:none;align-self:center;z-index:2}
 .evtx{flex:1;min-width:0;margin-left:12px;z-index:2}
-.evtx small{display:block;font-size:12px;line-height:16px;color:var(--mute);font-weight:600}
-.evtx b{display:block;margin-top:2px;font-size:20px;line-height:18.5px;letter-spacing:-.2px;color:var(--ink)}
+.evtx small{display:block;font-size:12px;line-height:16px;color:var(--mute);font-weight:500}
+/* one line, so the title can never wrap into the diya behind it */
+.evtx b{display:block;margin-top:2px;font-size:20px;line-height:26px;letter-spacing:-.2px;color:var(--ink);white-space:nowrap}
 .evchev{flex:none;z-index:2}
 
-/* aaj ka din */
-.pan{background:url(assets/scene.jpg) center/cover;border:1px solid var(--line)}
-.pan:before{content:"";position:absolute;left:0;right:0;top:0;height:260px;background:linear-gradient(#fff 10%,rgba(255,255,255,0))}
-.pan>*{position:relative}
+/* aaj ka din — the scenery sits on top and fades slowly into white, and the four readings are
+   plain two-column rows on that white, not boxes floating on the picture. */
+.pan{background:#fff;border:1px solid var(--line)}
+.pan:after{content:"";position:absolute;left:0;right:0;top:0;height:300px;z-index:0;
+ background:url(assets/scene.jpg) center top/cover;
+ -webkit-mask-image:linear-gradient(180deg,#000 0%,rgba(0,0,0,.55) 46%,rgba(0,0,0,0) 86%);
+ mask-image:linear-gradient(180deg,#000 0%,rgba(0,0,0,.55) 46%,rgba(0,0,0,0) 86%)}
+.pan>*{position:relative;z-index:1}
 .chev{width:28px;height:28px;border:0;background:none;display:grid;place-items:center;padding:0}
 .arc{padding:4px 20px 0}
 .arc svg{width:100%;height:auto;display:block}
-.suntimes{display:flex;justify-content:space-between;padding:4px 20px 0;font-size:12px;color:#7A5A3A;text-shadow:0 0 6px #fff,0 0 6px #fff}
-.pgrid{display:grid;grid-template-columns:1fr 1fr;gap:10px;padding:12px 20px 20px}
-.pc{background:rgba(255,255,255,.88);backdrop-filter:blur(6px);-webkit-backdrop-filter:blur(6px);border:1px solid rgba(255,255,255,.9);border-radius:16px;padding:12px 14px;display:flex;flex-direction:column;gap:6px}
-.pc img{width:36px;height:36px}
-.pc small{font-size:12px;line-height:16px;color:var(--ink2);white-space:nowrap}
-.pc b{font-size:14px;line-height:20px;font-variant-numeric:tabular-nums}
-.pc.lk{flex-direction:row;align-items:center;gap:10px}
-.pc.lk small{display:block;font-size:12px;line-height:16px;color:var(--mute)}
-.pc.lk b{display:block;font-size:16px;line-height:24px}
-.pc .bad{width:8px;height:8px;border-radius:50%;background:#F04438;display:inline-block;margin-right:6px}
-.pc .good{width:8px;height:8px;border-radius:50%;background:#12B76A;display:inline-block;margin-right:6px}
+.suntimes{display:flex;justify-content:space-between;padding:4px 20px 0;font-size:12px;font-weight:500;color:#7A5A3A;text-shadow:0 0 6px #fff,0 0 6px #fff}
+.pgrid{display:grid;grid-template-columns:1fr 1fr;gap:16px 10px;padding:16px 20px 20px}
+/* icon on the left, label over value on the right */
+.pc{display:flex;align-items:center;gap:10px;min-width:0}
+.pc img{width:32px;height:32px;flex:none}
+.pc small{display:block;font-size:12px;line-height:16px;font-weight:500;color:var(--mute);white-space:nowrap}
+.pc b{display:block;font-size:14px;line-height:20px;font-weight:600;font-variant-numeric:tabular-nums;white-space:nowrap}
 .hours{display:flex;gap:12px;overflow-x:auto;padding:12px 20px 2px;scrollbar-width:none;scroll-snap-type:x mandatory;scroll-padding-left:20px}
 .hours::-webkit-scrollbar{display:none}
 .hr{flex:none;display:flex;flex-direction:column;align-items:flex-start;justify-content:flex-start;width:140px;height:151px;border-radius:20px;border:1px solid var(--line);background:#fff;position:relative;overflow:hidden;padding:13px 14px;text-align:left;scroll-snap-align:start}
 .hr .st{font-size:12px;line-height:16px;font-weight:600}
 .hr b{display:block;font-size:14px;line-height:20px;margin-top:4px}
-.hr small{display:block;font-size:12px;line-height:16px;color:var(--mute);margin-top:4px}
+.hr small{display:block;font-size:12px;font-weight:500;line-height:16px;color:var(--mute);margin-top:4px}
 .hr .gl{position:absolute;width:130px;height:130px;right:-35px;bottom:-30px;border-radius:50%}
 .hr img{position:absolute;width:78px;height:78px;right:-16px;bottom:-14px;transform:rotate(-16deg)}
 .hr.now{border-color:#FDB022}
@@ -298,21 +333,27 @@ img{display:block;max-width:100%}
 /* experts */
 .exps{display:flex;gap:10px;overflow-x:auto;padding:14px 20px 18px;scrollbar-width:none}
 .exps::-webkit-scrollbar{display:none}
-.ex{flex:none;width:136px;border:1px solid var(--line);border-radius:20px;padding:14px 12px 12px;display:flex;flex-direction:column;align-items:center;text-align:center}
+/* each astrologer sits on a light pink wash whose border fades out at the bottom, so the row
+   reads as a set of people rather than a row of hard boxes */
+.ex{flex:none;width:136px;border:1px solid transparent;border-radius:20px;padding:14px 12px 12px;display:flex;flex-direction:column;align-items:center;text-align:center;
+ background-image:linear-gradient(180deg,#FFF1F6,#fff 78%),linear-gradient(180deg,#F4C9DA,#fff);background-origin:border-box;background-clip:padding-box,border-box}
 .ex .ph{width:64px;height:64px;border-radius:50%;position:relative;display:grid;place-items:center;font-size:16px;font-weight:600;color:var(--ink2);background:#EEF0FF}
 .ex .ph img{width:64px;height:64px}
 /* availability dot — same as the Experts page on pricing-v2: Success/500, 16px, 2.3px white ring */
 .ex .ph i{position:absolute;right:0;top:0;width:16px;height:16px;border-radius:50%;background:#12B76A;border:2.3px solid #fff}
 .ex b{font-size:14px;line-height:20px;margin-top:10px}
 /* "Numerology · ★ 4.7" outruns the card, so the speciality truncates rather than wrapping */
-.ex small{display:block;max-width:100%;font-size:12px;line-height:16px;color:var(--mute);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.ex small{display:block;max-width:100%;font-size:12px;font-weight:500;line-height:16px;color:var(--mute);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 .ex .pr{font-size:14px;font-weight:600;color:var(--green);margin-top:6px}
 .ex .pr s{color:var(--mute2);font-weight:500;margin-right:4px;font-size:12px}
 .btn-o{margin-top:10px;width:100%;height:36px;border:1.5px solid var(--or);border-radius:999px;background:#fff;color:var(--or);font-size:14px;font-weight:600;display:flex;align-items:center;justify-content:center;gap:6px}
 .sablink{border:0;background:none;font-size:14px;font-weight:600;color:var(--ink2);padding:0}
 
 /* nav */
-.nav{position:absolute;left:16px;right:16px;bottom:calc(env(safe-area-inset-bottom,0px) + 16px);height:60px;display:flex;border-radius:30px;background:rgba(255,255,255,.96);border:1px solid var(--line-solid);padding:4px 8px;z-index:10;backdrop-filter:blur(8px)}
+/* The pill has to land at exactly the same height as the wallet page's tabbar, or it jumps 34px
+   (the home-indicator inset) the moment you switch tabs. Both files now carry this one rule:
+   8px clear of the home indicator, which also matches how low the real Experts tabbar sits. */
+.nav{position:absolute;left:16px;right:16px;bottom:calc(env(safe-area-inset-bottom,0px) + 8px);height:60px;display:flex;border-radius:30px;background:rgba(255,255,255,.96);border:1px solid var(--line-solid);box-shadow:0 8px 24px rgba(16,24,40,.1);padding:4px 8px;z-index:10;-webkit-backdrop-filter:blur(8px);backdrop-filter:blur(8px)}
 /* type and icon sizing taken from the Experts page tabbar: 24px icon, 11/16 label, 2px gap */
 .nav button{flex:1;border:0;background:none;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px;font-size:12px;line-height:16px;color:var(--mute);padding:0}
 .nav button img{width:24px;height:24px}
@@ -334,7 +375,8 @@ img{display:block;max-width:100%}
 .sheet h4{margin:0;font-size:20px;line-height:28px}
 .sheet p{margin:6px 0 0;font-size:14px;line-height:20px;color:var(--mute)}
 .btn-full{width:100%;height:48px;border:0;border-radius:14px;background:var(--or);color:#fff;font-size:16px;font-weight:600;margin-top:16px}
-.btn-ghost{width:100%;height:48px;border:1px solid var(--line-solid);border-radius:14px;background:#fff;font-size:14px;font-weight:600;color:var(--ink2);margin-top:10px}
+/* neutral buttons are white with an orange border and orange text */
+.btn-ghost{width:100%;height:48px;border:1.5px solid var(--or);border-radius:14px;background:#fff;font-size:14px;font-weight:600;color:var(--or);margin-top:10px}
 .toast{position:absolute;left:50%;top:56px;transform:translateX(-50%);z-index:60;background:var(--ink);color:#fff;font-size:14px;line-height:20px;padding:10px 16px;border-radius:14px;max-width:320px;text-align:center;opacity:0;pointer-events:none;transition:opacity .2s,transform .2s}
 .toast.on{opacity:1;transform:translateX(-50%) translateY(4px)}
 .flycoin{position:absolute;z-index:70;width:44px;height:44px;pointer-events:none;transition:transform .8s cubic-bezier(.5,-.3,.3,1),opacity .8s}
@@ -366,7 +408,7 @@ img{display:block;max-width:100%}
 .svhd{display:flex;align-items:center;gap:10px;padding:12px 4px}
 .svhd img{width:36px;height:36px;border-radius:50%}
 .svhd b{display:block;font-size:14px;line-height:20px}
-.svhd small{display:block;font-size:12px;line-height:16px;color:rgba(255,255,255,.75)}
+.svhd small{display:block;font-size:12px;font-weight:500;line-height:16px;color:rgba(255,255,255,.75)}
 .svhd .x{margin-left:auto;width:36px;height:36px;border:0;background:none;display:grid;place-items:center;padding:0}
 .tapL,.tapR{position:absolute;top:90px;bottom:110px;z-index:2;border:0;background:none;padding:0}
 .tapL{left:0;width:32%}.tapR{right:0;width:68%}
@@ -377,8 +419,8 @@ img{display:block;max-width:100%}
 .s-eyebrow{font-size:12px;letter-spacing:2px;text-transform:uppercase;color:rgba(255,255,255,.75);font-weight:600}
 .lucky{display:grid;grid-template-columns:1fr 1fr;gap:10px}
 .lucky div{background:rgba(255,255,255,.1);border-radius:16px;padding:12px}
-.lucky small{display:block;font-size:12px;color:rgba(255,255,255,.7)}
-.lucky b{font-size:18px}
+.lucky small{display:block;font-size:12px;font-weight:500;color:rgba(255,255,255,.7)}
+.lucky b{font-size:20px;line-height:28px}
 .lbar{margin-top:4px}
 .lbar .r{display:flex;justify-content:space-between;font-size:14px;margin-bottom:6px}
 .lbar .t{height:6px;border-radius:3px;background:rgba(255,255,255,.18);overflow:hidden}
@@ -401,7 +443,7 @@ img{display:block;max-width:100%}
 .svfree:before,.svfree:after{content:"";flex:1;border-top:1px dashed rgba(255,255,255,.35)}
 /* Gita shlok */
 .shlok{font-family:'Cormorant Infant',serif;font-size:30px;line-height:38px;text-align:center;color:#FBE3B4}
-.shlok-tr{font-size:13px;line-height:19px;text-align:center;color:rgba(255,255,255,.75);font-style:italic}
+.shlok-tr{font-size:14px;line-height:20px;text-align:center;color:rgba(255,255,255,.75);font-style:italic}
 /* Mahadev fills the slide edge to edge; the words sit in a scrim over the bottom third */
 /* Mahadev is cropped hard at his left edge, so hold that edge and let the empty right go */
 .mahadev{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:left top}
@@ -413,78 +455,84 @@ img{display:block;max-width:100%}
 .cal::-webkit-scrollbar{display:none}
 .cal.on{display:block;animation:up .3s cubic-bezier(.2,.8,.2,1)}
 .calhd{position:sticky;top:0;z-index:4;display:flex;align-items:center;gap:12px;padding:calc(env(safe-area-inset-top,0px) + 16px) 16px 12px;background:rgba(252,251,250,.92);backdrop-filter:blur(10px);border-bottom:1px solid var(--line)}
-.calhd .x,.calhd .a{width:40px;height:40px;border-radius:50%;border:1px solid var(--bubble-line);background:var(--bubble);display:grid;place-items:center;padding:0;color:var(--ink)}
-.calhd b{display:block;font-size:22px;line-height:28px;font-weight:700;letter-spacing:-.2px}
-.calhd small{display:block;font-size:12px;color:var(--mute)}
-/* claimed-vs-missed summary — the first thing the month has to answer is "how much did I leave
-   on the table", so it sits above the grid */
-.calsum{display:flex;align-items:center;margin:12px 16px 0;padding:10px 12px;border-radius:14px;background:var(--bubble);border:1px solid var(--bubble-line)}
-.calsum .s{display:flex;align-items:center;gap:7px}
-.calsum .s+.s{margin-left:14px;padding-left:14px;border-left:1px solid var(--bubble-line)}
-.calsum .s i{width:18px;height:18px;border-radius:50%;display:grid;place-items:center;flex:none}
-.calsum .s b{display:block;font-size:14px;line-height:18px}
-.calsum .s small{display:block;font-size:12px;line-height:15px;color:var(--mute)}
-.calsum .sp{flex:1}
-.calsum em{font-size:12px;line-height:15px;color:var(--mute);font-style:normal;text-align:right;max-width:92px}
-.grid{margin:12px 16px 0;background:var(--bubble);border:1px solid var(--bubble-line);border-radius:22px;padding:12px 6px 10px;position:relative}
+.calhd .x,.calhd .a{width:40px;height:40px;border-radius:50%;border:1px solid var(--line-solid);background:#fff;display:grid;place-items:center;padding:0;color:var(--ink)}
+.calhd b{display:block;font-size:24px;line-height:30px;font-weight:700;letter-spacing:-.2px}
+.calhd small{display:block;font-size:12px;font-weight:500;color:var(--mute)}
+/* Earnings stats — what the month earned, what it left on the table, and the streak. Green is
+   money credited; the missed figure stays ink so it does not read as an alarm. */
+.calsum{display:flex;gap:10px;margin:12px 16px 0}
+.calsum .s{flex:1;min-width:0;display:flex;align-items:center;gap:8px;padding:10px 12px;border-radius:16px;background:#fff;border:1px solid var(--line-solid)}
+.calsum .s.ok{background:linear-gradient(180deg,#F0FDF6,#fff);border-color:#ABEFC6}
+.calsum .s i{width:20px;height:20px;border-radius:50%;display:grid;place-items:center;flex:none}
+.calsum .s b{display:block;font-size:14px;line-height:20px}
+.calsum .s.ok b{color:var(--green)}
+.calsum .s small{display:block;font-size:12px;line-height:16px;font-weight:500;color:var(--mute)}
+.grid{margin:12px 16px 0;background:#fff;border:1px solid var(--line-solid);border-radius:22px;padding:12px 6px 10px;position:relative}
 .wk,.gr{display:grid;grid-template-columns:repeat(7,1fr);text-align:center}
-.wk span{font-size:12px;color:var(--mute);font-weight:600;padding-bottom:6px}
-.cd{border:0;background:none;color:var(--ink);display:flex;flex-direction:column;align-items:center;gap:3px;padding:6px 0 5px;border-radius:14px}
-.cd .nr{display:flex;align-items:baseline;gap:2px}
-.cd .n{font-size:14px;font-weight:600;line-height:18px}
-/* the moon is gone from the cells — this mark says whether the day's money was claimed */
+.wk span{font-size:12px;color:var(--mute);font-weight:500;padding-bottom:6px}
+.cd{border:0;background:none;color:var(--ink);display:flex;flex-direction:column;align-items:center;gap:2px;padding:6px 0 5px;border-radius:14px}
+/* the moon phase is back in the cell, above the date — it is what makes the month scannable */
+.cd .mn{display:block;line-height:0}
+.cd .n{font-size:14px;font-weight:600;line-height:18px;width:22px;height:22px;display:grid;place-items:center;border-radius:50%}
 .cd .mk{width:16px;height:16px;border-radius:50%;display:grid;place-items:center;flex:none}
-.cd .am{font-size:12px;line-height:14px;font-weight:700;color:var(--ink2);font-variant-numeric:tabular-nums}
+.cd .am{font-size:12px;line-height:16px;font-weight:600;color:var(--ink2);font-variant-numeric:tabular-nums}
+.cd .am.c{color:var(--green)}
+.cd .am.t{color:var(--or)}
 /* only the coming weeks' amounts are hidden; the day itself stays readable */
 .cd .am.bl{filter:blur(3px)}
 .cd .dts{display:flex;gap:3px;height:6px}.cd .dts i{width:6px;height:6px;border-radius:50%}
-.cd.today{background:#FFF1E8}
-.cd.today .n{background:var(--or);color:#fff;border-radius:8px;padding:0 5px}
-.cd.sel{background:#F2EBE2}
-.cd.sel.today{background:#FFE1CF}
+.cd.today .n{background:var(--ink);color:#fff}
+.cd.sel .n{box-shadow:inset 0 0 0 1.5px var(--ink)}
 .cd.dim{opacity:.35}
-.weekband{position:absolute;left:6px;right:6px;border:1.5px solid rgba(239,105,57,.5);border-radius:16px;pointer-events:none}
-.lockcard{display:flex;gap:12px;align-items:center;margin:12px 16px 0;background:#fff;border:1px solid var(--bubble-line);border-radius:18px;padding:14px}
-.lockcard .lk{width:40px;height:40px;border-radius:50%;background:#FFF6ED;display:grid;place-items:center;flex:none}
+/* this week sits on the warm tint rather than inside an orange outline */
+.weekband{position:absolute;left:6px;right:6px;background:#FFF3EB;border-radius:16px;pointer-events:none;z-index:0}
+.gr{position:relative;z-index:1}
+.lockcard{display:flex;gap:12px;align-items:center;margin:12px 16px 0;background:#fff;border:1px solid var(--line-solid);border-radius:18px;padding:14px}
+.lockcard .lk{width:40px;height:40px;border-radius:50%;background:#FFF3EB;display:grid;place-items:center;flex:none}
 .lockcard b{display:block;font-size:14px;line-height:20px}
-.lockcard small{display:block;font-size:12px;line-height:16px;color:var(--mute)}
+.lockcard small{display:block;font-size:12px;font-weight:500;line-height:16px;color:var(--mute)}
 .lockcard .bar{height:6px;border-radius:3px;background:#F2F4F7;margin-top:8px;overflow:hidden}
 .lockcard .bar i{display:block;height:100%;width:28%;background:linear-gradient(90deg,#FDB022,#EF6939);border-radius:3px}
-/* full panchang for the selected day */
-.panch{margin:12px 16px 0;background:var(--bubble);border:1px solid var(--bubble-line);border-radius:20px;padding:12px 14px 14px}
-.panch>b{display:block;font-size:12px;letter-spacing:.6px;text-transform:uppercase;color:var(--mute);font-weight:600}
-.pg{display:grid;grid-template-columns:1fr 1fr;gap:10px 12px;margin-top:10px}
-.pg>span{display:block;min-width:0}
-.pg small{display:block;font-size:12px;line-height:15px;color:var(--mute)}
-.pg b{display:block;font-size:13px;line-height:18px;font-weight:600;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
-.pg b.warn{color:#B54708}
-.seld{margin:14px 16px 0;background:var(--bubble);border:1px solid var(--bubble-line);border-radius:20px;padding:14px;display:flex;gap:12px}
+/* One card for the selected day: who the day is, what it means for Mansi, and its full panchang.
+   The separate panchang card below it was saying the same thing twice. */
+.seld{margin:14px 16px 0;background:#fff;border:1px solid var(--line-solid);border-radius:20px;padding:16px}
+.seld .row1{display:flex;gap:12px;align-items:flex-start}
+.seld .mo{width:44px;height:44px;border-radius:50%;background:var(--ink);display:grid;place-items:center;flex:none}
 .seld .tx{flex:1;min-width:0}
-.seld small{display:block;font-size:12px;letter-spacing:.6px;text-transform:uppercase;color:var(--mute);font-weight:600}
-.seld b{display:block;font-size:18px;line-height:24px;margin-top:2px}
-.seld p{margin:2px 0 0;font-size:14px;line-height:20px;color:var(--ink2)}
+.seld small{display:block;font-size:12px;letter-spacing:.6px;text-transform:uppercase;color:var(--mute);font-weight:500}
+.seld b{display:block;font-size:20px;line-height:28px;letter-spacing:-.2px;margin-top:2px}
+.seld p{margin:2px 0 0;font-size:14px;line-height:20px;color:var(--mute)}
+/* "Mansi ke liye" — the one personal line on the screen, so it gets its own tinted note */
+.seld .note{display:flex;gap:8px;margin-top:12px;padding:10px 12px;border-radius:12px;background:#EFF8FF;border:1px solid #B2DDFF;font-size:14px;line-height:20px;color:var(--ink2)}
+.seld .note i{width:8px;height:8px;border-radius:50%;background:#2E90FA;flex:none;margin-top:6px}
 .seld .foryou{margin-top:10px;display:flex;flex-wrap:wrap;gap:6px}
-.seld .foryou span{display:inline-flex;align-items:center;gap:6px;font-size:12px;font-weight:600;padding:5px 10px;border-radius:12px;background:#fff;border:1px solid var(--bubble-line)}
+.seld .foryou span{display:inline-flex;align-items:center;gap:6px;font-size:12px;font-weight:500;padding:5px 10px;border-radius:12px;background:#fff;border:1px solid var(--line-solid)}
 .seld .foryou i{width:7px;height:7px;border-radius:50%}
-.seld .ask{width:40px;height:40px;border-radius:50%;border:0;background:var(--or);display:grid;place-items:center;flex:none;padding:0}
+.pg{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:14px;padding-top:14px;border-top:1px solid var(--line)}
+.pg>span{display:block;min-width:0}
+.pg small{display:block;font-size:12px;line-height:16px;font-weight:500;color:var(--mute);letter-spacing:0;text-transform:none}
+.pg b{display:block;font-size:14px;line-height:20px;font-weight:600;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.pg b.warn{color:#B54708}
+.seld .ask{margin-top:14px;width:100%;height:44px;border:1.5px solid var(--or);border-radius:22px;background:#fff;color:var(--or);font-size:14px;font-weight:600;display:flex;align-items:center;justify-content:center;gap:8px;padding:0}
 .filters{display:flex;gap:8px;overflow-x:auto;padding:16px 16px 4px;scrollbar-width:none;scroll-padding-left:16px}
 .filters::-webkit-scrollbar{display:none}
-.fl{flex:none;height:34px;border-radius:17px;border:1px solid var(--line-solid);background:#fff;color:var(--ink2);font-size:14px;font-weight:600;padding:0 14px;display:flex;align-items:center;gap:6px}
-.fl i{width:8px;height:8px;border-radius:50%}
-.fl.on{background:var(--ink);color:#fff;border-color:var(--ink)}
+.fl{flex:none;height:36px;border-radius:18px;border:1px solid var(--line-solid);background:#fff;color:var(--ink2);font-size:14px;font-weight:600;padding:0 14px 0 10px;display:flex;align-items:center;gap:6px}
+.fl img{width:22px;height:22px;flex:none}
+.fl.on{background:var(--ink);color:#fff;border-color:var(--ink);padding:0 14px}
 .evlist{padding:8px 16px 40px}
-.evlist h5{margin:14px 0 4px;font-size:12px;letter-spacing:1px;text-transform:uppercase;color:var(--mute)}
+.evlist h5{display:flex;align-items:baseline;justify-content:space-between;margin:20px 0 2px;font-size:20px;line-height:28px;letter-spacing:-.2px;color:var(--ink);font-weight:700}
+.evlist h5 span{font-size:12px;font-weight:500;color:var(--mute)}
 .ev{display:flex;align-items:center;gap:12px;padding:12px 2px;border-bottom:1px solid var(--line);width:100%;background:none;border-left:0;border-right:0;border-top:0;color:var(--ink);text-align:left}
-.ev .dt{width:46px;height:46px;border-radius:14px;background:var(--bubble);border:1px solid var(--bubble-line);display:flex;flex-direction:column;align-items:center;justify-content:center;flex:none}
-.ev .dt b{font-size:16px;line-height:18px}.ev .dt small{font-size:12px;color:var(--mute)}
+.ev .dt{width:46px;height:46px;border-radius:14px;background:var(--soft);border:1px solid var(--line-solid);display:flex;flex-direction:column;align-items:center;justify-content:center;flex:none}
+.ev .dt b{font-size:16px;line-height:18px}.ev .dt small{font-size:12px;font-weight:500;color:var(--mute)}
 .ev .tx{flex:1;min-width:0}
 .ev .tx b{display:block;font-size:16px;line-height:22px}
-.ev .tx small{display:flex;align-items:center;gap:6px;font-size:12px;color:var(--mute);margin-top:2px}
+.ev .tx small{display:flex;align-items:center;gap:6px;font-size:12px;font-weight:500;color:var(--mute);margin-top:2px}
 .ev .tx small i{width:7px;height:7px;border-radius:50%}
-.ev .rel{font-size:12px;color:var(--mute);white-space:nowrap}
+.ev .rel{font-size:12px;font-weight:500;color:var(--mute);white-space:nowrap}
 .ev.locked .tx b{filter:blur(5px)}
 .ev.locked .rel{display:flex;align-items:center;gap:4px;color:var(--or)}
-.calnote{font-size:12px;line-height:16px;color:var(--mute2);text-align:center;padding:0 24px 30px}
+.calnote{font-size:12px;font-weight:500;line-height:16px;color:var(--mute2);text-align:center;padding:0 24px 30px}
 
 @media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
 </style>
@@ -514,29 +562,30 @@ img{display:block;max-width:100%}
         <button class="calbtn" id="openCal" aria-label="Open October calendar"><span><svg width="16" height="16" viewBox="0 0 24 24" fill="none"><rect x="3.5" y="5" width="17" height="15.5" rx="3" stroke="#fff" stroke-width="2"/><path d="M3.5 10h17M8 3v4M16 3v4" stroke="#fff" stroke-width="2" stroke-linecap="round"/></svg></span>Oct ›</button>
       </div>
       <div class="daytip" id="daytip"></div>
+      <!-- one control. Unclaimed it is the orange claim button; claimed it becomes the neutral
+           orange-outline reminder for tomorrow's amount. No second purple box underneath. -->
       <button class="claim" id="claim">Claim today’s ₹9</button>
-      <div class="remind-row" id="remindRow"><span><b>Kal ₹11 milenge.</b> Subah 8 baje yaad dilayein?</span><button class="rmb" id="remindBtn"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><path d="M6 16V11a6 6 0 0 1 12 0v5l1.5 2h-15ZM10 21h4" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>Set reminder</button></div>
     </div>
 
     <!-- Hemali -->
-    <div class="sec"><div class="card" id="hemCard">
+    <div class="sec"><div class="card tint" id="hemCard">
       <div class="freepill"><svg width="14" height="14" viewBox="0 0 24 24"><path d="M12 2c.8 5.2 4.8 9.2 10 10-5.2.8-9.2 4.8-10 10-.8-5.2-4.8-9.2-10-10 5.2-.8 9.2-4.8 10-10Z" fill="#7F56D9"/></svg><span>FREE 2-min chat in</span><b id="freeT">14h 33m</b><span class="sp"></span><button class="rmb" id="freeRemind"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><path d="M6 16V11a6 6 0 0 1 12 0v5l1.5 2h-15ZM10 21h4" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>Remind me</button></div>
       <div class="th"><span class="node"></span><img class="hav" src="assets/hemali.png" alt=""><div class="tx"><small>Aapki chats se · AI notes</small><b>Astro Hemali</b></div></div>
       <div class="bubble">
         <div class="bhd">Aaj ke liye · 5 Oct</div>
         <div class="voice"><button class="pb" id="vPlay" aria-label="Play voice note"><svg id="vIcon" width="14" height="14" viewBox="0 0 16 16"><path d="M4 2.5l9 5.5-9 5.5Z" fill="#fff"/></svg></button><div class="wave" id="wave"></div><small id="vTime">0:42</small></div>
         <audio id="vAudio" src="assets/hemali.m4a" preload="metadata"></audio>
-        <div class="ins"><img src="assets/ic-rings.png" alt=""><p>Is hafte rishte aur bharosa sabse zaroori hain.</p></div>
-        <div class="ins"><img src="assets/ic-chat.png" alt=""><p>Rahul ke saath baat-cheet aasaan ho rahi hai.</p></div>
-        <div class="ins"><img src="assets/ic-calendar.png" alt=""><p>Ek faisla abhi clear nahi. Thursday tak rukiye.</p></div>
+        <div class="ins"><span class="ic" style="background:#FDF2F8"><img src="assets/illo-rings.svg" alt=""></span><p>Is hafte rishte aur bharosa sabse zaroori hain.</p></div>
+        <div class="ins"><span class="ic" style="background:#F4EBFF"><img src="assets/illo-chat.svg" alt=""></span><p>Rahul ke saath baat-cheet aasaan ho rahi hai.</p></div>
+        <div class="ins"><span class="ic" style="background:#FFF3EB"><img src="assets/illo-calendar.svg" alt=""></span><p>Ek faisla abhi clear nahi. Thursday tak rukiye.</p></div>
       </div>
-      <div class="freebar"><svg width="14" height="14" viewBox="0 0 24 24"><path d="M12 2c.8 5.2 4.8 9.2 10 10-5.2.8-9.2 4.8-10 10-.8-5.2-4.8-9.2-10-10 5.2-.8 9.2-4.8 10-10Z" fill="#7F56D9"/></svg>FREE 2-min chat in <b id="freeT2">14h 33min 23 sec</b></div>
+      <div class="freebar"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" aria-hidden="true"><circle cx="12" cy="13" r="8.4" stroke="#6941C6" stroke-width="1.9"/><path d="M12 9.4V13l2.6 1.7M9.2 2.9h5.6" stroke="#6941C6" stroke-width="1.9" stroke-linecap="round"/></svg>FREE 2-min chat in <b id="freeT2">14h 33min 23 sec</b></div>
       <div class="replyrow" id="replyRow"><span class="phtrack"><span id="phTx"></span></span><input id="reply" aria-label="Reply to Hemali"><button class="btn-p" data-chat="Astro Hemali" data-rate="10">Chat <b>₹10/min</b></button></div>
     </div></div>
 
     <!-- Check-in -->
-    <div class="sec" style="padding-top:12px"><div class="card ci" id="ciCard">
-      <span class="pill">Jawab dein · ₹9 claim</span>
+    <div class="sec" style="padding-top:12px"><div class="card ci tint" id="ciCard">
+      <span class="pill">Aaj ka sawaal · ₹9 claim</span>
       <h3>Aaj Rahul ko lekar kaisa feel kar rahe ho?</h3>
       <div class="moods" id="moods">
         <button class="mood" data-m="achha"><svg width="20" height="20" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10" fill="#ECFDF3" stroke="#12B76A" stroke-width="1.6"/><circle cx="9" cy="10" r="1.2" fill="#12B76A"/><circle cx="15" cy="10" r="1.2" fill="#12B76A"/><path d="M8 14q4 4 8 0" fill="none" stroke="#12B76A" stroke-width="1.6" stroke-linecap="round"/></svg>Achha</button>
@@ -544,16 +593,19 @@ img{display:block;max-width:100%}
         <button class="mood" data-m="pareshaan"><svg width="20" height="20" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10" fill="#FEF3F2" stroke="#F04438" stroke-width="1.6"/><circle cx="9" cy="10" r="1.2" fill="#F04438"/><circle cx="15" cy="10" r="1.2" fill="#F04438"/><path d="M8 16q4-4 8 0" fill="none" stroke="#F04438" stroke-width="1.6" stroke-linecap="round"/></svg>Pareshaan</button>
       </div>
       <div class="thread" id="thread"></div>
-      <div class="ciremind"><span>Roz check-in ki yaad dilayein?</span><button class="rmb" id="ciRemind"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><path d="M6 16V11a6 6 0 0 1 12 0v5l1.5 2h-15ZM10 21h4" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>Set reminder</button></div>
+      <!-- answered, the card becomes a chat thread, so the reply chips take over from the
+           label-and-button reminder row -->
+      <div class="chips" id="ciChips"></div>
     </div></div>
 
     <!-- Tasks -->
-    <div class="sec"><div class="card">
-      <div class="th"><span class="node"></span><div class="tx"><b>₹4 free kamaayein</b><small style="font-weight:400;font-size:14px;line-height:20px">2 chhote kaam, paise seedha wallet mein</small>
+    <!-- Figma 2448:10860 — white card, Gray-300 border, two 173px tiles side by side -->
+    <div class="sec"><div class="card" style="border-color:rgba(208,213,221,.9);border-radius:20px;padding-top:16px">
+      <div class="th" style="padding:0 20px 8px"><span class="node"></span><div class="tx"><b>₹4 free kamaayein</b><small style="font-weight:400;font-size:14px;line-height:20px">2 chhote kaam, paise seedha wallet mein</small>
         <div class="prog"><i id="p1"></i><i id="p2"></i><span id="pTxt">0/2</span></div></div></div>
       <div class="tasks">
-        <button class="task" id="tTarot"><div class="body"><div><b>Tarot se 1 sawaal</b><small>Free · seedha jawab</small></div><span class="chip2"><img src="assets/coin.png" alt="">+₹2</span></div><div class="art"><span class="halo"></span><img src="assets/tarot.png" alt=""><span class="go"><svg width="14" height="14" viewBox="0 0 14 14"><path d="M5.5 3.5 9 7l-3.5 3.5" fill="none" stroke="#fff" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></span></div></button>
-        <button class="task rep" id="tReport"><div class="body"><div><b>Apni life report</b><small>Career, rishte, sehat</small></div><span class="chip2"><img src="assets/coin.png" alt="">+₹2</span></div><div class="art"><span class="halo"></span><img src="assets/report.png" alt=""><span class="go"><svg width="14" height="14" viewBox="0 0 14 14"><path d="M5.5 3.5 9 7l-3.5 3.5" fill="none" stroke="#fff" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></span></div></button>
+        <button class="task" id="tTarot"><span class="art"><img src="assets/illo-tarot.svg" alt=""></span><span class="body"><b>Tarot se 1 sawaal</b><small>Free · seedha jawab</small></span><span class="foot"><span class="chip2"><img src="assets/coin.png" alt="">+₹2</span><span class="go">Shuru<svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M3 8h10M9 12l4-4-4-4" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></span></span></button>
+        <button class="task rep" id="tReport"><span class="art"><img src="assets/illo-report.svg" alt=""></span><span class="body"><b>Apni life report</b><small>Career, rishte, sehat</small></span><span class="foot"><span class="chip2"><img src="assets/coin.png" alt="">+₹2</span><span class="go">Shuru<svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M3 8h10M9 12l4-4-4-4" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></span></span></button>
       </div>
     </div></div>
 
@@ -563,7 +615,8 @@ img{display:block;max-width:100%}
       <span class="evfade"></span>
       <!-- node drawn exactly as Figma 2392:73541 — 14x40, 2.4 stroke, 12x14 diamond -->
       <svg class="evnode" width="14" height="40" viewBox="0 0 14 40" fill="none" aria-hidden="true"><path d="M7 0V15.925M7 27.5V49" stroke="#EF6939" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/><path d="M7 13L13 20L7 27L1 20L7 13Z" stroke="#EF6939" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg>
-      <span class="evtx"><small>Kal</small><b>Indira Ekadashi,<br>keep vrat for good luck</b></span>
+      <!-- eyebrow carries the "why", so the title is one short line and never runs into the diya -->
+      <span class="evtx"><small>Kal · aapke liye shubh din</small><b>Indira Ekadashi</b></span>
       <svg class="evchev" width="18" height="18" viewBox="0 0 24 24"><path d="M9 5l7 7-7 7" fill="none" stroke="#101828" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
     </button></div>
 
@@ -573,18 +626,20 @@ img{display:block;max-width:100%}
       <span class="node or"></span><div class="tx"><small>Mumbai · aaj</small><b>Aaj ka din</b></div><button class="chev" id="panCal" aria-label="Open calendar"><svg width="18" height="18" viewBox="0 0 24 24"><path d="M9 5l7 7-7 7" fill="none" stroke="#101828" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></button></div>
       <div class="arc"><svg viewBox="0 0 316 96" id="arcSvg"></svg></div>
       <div class="suntimes"><span>Sunrise 6:28 AM</span><span>Sunset 6:24 PM</span></div>
+      <!-- four plain rows, icon left and text right. The "ashubh/shubh" suffix is gone: the
+           half-eclipse and the sun already say which is which. -->
       <div class="pgrid">
-        <div class="pc"><img src="assets/ic-rahu.png" alt=""><small><span class="bad"></span>Rahu kaal · ashubh</small><b>7:57–9:27 AM</b></div>
-        <div class="pc"><img src="assets/ic-sun.png" alt=""><small><span class="good"></span>Abhijit · shubh</small><b>12:02–12:50 PM</b></div>
-        <div class="pc lk"><img src="assets/ic-drop.png" alt=""><div><small>Lucky rang</small><b>Gulabi</b></div></div>
-        <div class="pc lk"><img src="assets/ic-ank.png" alt=""><div><small>Lucky ank</small><b>Chha (6)</b></div></div>
+        <div class="pc"><img src="assets/illo-rahu.svg" alt=""><div><small>Rahu kaal</small><b>7:57–9:27 AM</b></div></div>
+        <div class="pc"><img src="assets/illo-sun.svg" alt=""><div><small>Abhijit</small><b>12:02–12:50 PM</b></div></div>
+        <div class="pc"><img src="assets/illo-drop.svg" alt=""><div><small>Lucky rang</small><b>Gulabi</b></div></div>
+        <div class="pc"><img src="assets/illo-ank.svg" alt=""><div><small>Lucky ank</small><b>Chha (6)</b></div></div>
       </div>
     </div></div>
     <div class="hours" id="hours"></div>
 
     <!-- Experts -->
-    <div class="sec"><div class="card">
-      <div class="th"><span class="node"></span><div class="tx"><small>4 astrologers online</small><b>Abhi baat karein</b></div><button class="sablink" data-experts>Sab dekhein</button></div>
+    <div class="sec"><div class="card fade">
+      <div class="th"><span class="node"></span><div class="tx"><small>3 astrologers online</small><b>Abhi baat karein</b></div><button class="sablink" data-experts>Sab dekhein</button></div>
       <div class="exps" id="exps"></div>
     </div></div>
     <div style="height:30px"></div>
@@ -619,21 +674,25 @@ const $=s=>document.querySelector(s), $$=s=>[...document.querySelectorAll(s)];
 const app=$('#app'), scroll=$('#scroll');
 
 /* Bottom tabs — same artwork and sizing as the Experts page, kept in this page's floating pill.
-   Experts routes into the listing; Timeline and Explore stay inert. */
-$('#nav').innerHTML=[['Today','tab-today','on'],['Experts','tab-experts','experts'],['Timeline','tab-timeline',''],['Explore','tab-explore','']]
+   Experts routes into the listing; History and Explore stay inert. The third tab is labelled
+   History — the icon key stays `tab-timeline`, which is what icons.js ships. */
+$('#nav').innerHTML=[['Today','tab-today','on'],['Experts','tab-experts','experts'],['History','tab-timeline',''],['Explore','tab-explore','']]
   .map(([t,k,m])=>`<button class="${m==='on'?'on':''}"${m==='experts'?' data-experts':(m?'':` data-toast="${t} tab"`)}><img src="${ICONS[m==='on'?k+'-on':k]}" alt="">${t}</button>`).join('');
 $('#icMenu').src=ICONS.hamburger; $('#icWallet').src=ICONS.wallet; $('#icChat').src=ICONS['chat-top']; $('#icPlus').src=ICONS.plus;
 
 const state={bal:0,claimed:false,mood:null,tasks:{tarot:false,report:false},seen:{},remind:false,freeRemind:false,ciRemind:false};
 
 /* header turns white once the page slides under it */
-const tc=document.querySelector('meta[name=theme-color]');
+const tc=document.querySelector('meta[name=theme-color]'),phone=matchMedia('(min-width:520px)');
 scroll.addEventListener('scroll',()=>{const st=scroll.scrollTop>6;
  $('#hd').classList.toggle('stuck',st);
  $('#sbar').classList.toggle('stuck',st);
  /* the status strip is painted by theme-color, not by .hero — so it has to be told too */
  tc.content=st?'#FFFFFF':'#FEBC9D';
- document.documentElement.style.background=st?'#FFFFFF':'#FEBC9D';},{passive:true});
+ const c=st?'#FFFFFF':'#FEBC9D';
+ document.documentElement.style.background=c;
+ /* on desktop body is the grey backdrop around the phone frame, so leave it alone there */
+ if(!phone.matches)document.body.style.background=c;},{passive:true});
 
 /* toast */
 let tt;function toast(m){const t=$('#toast');t.textContent=m;t.classList.add('on');clearTimeout(tt);tt=setTimeout(()=>t.classList.remove('on'),2200);}
@@ -733,16 +792,9 @@ const STORIES=[
      <p style="margin:0;font-size:16px;line-height:24px;color:rgba(255,255,255,.85)">Somvaar Mahadev ka din hai — shaant mann aur ghar mein sukoon ke liye.</p>
      <p style="margin:0;font-size:12px;color:rgba(255,255,255,.55)">Darshan, har subah AstroChat par</p></div>`],
   cta:{t:'Om Namah Shivaya · 108 jaap',a:()=>toast('Jaap counter khulega')}},
- {k:'panchang',ring:'#5867A8,#141A33',name:'Panchang',img:'assets/story-panchang.png',tag:'',bg:'#141A33',pat:'lotus',slides:[
-  ()=>`<div style="flex:1;display:flex;flex-direction:column;justify-content:center;gap:12px">
-     <div class="wcard" style="text-align:center"><small style="color:var(--mute);font-size:12px">Krishna Paksha</small><div style="font-size:40px;line-height:48px;font-weight:600">Dashami</div><small style="color:var(--mute);font-size:12px">2:08 AM tak · phir Ekadashi</small></div>
-     <div class="wcard"><div style="font-size:12px;color:var(--mute);font-weight:600;margin-bottom:4px">★ Aaj ka nakshatra</div>
-       <div class="row"><b>Punarvasu</b><span>11:10 PM tak</span></div>
-       <div class="row"><div><b>Ashwin</b><small>Maah · 2083 Vikram Samvat</small></div></div>
-       <div class="row"><div><b>Siddh</b><small>Yog</small></div><span>7:21 AM tak</span></div>
-       <div class="row"><div><b>Vishti</b><small>Karan</small></div><span>2:09 AM tak</span></div></div></div>`],
-  cta:{t:'Poora Panchang dekhein',a:()=>{closeStory();openCal();}}},
- /* Gita — the one slide that is purely to be shared. It is built exactly like Darshan: its own
+ /* Gita sits directly after Darshan — the two devotional slides belong together, and Panchang
+    closes the rail because it is the one that routes into the calendar.
+    Gita is the one slide that is purely to be shared. It is built exactly like Darshan: its own
     artwork full-bleed, the same dark scrim under the words, gold eyebrow, white body. The violet
     ground is pitched between Panchang's navy and Darshan's indigo so the rail reads as one set. */
  {k:'gita',ring:'#B08CE8,#F0A37A',name:'Gita',img:gitaAvatar(),tag:'new',pat:'chakra',bg:'radial-gradient(120% 70% at 50% 0%,#5B3A8E,#1A1033 72%)',slides:[
@@ -753,7 +805,16 @@ const STORIES=[
      <div class="shlok">कर्मण्येवाधिकारस्ते<br>मा फलेषु कदाचन</div>
      <div class="shlok-tr">karmaṇy-evādhikāras te mā phaleṣu kadāchana</div>
      <p style="margin:0;font-size:16px;line-height:24px;text-align:center;color:rgba(255,255,255,.85)">Apna kaam karne ka haq aapka hai, phal ka nahi. Natije ki chinta chhodiye — aaj ka kaam poora kijiye.</p></div>`],
-  cta:{t:'Aaj ka arth samjhein',a:()=>toast('Gita ka arth khulega')}}
+  cta:{t:'Aaj ka arth samjhein',a:()=>toast('Gita ka arth khulega')}},
+ {k:'panchang',ring:'#5867A8,#141A33',name:'Panchang',img:'assets/story-panchang.png',tag:'',bg:'#141A33',pat:'lotus',slides:[
+  ()=>`<div style="flex:1;display:flex;flex-direction:column;justify-content:center;gap:12px">
+     <div class="wcard" style="text-align:center"><small style="color:var(--mute);font-size:12px">Krishna Paksha</small><div style="font-size:40px;line-height:48px;font-weight:600">Dashami</div><small style="color:var(--mute);font-size:12px">2:08 AM tak · phir Ekadashi</small></div>
+     <div class="wcard"><div style="font-size:12px;color:var(--mute);font-weight:600;margin-bottom:4px">★ Aaj ka nakshatra</div>
+       <div class="row"><b>Punarvasu</b><span>11:10 PM tak</span></div>
+       <div class="row"><div><b>Ashwin</b><small>Maah · 2083 Vikram Samvat</small></div></div>
+       <div class="row"><div><b>Siddh</b><small>Yog</small></div><span>7:21 AM tak</span></div>
+       <div class="row"><div><b>Vishti</b><small>Karan</small></div><span>2:09 AM tak</span></div></div></div>`],
+  cta:{t:'Poora Panchang dekhein',a:()=>{closeStory();openCal();}}}
 ];
 /* the rail thumbnail — a Sudarshan chakra, so Gita needs no png of its own */
 function gitaAvatar(){const sp=Array.from({length:8},(_,i)=>{const a=i*45*Math.PI/180;
@@ -853,20 +914,32 @@ const REPLIES={
  achha:'Bahut badhiya, Mansi! Aaj Shukra aapke saath hai. Shaam 6 baje ke baad Rahul se dil ki baat kariye — jawab achha aayega.',
  theek:'Theek hai, koi baat nahi. Aaj thoda dheeraj rakhiye. Bade faisle Thursday tak tal dijiye, tab tak baat halki-phulki rakhiye.',
  pareshaan:'Main samajh sakti hoon. Aaj Rahu kaal (7:57–9:27) mein koi bhi baat mat chhediye. Chahein to mujhse 2 minute baat kar lijiye.'};
+/* the answered card is a thread, so the mood the user picked is echoed back as their own bubble */
+const MOODTX={achha:'😊 Achha',theek:'😐 Theek',pareshaan:'😟 Pareshaan'};
 $$('.mood').forEach(b=>b.onclick=()=>{
   if(state.mood)return;state.mood=b.dataset.m;
-  $$('.mood').forEach(x=>{x.disabled=true;x.classList.toggle('pick',x===b);});
-  $('#ciCard').querySelector('.pill').classList.add('done');
+  const ci=$('#ciCard');
+  ci.querySelector('.pill').classList.add('done');
+  /* the mood row has done its job — it becomes the user's reply in the thread */
+  $('#moods').remove();
   const th=$('#thread');
-  th.innerHTML=`<div class="msg"><img src="assets/hemali.png" alt=""><div class="bb"><span class="typing"><i></i><i></i><i></i></span></div></div>`;
+  th.innerHTML=`<div class="msg me"><div class="bb">${MOODTX[state.mood]}</div></div>
+    <div class="msg"><img src="assets/hemali.png" alt=""><div class="bb"><span class="typing"><i></i><i></i><i></i></span></div></div>`;
   setTimeout(()=>{
-    th.innerHTML=`<div class="msg"><img src="assets/hemali.png" alt=""><div class="bb">${REPLIES[state.mood]}${state.mood==='pareshaan'?'<br><button class="act" data-chat="Astro Hemali" data-rate="10">Hemali ji se baat karein</button>':''}</div></div>`;
+    th.innerHTML=`<div class="msg me"><div class="bb">${MOODTX[state.mood]}</div></div>
+      <div class="msg"><img src="assets/hemali.png" alt=""><div class="bb">${REPLIES[state.mood]}${state.mood==='pareshaan'?'<br><button class="act" data-chat="Astro Hemali" data-rate="10">Hemali ji se baat karein</button>':''}</div></div>`;
     setTimeout(()=>{
-      th.insertAdjacentHTML('beforeend',`<div class="credit" id="credit"><img src="assets/coin.png" alt=""><span>₹9 aapke wallet mein jud gaye<small>Kal aaiye aur ₹11 kamaiye</small></span></div>`);
+      th.insertAdjacentHTML('beforeend',`<div class="credit" id="credit"><svg width="18" height="18" viewBox="0 0 18 18" fill="none"><circle cx="9" cy="9" r="8" fill="#ECFDF3" stroke="#12B76A" stroke-width="1.4"/><path d="M5.4 9.3l2.4 2.4L12.6 6.9" stroke="#027A48" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>₹9 wallet mein jud gaye <small>· kal ₹11</small></div>`);
       addMoney(9,$('#credit'));
       state.claimed=true;DAYS[1].st='done';DAYS[1].tip='<b>Aaj</b> · ₹9 mil gaye ✓ Kal ₹11 milenge.';renderDays();
-      const cl=$('#claim');cl.classList.add('done');cl.innerHTML='<svg width="16" height="16" viewBox="0 0 14 14"><path d="M3 7.2l2.6 2.6L11 4.3" fill="none" stroke="#12B76A" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>Aaj ka ₹9 mil gaya · Kal ₹11';
-      $('#remindRow').classList.add('on');
+      /* the claim button becomes the one neutral reminder control for tomorrow's amount */
+      const cl=$('#claim');cl.classList.add('done');
+      bellBtn('claim','₹9 mil gaya · Kal ₹11 ki yaad dilayein','remind','Kal subah 8 baje yaad dilayenge');
+      $('#ciChips').innerHTML=`<button class="chip-r or" id="ciRemind"></button>
+        <button class="chip-r" data-toast="Shukriya, Mansi ji 🙏">Shukriya 🙏</button>
+        <button class="chip-r" data-chat="Astro Hemali" data-rate="10">Aur bataiye</button>
+        <button class="chip-r" data-toast="Hemali ji dobara dekhengi">Galat hai !</button>`;
+      bellBtn('ciRemind','Kal yaad dilana','ciRemind','Roz subah 9 baje check-in ki yaad dilayenge');
     },900);
   },1400);
 });
@@ -888,9 +961,9 @@ function bellBtn(id,label,key,msg){
     if(on)toast(msg);
   };
 }
-bellBtn('remindBtn','Set reminder','remind','Kal subah 8 baje yaad dilayenge');
+/* only the free-chat pill exists at load — the claim and check-in bells are built by the
+   check-in flow, which calls bellBtn() itself once their nodes are in the DOM */
 bellBtn('freeRemind','Remind me','freeRemind','Free chat khulte hi bata denge');
-bellBtn('ciRemind','Set reminder','ciRemind','Roz subah 9 baje check-in ki yaad dilayenge');
 
 /* voice note — real audio, wave driven off playback position */
 (()=>{const W=34,a=$('#vAudio');$('#wave').innerHTML=wave(W,0);
@@ -935,7 +1008,9 @@ setInterval(()=>{remain--;
 
 /* ---------- tasks ---------- */
 function taskDone(k){if(state.tasks[k])return;state.tasks[k]=true;const el=k==='tarot'?$('#tTarot'):$('#tReport');el.classList.add('done');
-  el.querySelector('.go').innerHTML='<svg width="14" height="14" viewBox="0 0 14 14"><path d="M3 7.2l2.6 2.6L11 4.3" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>';
+  /* "Shuru →" collapses to a green tick and the chip carries the wording — both together
+     overflow the 173px tile */
+  el.querySelector('.go').innerHTML='<svg width="18" height="18" viewBox="0 0 16 16"><path d="M3.5 8.4l3 3 6-6.4" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>';
   el.querySelector('.chip2').innerHTML='<img src="assets/coin.png" alt="">₹2 mil gaye';
   const n=Object.values(state.tasks).filter(Boolean).length;$('#p1').classList.toggle('f',n>=1);$('#p2').classList.toggle('f',n>=2);$('#pTxt').textContent=n+'/2';
   addMoney(2,el.querySelector('.art'));}
@@ -1007,13 +1082,17 @@ $('#hours').innerHTML=HOURS.map((h,i)=>`<button class="hr ${i===0?'now':''}" dat
 $$('.hr').forEach(b=>b.onclick=()=>toast(b.dataset.tip));
 
 /* experts */
-const EX=[['Astro Hemali','Tarot · ★ 4.9','<s>₹20/min</s>₹10/min','img','',10],['Acharya Ravi','Vedic · ★ 4.8','₹25/min','AR','#EEF0FF',25],['Meera Shah','Numerology · ★ 4.7','₹15/min','MS','#ECFDF3',15],['Pandit Arun','KP · ★ 4.8','₹18/min','PA','#FFF6ED',18]];
+/* Hemali is not in this rail — she already has her own card above it, and listing her twice
+   split the tap between the discounted Continue Chat and a full-price cold start */
+const EX=[['Acharya Ravi','Vedic · ★ 4.8','₹25/min','AR','#EEF0FF',25],['Meera Shah','Numerology · ★ 4.7','₹15/min','MS','#ECFDF3',15],['Pandit Arun','KP · ★ 4.8','₹18/min','PA','#FFF6ED',18]];
 $('#exps').innerHTML=EX.map(e=>`<div class="ex"><span class="ph" style="background:${e[4]||'none'}">${e[3]==='img'?'<img src="assets/hemali.png" alt="">':e[3]}<i></i></span><b>${e[0]}</b><small>${e[1]}</small><span class="pr">${e[2]}</span><button class="btn-o" data-chat="${e[0]}" data-rate="${e[5]}">${icoChat('#EF6939','#fff',16)}Chat</button></div>`).join('');
 
 /* ---------- CALENDAR ---------- */
 const CT={fes:['Tyohaar','#F79009'],vrat:['Vrat & tithi','#A3B4F7'],love:['Love','#F472B6'],career:['Career','#60A5FA'],health:['Sehat','#4ADE80'],money:['Paisa','#FBBF24']};
 /* the personal chips say what the day is good for, the way the event rows do */
-const FILT=[['all','Sab'],['fes','Tyohaar'],['vrat','Vrat'],['love','Love ke liye lucky'],['career','Career ke liye lucky'],['health','Sehat ke liye lucky'],['money','Paisa ke liye lucky']];
+/* chip label, then the Figma illustration that goes on it — the long "… ke liye lucky" labels
+   were what forced the filter row to scroll three screens wide */
+const FILT=[['all','Sab',''],['fes','Tyohaar','tyohaar'],['vrat','Vrat','vrat'],['love','Love','love'],['career','Career','career'],['health','Sehat','sehat'],['money','Paisa','paisa']];
 const EVENTS={2:[['fes','Gandhi Jayanti','Rashtriya chhutti']],6:[['vrat','Indira Ekadashi','Pitron ki shanti ke liye vrat'],['money','Paisa ke liye lucky','Naya invest ya kharid sochein']],10:[['vrat','Sarva Pitru Amavasya','Pitru Paksha ka aakhri din']],11:[['fes','Navratri shuru','Ghatasthapana · Shukla Pratipada']],17:[['fes','Tula Sankranti','Surya Tula mein']],19:[['fes','Durga Ashtami','Kanya pujan']],20:[['fes','Dussehra','Vijayadashami']],22:[['vrat','Papankusha Ekadashi','Shukla Ekadashi']],25:[['fes','Kojagari Lakshmi Puja','Raat bhar Lakshmi puja']],26:[['vrat','Sharad Purnima','Poornima']],29:[['vrat','Karwa Chauth','Chandrodaya par vrat kholein']],
  4:[['health','Sehat ke liye achha','Walk aur jaldi neend']],5:[['career','Career ke liye achha','Boss se baat 10:28–11:28']],7:[['love','Love ke liye lucky','Dil ki baat kehne ka din']],8:[['love','Rishton ke liye achha','Purani baat suljhaayein']],9:[['health','Sehat ke liye achha','Yoga se shuru karein']],
  13:[['love','Love ke liye lucky','']],14:[['career','Career ke liye achha','']],18:[['health','Sehat ke liye achha','']],21:[['money','Paisa ke liye lucky','']],23:[['love','Love ke liye lucky','']],27:[['career','Career ke liye achha','']]};
@@ -1062,8 +1141,11 @@ function relD(d){return d===5?'Aaj':d===6?'Kal':d<5?`${5-d} din pehle`:`${d-5} d
 function renderCal(){
  const cells=['','','',''].map(()=>'<span></span>');
  for(let d=1;d<=31;d++){const ev=shows(d),st=clSt(d);
-  cells.push(`<button class="cd ${d===5?'today':''} ${d===cal.sel?'sel':''} ${cal.f!=='all'&&!ev.length?'dim':''}" data-d="${d}"><span class="nr"><span class="n">${d}</span></span>${MK[st]}<span class="am ${d>10?'bl':''}">₹${EARN(d)}</span><span class="dts">${ev.slice(0,3).map(e=>`<i style="background:${CT[e[0]][1]}"></i>`).join('')}</span></button>`);}
+  cells.push(`<button class="cd ${d===5?'today':''} ${d===cal.sel?'sel':''} ${cal.f!=='all'&&!ev.length?'dim':''}" data-d="${d}"><span class="mn">${moon(d,16)}</span><span class="n">${d}</span>${MK[st]}<span class="am ${st==='c'?'c':st==='t'?'t':''} ${d>10?'bl':''}">₹${EARN(d)}</span><span class="dts">${ev.slice(0,3).map(e=>`<i style="background:${CT[e[0]][1]}"></i>`).join('')}</span></button>`);}
  let got=0,lost=0;for(let d=1;d<=31;d++){const s=clSt(d);if(s==='c')got+=EARN(d);if(s==='m')lost+=EARN(d);}
+ /* streak = unbroken claimed days ending today. Today only counts once it is actually claimed,
+    so this reads 1 before the check-in and 2 after — the same number the lock card counts to. */
+ let streak=0;for(let d=state.claimed?5:4;d>=1;d--){if(clSt(d)==='c')streak++;else break;}
  const sel=EVENTS[cal.sel]||[],p=panch(cal.sel),tt=[p.pk==='-'?p.ti:p.pk==='K'?'Krishna '+p.ti:'Shukla '+p.ti,p.nak];
  const pub=sel.filter(e=>!PERSONAL.includes(e[0])),me=sel.filter(e=>PERSONAL.includes(e[0]));
  const wkList=[];for(let d=4;d<=10;d++)shows(d).forEach(e=>wkList.push([d,e]));
@@ -1071,24 +1153,25 @@ function renderCal(){
  $('#cal').innerHTML=`<svg width="0" height="0" style="position:absolute"><defs><radialGradient id="ml" cx=".38" cy=".32" r=".85"><stop offset="0" stop-color="#FDB022"/><stop offset="1" stop-color="#EF6939"/></radialGradient></defs></svg>
  <div class="calhd"><button class="x" id="calX" aria-label="Close"><svg width="16" height="16" viewBox="0 0 24 24"><path d="M6 6l12 12M18 6 6 18" stroke="#101828" stroke-width="2.2" stroke-linecap="round"/></svg></button><div style="flex:1"><b>October 2026</b><small>Ashwin · Kartik · Mumbai</small></div>
   <button class="a" data-toast="September 2026" aria-label="Previous month"><svg width="16" height="16" viewBox="0 0 24 24"><path d="M15 5l-7 7 7 7" fill="none" stroke="#101828" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg></button><button class="a" data-toast="November · Diwali 8 Nov" aria-label="Next month"><svg width="16" height="16" viewBox="0 0 24 24"><path d="M9 5l7 7-7 7" fill="none" stroke="#101828" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg></button></div>
- <div class="calsum"><div class="s"><i style="background:#EF6939"><svg width="10" height="10" viewBox="0 0 14 14"><path d="M3 7.2l2.6 2.6L11 4.3" fill="none" stroke="#fff" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/></svg></i><span><b>₹${got} mile</b><small>claim kiye</small></span></div>
-  <div class="s"><i style="background:#F2F4F7;box-shadow:inset 0 0 0 1px #D0D5DD"><svg width="9" height="9" viewBox="0 0 14 14"><path d="M4.2 4.2l5.6 5.6M9.8 4.2l-5.6 5.6" fill="none" stroke="#98A2B3" stroke-width="2.2" stroke-linecap="round"/></svg></i><span><b>₹${lost} chhoot gaye</b><small>claim nahi kiya</small></span></div></div>
- <div class="filters">${FILT.map(([k,l])=>`<button class="fl ${cal.f===k?'on':''}" data-f="${k}">${k!=='all'?`<i style="background:${CT[k][1]}"></i>`:''}${l}</button>`).join('')}</div>
+ <div class="calsum"><div class="s ok"><i style="background:#17B26A"><svg width="10" height="10" viewBox="0 0 14 14"><path d="M3 7.2l2.6 2.6L11 4.3" fill="none" stroke="#fff" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/></svg></i><span><b>₹${got}</b><small>mile</small></span></div>
+  <div class="s"><i style="background:#F2F4F7;box-shadow:inset 0 0 0 1px #D0D5DD"><svg width="9" height="9" viewBox="0 0 14 14"><path d="M4.2 4.2l5.6 5.6M9.8 4.2l-5.6 5.6" fill="none" stroke="#98A2B3" stroke-width="2.2" stroke-linecap="round"/></svg></i><span><b>₹${lost}</b><small>chhoot gaye</small></span></div>
+  <div class="s"><i style="background:#FFF3EB"><svg width="11" height="11" viewBox="0 0 14 14"><path d="M7 1.5c1.4 2.2.6 3.2-.3 4.2-1 1.1-2.4 2-2.4 4a2.7 2.7 0 0 0 5.4 0c0-1-.4-1.8-.9-2.5.9.5 2.1 1.6 2.1 3.3A5 5 0 0 1 7 12.5" fill="none" stroke="#EF6939" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></svg></i><span><b>${streak} din</b><small>streak</small></span></div></div>
+ <div class="filters">${FILT.map(([k,l,ic])=>`<button class="fl ${cal.f===k?'on':''}" data-f="${k}">${ic?`<img src="assets/fl-${ic}.svg" alt="">`:''}${l}</button>`).join('')}</div>
  <div class="grid" id="grid"><div class="wk">${['S','M','T','W','T','F','S'].map(x=>`<span>${x}</span>`).join('')}</div><div class="gr">${cells.join('')}</div>
   <div class="weekband" id="band"></div>
  </div>
  <div class="lockcard"><span class="lk"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#EF6939" stroke-width="2"><rect x="5" y="10.5" width="14" height="10" rx="2.5"/><path d="M8 10.5V8a4 4 0 0 1 8 0v2.5"/></svg></span><div style="flex:1"><b>Aage ke hafton ka amount chhupa hai</b><small>7 din ki streak poori karein — har din ka inaam aur aapke lucky din khul jayenge · 2/7</small><div class="bar"><i style="width:${state.claimed?28:14}%"></i></div></div></div>
- <div class="seld">${moon(cal.sel,44)}<div class="tx"><small>${WK[(cal.sel-1)%7]}, ${cal.sel} Oct · ${relD(cal.sel)}</small><b>${pub[0]?pub[0][1]:tt[0]}</b><p>${pub[0]?pub[0][2]+' · '+tt[0]:tt[1]+' nakshatra'}</p>
-  ${me.length?`<div class="foryou">${me.map(e=>`<span><i style="background:${CT[e[0]][1]}"></i>${e[1]}</span>`).join('')}</div>${me[0][2]?`<p style="margin-top:6px">Mansi ke liye: ${me[0][2]}</p>`:''}`:''}</div>
-  <button class="ask" data-chat="Astro Hemali" data-rate="10" aria-label="Ask Hemali about this day">${icoChat('#fff','#EF6939',18)}</button></div>
- <div class="panch"><b>Panchang · ${cal.sel} Oct, Mumbai</b><div class="pg">
-  <span><small>Tithi</small><b>${tt[0]}</b></span><span><small>Nakshatra</small><b>${p.nak}</b></span>
-  <span><small>Yog</small><b>${p.yog}</b></span><span><small>Karan</small><b>${p.krn}</b></span>
-  <span><small>Sooryoday</small><b>${p.rise}</b></span><span><small>Sooryast</small><b>${p.set}</b></span>
-  <span><small>Rahu kaal</small><b class="warn">${p.rahu}</b></span><span><small>Chandra rashi</small><b>${p.ras}</b></span>
- </div></div>
- <div class="evlist"><h5>Is hafte · ${wkList.length}</h5>${wkList.map(([d,e])=>evRow(d,e,false)).join('')||'<p style="color:var(--mute);font-size:14px">Is hafte kuch nahi</p>'}
-  <h5>Aage is mahine</h5>${later.map(([d,e])=>evRow(d,e,PERSONAL.includes(e[0]))).join('')}</div>
+ <div class="seld"><div class="row1"><span class="mo">${moon(cal.sel,30)}</span><div class="tx"><small>${WK[(cal.sel-1)%7]}, ${cal.sel} Oct · ${relD(cal.sel)}</small><b>${pub[0]?pub[0][1]:tt[0]}</b><p>${tt[0]} · ${p.nak} nakshatra</p></div></div>
+  ${me.length?`<div class="foryou">${me.map(e=>`<span><i style="background:${CT[e[0]][1]}"></i>${e[1]}</span>`).join('')}</div>`:''}
+  ${me.length&&me[0][2]?`<div class="note"><i></i><span>Mansi ke liye: ${me[0][2]}</span></div>`:''}
+  <div class="pg">
+   <span><small>Yog</small><b>${p.yog}</b></span><span><small>Karan</small><b>${p.krn}</b></span>
+   <span><small>Sooryoday</small><b>${p.rise}</b></span><span><small>Sooryast</small><b>${p.set}</b></span>
+   <span><small>Rahu kaal</small><b class="warn">${p.rahu}</b></span><span><small>Chandra rashi</small><b>${p.ras}</b></span>
+  </div>
+  <button class="ask" data-chat="Astro Hemali" data-rate="10">${icoChat('#EF6939','#fff',18)}Is din ke baare mein poochein</button></div>
+ <div class="evlist"><h5>Is hafte<span>${wkList.length}</span></h5>${wkList.map(([d,e])=>evRow(d,e,false)).join('')||'<p style="color:var(--mute);font-size:14px">Is hafte kuch nahi</p>'}
+  <h5>Aage is mahine<span>${later.length}</span></h5>${later.map(([d,e])=>evRow(d,e,PERSONAL.includes(e[0]))).join('')}</div>
  <div class="calnote">Tithi aur tyohaar Kalnirnay ke hisaab se · Mumbai · Lucky din aapki kundli se andaaza hain</div>`;
  const g=$('#grid'),btns=$$('.cd'),f=btns.find(b=>+b.dataset.d===4);
  const gr=g.getBoundingClientRect(),fr=f.getBoundingClientRect();

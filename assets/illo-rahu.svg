@@ -1,0 +1,10 @@
+<svg width="32" height="32" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
+<path opacity="0.16" d="M16.0002 28.8C23.0694 28.8 28.8002 23.0692 28.8002 16C28.8002 8.93071 23.0694 3.19995 16.0002 3.19995C8.93095 3.19995 3.2002 8.93071 3.2002 16C3.2002 23.0692 8.93095 28.8 16.0002 28.8Z" fill="#FDB022"/>
+<path d="M13.1998 26C17.839 26 21.5998 22.2391 21.5998 17.6C21.5998 12.9608 17.839 9.19995 13.1998 9.19995C8.56061 9.19995 4.7998 12.9608 4.7998 17.6C4.7998 22.2391 8.56061 26 13.1998 26Z" fill="url(#a)"/>
+<path d="M18.8002 21.2C22.9976 21.2 26.4002 17.7974 26.4002 13.6C26.4002 9.40264 22.9976 6 18.8002 6C14.6028 6 11.2002 9.40264 11.2002 13.6C11.2002 17.7974 14.6028 21.2 18.8002 21.2Z" fill="url(#b)"/>
+<path d="M14.7998 9.9999C15.6204 9.07412 16.7668 8.50093 17.9998 8.3999" stroke="white" stroke-opacity="0.35" stroke-width="1.44" stroke-linecap="round"/>
+<defs>
+<linearGradient id="a" x1="8.1598" y1="9.19995" x2="18.2398" y2="26" gradientUnits="userSpaceOnUse"><stop stop-color="#FFE08A"/><stop offset="1" stop-color="#F38744"/></linearGradient>
+<linearGradient id="b" x1="14.2402" y1="6" x2="23.3602" y2="21.2" gradientUnits="userSpaceOnUse"><stop stop-color="#6B70B8"/><stop offset="1" stop-color="#2B2F5E"/></linearGradient>
+</defs>
+</svg>
