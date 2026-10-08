@@ -129,7 +129,7 @@ body.kbd :focus-visible{outline:2px solid rgba(16,24,40,.35);outline-offset:2px}
 .lotdl .pv dotlottie-wc{display:block;width:100%;height:100%}
 .lotdl a{color:#fff;font-weight:600;text-decoration:none;border-bottom:1px solid #6a6a72}
 /* the raw-file escape hatch: present, but never competing with the LottieFiles link */
-.lotdl a.raw{color:#8a8a93;font-weight:400;font-size:11px;border-bottom-color:#4a4a52}
+.lotdl a.raw{color:#8a8a93;font-weight:400;font-size:12px;border-bottom-color:#4a4a52}
 .lotdl small{display:block;color:#8a8a93}
 .lotdl .note{margin:8px 0 0;color:#8a8a93}
 body.mobile .specs{display:none}
@@ -187,7 +187,7 @@ body.mobile .phone{border-radius:0;box-shadow:none}
 .wpill{position:relative;background:var(--gray-700);display:flex;flex-direction:column;align-items:center;gap:3px;padding:2px 2px 4px;border-radius:16px 16px 12px 12px;overflow:hidden}
 .wpill .inner{background:#fff;border:1px solid var(--gray-300);border-radius:20px;display:flex;gap:8px;align-items:center;padding:3px 4px 3px 6px;position:relative;z-index:1}
 .wpill .inner p{font-size:var(--fs-sm);color:#2d2d2d}
-.wpill .cb{font-size:10px;color:#fff;letter-spacing:-.32px;white-space:nowrap;position:relative;z-index:1}
+.wpill .cb{font-size:12px;color:#fff;letter-spacing:-.32px;white-space:nowrap;position:relative;z-index:1}
 /* light sweep: kept for the ASTRO50 coupon banner (both its timer and non-timer states).
    The offer banner deliberately has none. */
 .sweep{position:absolute;inset:0;pointer-events:none;overflow:hidden;border-radius:inherit}
@@ -237,7 +237,7 @@ body.mobile .phone{border-radius:0;box-shadow:none}
 .promo.img{padding:0;background:none}
 .promo.img img{width:100%;height:100%;object-fit:contain}
 .promo h5{font-size:15px;font-weight:800;line-height:var(--lh-sm);white-space:nowrap}
-.promo p{font-size:11px;line-height:15px;opacity:.95;white-space:nowrap}
+.promo p{font-size:12px;line-height:15px;opacity:.95;white-space:nowrap}
 .promo p b{font-weight:700}
 .promo .rn{white-space:nowrap;background:#fff;color:#7a45c9;font-weight:700;font-size:13px;border-radius:10px;padding:9px 10px;box-shadow:0 2px 8px rgba(60,20,120,.25)}
 .recent{flex-shrink:0;border-radius:12px;padding:12px 8px;display:flex;flex-direction:column;gap:8px;background:linear-gradient(112.5deg,#fefdf8 1.3%,#ffedd2 49.8%,#fefdf8 104%)}
@@ -301,7 +301,7 @@ body.mobile .phone{border-radius:0;box-shadow:none}
 .t-ins .g svg,.t-foot svg{display:block;width:100%;height:100%}
 .t-ins p{font-size:var(--fs-sm);line-height:20px;color:var(--gray-700)}
 .t-foot{display:flex;justify-content:space-between;align-items:center;margin-top:14px;padding:0 20px;
-  font-size:10px;line-height:12px;font-weight:300}
+  font-size:12px;line-height:12px;font-weight:300}
 /* Figma has this line in #fff, which over the near-white bottom of the hero is invisible.
    Rendered in gray-400 instead so the prototype actually shows it — one line to revert. */
 .t-foot .upd{color:var(--gray-400);white-space:nowrap}
@@ -490,7 +490,7 @@ body.mobile .phone{border-radius:0;box-shadow:none}
 .addfly{position:absolute;left:calc(100% + 6px);top:14px;white-space:nowrap;font-size:var(--fs-sm);line-height:var(--lh-sm);font-weight:700;letter-spacing:0;color:var(--success-700);background:var(--success-50);border:1px solid #abefc6;border-radius:10px;padding:1px 7px;opacity:0;transform:translateY(10px) scale(.7);pointer-events:none;transition:opacity .25s ease-out,transform .4s cubic-bezier(.2,1.4,.4,1)}
 .addfly.in{opacity:1;transform:none}
 .addfly.merge{opacity:0;transform:translateX(-30px) scale(.5);transition:opacity .55s ease-in,transform .7s cubic-bezier(.5,0,.8,.4)}
-.bonus.nudge{border:0;cursor:pointer;font-size:11px;letter-spacing:0;padding:4px 7px;background:linear-gradient(180deg,#F79009,var(--warning-600));box-shadow:0 2px 6px rgba(220,104,3,.35);animation:nudge 2.4s ease-in-out infinite}
+.bonus.nudge{border:0;cursor:pointer;font-size:12px;letter-spacing:0;padding:4px 7px;background:linear-gradient(180deg,#F79009,var(--warning-600));box-shadow:0 2px 6px rgba(220,104,3,.35);animation:nudge 2.4s ease-in-out infinite}
 @keyframes nudge{0%,70%,100%{transform:translateY(0)}78%{transform:translateY(-2px)}86%{transform:translateY(0)}92%{transform:translateY(-1px)}}
 .ab .coinfall{position:absolute;inset:0;border-radius:13px;overflow:hidden;pointer-events:none;z-index:0;-webkit-mask-image:linear-gradient(90deg,#000 0 21%,transparent 24% 76%,#000 79% 100%);mask-image:linear-gradient(90deg,#000 0 21%,transparent 24% 76%,#000 79% 100%)}
 .ab .coinfall .coin{position:absolute;top:0;opacity:0;animation:coinFall 3.6s linear infinite}
@@ -694,7 +694,7 @@ body.mobile .phone{border-radius:0;box-shadow:none}
 .msgs{position:absolute;top:64px;left:0;right:0;bottom:0;overflow-y:auto;padding:12px 16px 210px;display:flex;flex-direction:column;gap:12px;scrollbar-width:none;-webkit-overflow-scrolling:touch}
 .msgs::-webkit-scrollbar{display:none}
 .msg{max-width:268px;padding:8px 12px;border-radius:14px;font-size:var(--fs-sm);line-height:22px;color:var(--gray-800);display:flex;flex-wrap:wrap;align-items:flex-end;column-gap:8px}
-.msg time{font-size:10px;line-height:14px;color:var(--gray-500);margin-left:auto}
+.msg time{font-size:12px;line-height:14px;color:var(--gray-500);margin-left:auto}
 .msg.in{background:#fff;align-self:flex-start;box-shadow:0 1px 2px rgba(16,24,40,.05)}
 .msg.out{background:#fde2d6;align-self:flex-end}
 .sys{background:var(--gray-100);border:1px solid var(--gray-300);border-radius:10px;padding:8px 12px;text-align:center;font-size:var(--fs-sm);line-height:22px;color:var(--gray-600)}

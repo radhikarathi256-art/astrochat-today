@@ -6,6 +6,14 @@
 <!-- the hero's own top tint, so the strip the OS paints behind the status bar reads as part of
      the image instead of a white band above it -->
 <meta name="theme-color" content="#FEBC9D">
+<!-- Added to Home Screen, iOS runs the page standalone, ignores theme-color entirely, and paints an
+     opaque white bar above the content unless the page declares itself web-app capable. Declaring it
+     and asking for a translucent bar lets the hero run all the way under the status bar; .hd already
+     pads by env(safe-area-inset-top), so the greeting still clears the clock. -->
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="AstroChat">
 <title>AstroChat Today</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -299,7 +307,7 @@ img{display:block;max-width:100%}
 .sablink{border:0;background:none;font-size:14px;font-weight:600;color:var(--ink2);padding:0}
 
 /* nav */
-.nav{position:absolute;left:16px;right:16px;bottom:16px;height:60px;display:flex;border-radius:30px;background:rgba(255,255,255,.96);border:1px solid var(--line-solid);padding:4px 8px;z-index:10;backdrop-filter:blur(8px)}
+.nav{position:absolute;left:16px;right:16px;bottom:calc(env(safe-area-inset-bottom,0px) + 16px);height:60px;display:flex;border-radius:30px;background:rgba(255,255,255,.96);border:1px solid var(--line-solid);padding:4px 8px;z-index:10;backdrop-filter:blur(8px)}
 /* type and icon sizing taken from the Experts page tabbar: 24px icon, 11/16 label, 2px gap */
 .nav button{flex:1;border:0;background:none;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px;font-size:12px;line-height:16px;color:var(--mute);padding:0}
 .nav button img{width:24px;height:24px}
