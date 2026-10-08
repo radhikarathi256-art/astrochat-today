@@ -56,6 +56,11 @@ img{display:block;max-width:100%}
 .top{position:relative;padding-bottom:4px}
 /* sticky: transparent over the hero at rest, white once the page moves under it */
 .hd{position:sticky;top:0;z-index:20;display:flex;align-items:center;gap:12px;padding:calc(env(safe-area-inset-top,0px) + 12px) 16px 8px;transition:background .2s,box-shadow .2s}
+/* The strip behind the OS clock. Standalone runs the content under the status bar, so this is
+   what shows there: lotus peach at rest, white the moment the header sticks. It sits inside .app
+   (not fixed) so the desktop phone frame keeps it, and it collapses to 0 where there is no inset. */
+.sbar{position:absolute;top:0;left:0;right:0;height:env(safe-area-inset-top,0px);z-index:30;background:#FEBC9D;transition:background .2s;pointer-events:none}
+.sbar.stuck{background:#fff}
 .hd.stuck{background:rgba(255,255,255,.94);-webkit-backdrop-filter:blur(12px);backdrop-filter:blur(12px);box-shadow:0 1px 0 var(--line)}
 .hd .g{flex:1}.hd .g small{display:block;font-size:12px;color:var(--ink2);line-height:16px}.hd .g b{font-size:16px;line-height:24px}
 .iconbtn{width:36px;height:36px;border-radius:50%;border:1px solid var(--line);background:rgba(255,255,255,.85);display:grid;place-items:center;padding:0}
@@ -486,6 +491,7 @@ img{display:block;max-width:100%}
 </head>
 <body>
 <div class="app" id="app">
+  <div class="sbar" id="sbar"></div>
   <div class="scroll" id="scroll">
     <div class="hero"></div>
     <!-- direct child of the scrollport so it stays stuck for the whole page, not just .top -->
@@ -624,6 +630,7 @@ const state={bal:0,claimed:false,mood:null,tasks:{tarot:false,report:false},seen
 const tc=document.querySelector('meta[name=theme-color]');
 scroll.addEventListener('scroll',()=>{const st=scroll.scrollTop>6;
  $('#hd').classList.toggle('stuck',st);
+ $('#sbar').classList.toggle('stuck',st);
  /* the status strip is painted by theme-color, not by .hero — so it has to be told too */
  tc.content=st?'#FFFFFF':'#FEBC9D';
  document.documentElement.style.background=st?'#FFFFFF':'#FEBC9D';},{passive:true});
