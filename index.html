@@ -649,21 +649,33 @@ document.addEventListener('click',e=>{
 /* ---------- wallet + recharge ----------
    wallet.html is the pricing prototype verbatim. Same origin, so its router can be patched:
    its Home/Today/History tabs are THIS page, so those routes come back here instead. */
+/* wallet.html is ~500KB. Pointing the iframe at it on every tap meant re-fetching and re-parsing
+   the whole page while the panel was already visible, which is the blank second or two. It is now
+   mounted once in the background and routed in place after that; closing only hides it. */
+const wvFrame=$('#wvFrame');
+/* the Experts screen IS pricing-v2's `home`, so when that is what we mounted the route has to
+   stay inside the iframe; every other mount treats Home/Today as "back to this page". */
+let wvExits=[],wvGo=null;
+wvFrame.addEventListener('load',()=>{
+  const w=wvFrame.contentWindow;
+  if(!w||typeof w.go!=='function'){wvGo=null;return;}
+  wvGo=w.go;
+  w.go=(r,rt)=>{ if(wvExits.includes(r))return closeWallet(); wvGo(r,rt); };
+});
+/* mount once the Today page itself has painted, so the preload costs nothing the user can see */
+addEventListener('load',()=>setTimeout(()=>{
+  if(!wvGo)wvFrame.src='wallet.html?view=mobile&start=home';
+},600));
+
 function openWallet(route,rate){
-  const f=$('#wvFrame');
-  /* the Experts screen IS pricing-v2's `home`, so when that is what we mounted the route has to
-     stay inside the iframe; every other mount treats Home/Today as "back to this page". */
-  const exits=route==='home'?['today']:['home','today','history'];
-  f.src=`wallet.html?view=mobile&start=${route}`+(rate?`&rate=${rate}`:'');
-  f.onload=()=>{
-    const w=f.contentWindow;
-    if(!w||typeof w.go!=='function')return;
-    const go=w.go;
-    w.go=(r,rt)=>{ if(exits.includes(r))return closeWallet(); go(r,rt); };
-  };
+  wvExits=route==='home'?['today']:['home','today','history'];
+  /* already mounted -> route inside the iframe, no reload. go(route) is exactly what the page runs
+     for itself on boot, so what renders is unchanged. */
+  if(wvGo)wvGo(route);
+  else wvFrame.src=`wallet.html?view=mobile&start=${route}`+(rate?`&rate=${rate}`:'');
   $('#wv').classList.add('on');
 }
-function closeWallet(){$('#wv').classList.remove('on');$('#wvFrame').src='about:blank';}
+function closeWallet(){$('#wv').classList.remove('on');}
 $('#wallet').onclick=()=>openWallet('wallet');
 
 /* wallet */
